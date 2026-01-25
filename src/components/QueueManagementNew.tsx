@@ -1,0 +1,770 @@
+import { useState, useEffect } from 'react';
+import { motion } from 'motion/react';
+import { Plus, Search, Clock, Users, ArrowUp, ArrowDown, Play, Pause, CheckCircle, AlertTriangle } from 'lucide-react';
+import { toast } from 'sonner';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
+import { Label } from './ui/label';
+import { Badge } from './ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+import { DatabaseService } from '../utils/supabase/database';
+
+interface QueueItem {
+  id: string;
+  patientId: string;
+  patientName: string;
+  appointmentId?: string;
+  department: string;
+  service: string;
+  priority: 'low' | 'normal' | 'high' | 'urgent';
+  status: 'waiting' | 'called' | 'in_service' | 'completed' | 'no_show';
+  queueNumber: number;
+  estimatedWaitTime: number;
+  actualWaitTime?: number;
+  joinedTime: string;
+  calledTime?: string;
+  completedTime?: string;
+  notes?: string;
+}
+
+interface QueueStats {
+  totalWaiting: number;
+  averageWaitTime: number;
+  longestWaitTime: number;
+  completedToday: number;
+  noShowsToday: number;
+}
+
+interface QueueManagementProps {
+  session: any;
+}
+
+export function QueueManagement({ session }: QueueManagementProps) {
+  const [queues, setQueues] = useState<QueueItem[]>([]);
+  const [selectedDepartment, setSelectedDepartment] = useState('all');
+  const [selectedService, setSelectedService] = useState('all');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [queueForm, setQueueForm] = useState<Partial<QueueItem>>({});
+  const [loading, setLoading] = useState(false);
+  const [stats, setStats] = useState<QueueStats>({
+    totalWaiting: 0,
+    averageWaitTime: 0,
+    longestWaitTime: 0,
+    completedToday: 0,
+    noShowsToday: 0
+  });
+
+  const departments = ['Cardiology', 'Neurology', 'Pediatrics', 'Orthopedics', 'Emergency', 'General Medicine'];
+  const services = ['Consultation', 'Lab Tests', 'Radiology', 'Pharmacy', 'Billing', 'Registration'];
+
+  useEffect(() => {
+    fetchQueues();
+    const interval = setInterval(fetchQueues, 30000); // Refresh every 30 seconds
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    calculateStats();
+  }, [queues]);
+
+  const fetchQueues = async () => {
+    try {
+      // Mock data for now - would use DatabaseService in production
+      const mockQueues: QueueItem[] = [
+        {
+          id: '1',
+          patientId: 'P001',
+          patientName: 'John Smith',
+          appointmentId: 'A001',
+          department: 'Cardiology',
+          service: 'Consultation',
+          priority: 'normal',
+          status: 'waiting',
+          queueNumber: 1,
+          estimatedWaitTime: 15,
+          joinedTime: '2024-12-08T09:00:00',
+          notes: 'Follow-up appointment'
+        },
+        {
+          id: '2',
+          patientId: 'P002',
+          patientName: 'Sarah Johnson',
+          department: 'Emergency',
+          service: 'Consultation',
+          priority: 'urgent',
+          status: 'in_service',
+          queueNumber: 1,
+          estimatedWaitTime: 5,
+          actualWaitTime: 3,
+          joinedTime: '2024-12-08T09:15:00',
+          calledTime: '2024-12-08T09:18:00',
+          notes: 'Chest pain'
+        },
+        {
+          id: '3',
+          patientId: 'P003',
+          patientName: 'Mike Wilson',
+          department: 'Radiology',
+          service: 'X-Ray',
+          priority: 'normal',
+          status: 'waiting',
+          queueNumber: 2,
+          estimatedWaitTime: 25,
+          joinedTime: '2024-12-08T09:30:00'
+        },
+        {
+          id: '4',
+          patientId: 'P004',
+          patientName: 'Emily Davis',
+          department: 'Lab',
+          service: 'Blood Test',
+          priority: 'high',
+          status: 'called',
+          queueNumber: 1,
+          estimatedWaitTime: 10,
+          joinedTime: '2024-12-08T09:45:00',
+          calledTime: '2024-12-08T09:55:00'
+        }
+      ];
+      setQueues(mockQueues);
+    } catch (error) {
+      console.error('Error fetching queues:', error);
+      toast.error('Failed to load queue data');
+    }
+  };
+
+  const calculateStats = () => {
+    const waiting = queues.filter(q => q.status === 'waiting');
+    const completed = queues.filter(q => q.status === 'completed');
+    const noShows = queues.filter(q => q.status === 'no_show');
+    
+    const waitTimes = waiting.map(q => {
+      const joinedTime = new Date(q.joinedTime);
+      const now = new Date();
+      return Math.floor((now.getTime() - joinedTime.getTime()) / (1000 * 60));
+    });
+
+    setStats({
+      totalWaiting: waiting.length,
+      averageWaitTime: waitTimes.length > 0 ? Math.round(waitTimes.reduce((a, b) => a + b, 0) / waitTimes.length) : 0,
+      longestWaitTime: waitTimes.length > 0 ? Math.max(...waitTimes) : 0,
+      completedToday: completed.length,
+      noShowsToday: noShows.length
+    });
+  };
+
+  const handleAddToQueue = async () => {
+    if (!queueForm.patientName || !queueForm.department || !queueForm.service) {
+      toast.error('Please fill in all required fields');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const departmentQueues = queues.filter(q => 
+        q.department === queueForm.department && 
+        q.service === queueForm.service &&
+        q.status !== 'completed' && 
+        q.status !== 'no_show'
+      );
+      
+      const nextQueueNumber = Math.max(...departmentQueues.map(q => q.queueNumber), 0) + 1;
+
+      const newQueueItem: QueueItem = {
+        id: Date.now().toString(),
+        patientId: queueForm.patientId || `P${Date.now()}`,
+        patientName: queueForm.patientName || '',
+        appointmentId: queueForm.appointmentId,
+        department: queueForm.department || '',
+        service: queueForm.service || '',
+        priority: queueForm.priority || 'normal',
+        status: 'waiting',
+        queueNumber: nextQueueNumber,
+        estimatedWaitTime: departmentQueues.length * 15, // 15 minutes per person
+        joinedTime: new Date().toISOString(),
+        notes: queueForm.notes
+      };
+
+      setQueues([...queues, newQueueItem]);
+      setQueueForm({});
+      setIsAddModalOpen(false);
+      toast.success(`Patient added to queue #${nextQueueNumber}`);
+    } catch (error) {
+      console.error('Error adding to queue:', error);
+      toast.error('Failed to add patient to queue');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCallNext = async (department: string, service: string) => {
+    try {
+      const nextPatient = queues
+        .filter(q => q.department === department && q.service === service && q.status === 'waiting')
+        .sort((a, b) => {
+          // Sort by priority first, then by queue number
+          const priorityOrder = { urgent: 0, high: 1, normal: 2, low: 3 };
+          const aPriority = priorityOrder[a.priority];
+          const bPriority = priorityOrder[b.priority];
+          
+          if (aPriority !== bPriority) {
+            return aPriority - bPriority;
+          }
+          return a.queueNumber - b.queueNumber;
+        })[0];
+
+      if (nextPatient) {
+        setQueues(queues.map(q =>
+          q.id === nextPatient.id
+            ? { ...q, status: 'called', calledTime: new Date().toISOString() }
+            : q
+        ));
+        toast.success(`Called ${nextPatient.patientName} - Queue #${nextPatient.queueNumber}`);
+      } else {
+        toast.info('No patients waiting in this queue');
+      }
+    } catch (error) {
+      console.error('Error calling next patient:', error);
+      toast.error('Failed to call next patient');
+    }
+  };
+
+  const handleStartService = async (queueId: string) => {
+    try {
+      setQueues(queues.map(q =>
+        q.id === queueId
+          ? { ...q, status: 'in_service' }
+          : q
+      ));
+      toast.success('Service started');
+    } catch (error) {
+      console.error('Error starting service:', error);
+      toast.error('Failed to start service');
+    }
+  };
+
+  const handleCompleteService = async (queueId: string) => {
+    try {
+      const queueItem = queues.find(q => q.id === queueId);
+      if (queueItem) {
+        const actualWaitTime = Math.floor(
+          (new Date().getTime() - new Date(queueItem.joinedTime).getTime()) / (1000 * 60)
+        );
+
+        setQueues(queues.map(q =>
+          q.id === queueId
+            ? { 
+                ...q, 
+                status: 'completed', 
+                completedTime: new Date().toISOString(),
+                actualWaitTime 
+              }
+            : q
+        ));
+        toast.success('Service completed');
+      }
+    } catch (error) {
+      console.error('Error completing service:', error);
+      toast.error('Failed to complete service');
+    }
+  };
+
+  const handleMarkNoShow = async (queueId: string) => {
+    try {
+      setQueues(queues.map(q =>
+        q.id === queueId
+          ? { ...q, status: 'no_show' }
+          : q
+      ));
+      toast.success('Marked as no-show');
+    } catch (error) {
+      console.error('Error marking no-show:', error);
+      toast.error('Failed to mark as no-show');
+    }
+  };
+
+  const handleChangePriority = async (queueId: string, newPriority: QueueItem['priority']) => {
+    try {
+      setQueues(queues.map(q =>
+        q.id === queueId
+          ? { ...q, priority: newPriority }
+          : q
+      ));
+      toast.success('Priority updated');
+    } catch (error) {
+      console.error('Error changing priority:', error);
+      toast.error('Failed to change priority');
+    }
+  };
+
+  const filteredQueues = queues.filter(queue => {
+    const matchesSearch = queue.patientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         queue.patientId.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesDepartment = selectedDepartment === 'all' || queue.department === selectedDepartment;
+    const matchesService = selectedService === 'all' || queue.service === selectedService;
+    const isActive = queue.status !== 'completed' && queue.status !== 'no_show';
+    
+    return matchesSearch && matchesDepartment && matchesService && isActive;
+  });
+
+  const getStatusColor = (status: string) => {
+    const colors = {
+      'waiting': 'bg-yellow-100 text-yellow-700',
+      'called': 'bg-blue-100 text-blue-700',
+      'in_service': 'bg-green-100 text-green-700',
+      'completed': 'bg-gray-100 text-gray-700',
+      'no_show': 'bg-red-100 text-red-700'
+    };
+    return colors[status as keyof typeof colors] || 'bg-gray-100 text-gray-700';
+  };
+
+  const getPriorityColor = (priority: string) => {
+    const colors = {
+      'low': 'bg-blue-100 text-blue-700',
+      'normal': 'bg-gray-100 text-gray-700',
+      'high': 'bg-orange-100 text-orange-700',
+      'urgent': 'bg-red-100 text-red-700'
+    };
+    return colors[priority as keyof typeof colors] || 'bg-gray-100 text-gray-700';
+  };
+
+  const getWaitTime = (joinedTime: string) => {
+    const joined = new Date(joinedTime);
+    const now = new Date();
+    const diffMinutes = Math.floor((now.getTime() - joined.getTime()) / (1000 * 60));
+    return diffMinutes;
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Queue Management</h1>
+          <p className="text-gray-600">Manage patient queues across departments</p>
+        </div>
+        <Button onClick={() => setIsAddModalOpen(true)} className="bg-[#38bdf8] hover:bg-[#0ea5e9]">
+          <Plus className="size-4 mr-2" />
+          Add to Queue
+        </Button>
+      </div>
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-600">Waiting</p>
+                <p className="text-2xl font-bold text-yellow-600">{stats.totalWaiting}</p>
+              </div>
+              <Clock className="size-8 text-yellow-600" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-600">Avg Wait</p>
+                <p className="text-2xl font-bold text-blue-600">{stats.averageWaitTime}m</p>
+              </div>
+              <Users className="size-8 text-blue-600" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-600">Longest Wait</p>
+                <p className="text-2xl font-bold text-orange-600">{stats.longestWaitTime}m</p>
+              </div>
+              <AlertTriangle className="size-8 text-orange-600" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-600">Completed</p>
+                <p className="text-2xl font-bold text-green-600">{stats.completedToday}</p>
+              </div>
+              <CheckCircle className="size-8 text-green-600" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-600">No Shows</p>
+                <p className="text-2xl font-bold text-red-600">{stats.noShowsToday}</p>
+              </div>
+              <Users className="size-8 text-red-600" />
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Tabs defaultValue="active" className="space-y-4">
+        <TabsList>
+          <TabsTrigger value="active">Active Queues</TabsTrigger>
+          <TabsTrigger value="departments">By Department</TabsTrigger>
+          <TabsTrigger value="history">History</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="active" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle>Current Queue Status</CardTitle>
+                <div className="flex gap-2">
+                  <select
+                    value={selectedDepartment}
+                    onChange={(e) => setSelectedDepartment(e.target.value)}
+                    className="px-3 py-2 border border-gray-300 rounded-md"
+                  >
+                    <option value="all">All Departments</option>
+                    {departments.map(dept => (
+                      <option key={dept} value={dept}>{dept}</option>
+                    ))}
+                  </select>
+                  <select
+                    value={selectedService}
+                    onChange={(e) => setSelectedService(e.target.value)}
+                    className="px-3 py-2 border border-gray-300 rounded-md"
+                  >
+                    <option value="all">All Services</option>
+                    {services.map(service => (
+                      <option key={service} value={service}>{service}</option>
+                    ))}
+                  </select>
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
+                    <Input
+                      placeholder="Search patients..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="pl-10 w-64"
+                    />
+                  </div>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {filteredQueues
+                  .sort((a, b) => {
+                    // Sort by priority first, then by queue number
+                    const priorityOrder = { urgent: 0, high: 1, normal: 2, low: 3 };
+                    const aPriority = priorityOrder[a.priority];
+                    const bPriority = priorityOrder[b.priority];
+                    
+                    if (aPriority !== bPriority) {
+                      return aPriority - bPriority;
+                    }
+                    return a.queueNumber - b.queueNumber;
+                  })
+                  .map((queue, index) => (
+                    <motion.div
+                      key={queue.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                      className="border rounded-lg p-4 hover:shadow-md transition-shadow"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex-1 grid grid-cols-6 gap-4">
+                          <div>
+                            <p className="text-xs text-gray-600">Queue #</p>
+                            <p className="text-lg font-bold text-[#38bdf8]">{queue.queueNumber}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-gray-600">Patient</p>
+                            <p className="text-sm font-medium text-gray-900">{queue.patientName}</p>
+                            <p className="text-xs text-gray-500">{queue.patientId}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-gray-600">Department</p>
+                            <p className="text-sm text-gray-900">{queue.department}</p>
+                            <p className="text-xs text-gray-500">{queue.service}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-gray-600">Priority</p>
+                            <Badge className={getPriorityColor(queue.priority)}>
+                              {queue.priority}
+                            </Badge>
+                          </div>
+                          <div>
+                            <p className="text-xs text-gray-600">Status</p>
+                            <Badge className={getStatusColor(queue.status)}>
+                              {queue.status.replace('_', ' ')}
+                            </Badge>
+                          </div>
+                          <div>
+                            <p className="text-xs text-gray-600">Wait Time</p>
+                            <p className="text-sm font-medium text-gray-900">
+                              {getWaitTime(queue.joinedTime)}m
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex gap-2">
+                          {queue.status === 'waiting' && (
+                            <>
+                              <Button
+                                size="sm"
+                                onClick={() => handleCallNext(queue.department, queue.service)}
+                                className="bg-[#38bdf8] hover:bg-[#0ea5e9]"
+                              >
+                                Call
+                              </Button>
+                              <select
+                                value={queue.priority}
+                                onChange={(e) => handleChangePriority(queue.id, e.target.value as QueueItem['priority'])}
+                                className="px-2 py-1 text-xs border border-gray-300 rounded"
+                              >
+                                <option value="low">Low</option>
+                                <option value="normal">Normal</option>
+                                <option value="high">High</option>
+                                <option value="urgent">Urgent</option>
+                              </select>
+                            </>
+                          )}
+                          {queue.status === 'called' && (
+                            <Button
+                              size="sm"
+                              onClick={() => handleStartService(queue.id)}
+                              className="bg-green-600 hover:bg-green-700"
+                            >
+                              <Play className="size-4 mr-1" />
+                              Start
+                            </Button>
+                          )}
+                          {queue.status === 'in_service' && (
+                            <Button
+                              size="sm"
+                              onClick={() => handleCompleteService(queue.id)}
+                              className="bg-purple-600 hover:bg-purple-700"
+                            >
+                              <CheckCircle className="size-4 mr-1" />
+                              Complete
+                            </Button>
+                          )}
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => handleMarkNoShow(queue.id)}
+                          >
+                            No Show
+                          </Button>
+                        </div>
+                      </div>
+                      {queue.notes && (
+                        <div className="mt-2 pt-2 border-t">
+                          <p className="text-xs text-gray-600">Notes:</p>
+                          <p className="text-sm text-gray-900">{queue.notes}</p>
+                        </div>
+                      )}
+                    </motion.div>
+                  ))}
+                {filteredQueues.length === 0 && (
+                  <div className="text-center py-8 text-gray-500">
+                    No patients in queue
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="departments" className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {departments.map(department => {
+              const deptQueues = queues.filter(q => 
+                q.department === department && 
+                (q.status === 'waiting' || q.status === 'called' || q.status === 'in_service')
+              );
+              
+              return (
+                <Card key={department}>
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-lg">{department}</CardTitle>
+                      <Badge variant="outline">{deptQueues.length} waiting</Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2">
+                      {services.map(service => {
+                        const serviceQueues = deptQueues.filter(q => q.service === service);
+                        if (serviceQueues.length === 0) return null;
+                        
+                        return (
+                          <div key={service} className="flex items-center justify-between p-2 bg-gray-50 rounded">
+                            <span className="text-sm">{service}</span>
+                            <div className="flex items-center gap-2">
+                              <Badge variant="outline">{serviceQueues.length}</Badge>
+                              <Button
+                                size="sm"
+                                onClick={() => handleCallNext(department, service)}
+                                className="bg-[#38bdf8] hover:bg-[#0ea5e9]"
+                              >
+                                Call Next
+                              </Button>
+                            </div>
+                          </div>
+                        );
+                      })}
+                      {deptQueues.length === 0 && (
+                        <p className="text-sm text-gray-500 text-center py-4">No patients waiting</p>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="history" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Queue History</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {queues
+                  .filter(q => q.status === 'completed' || q.status === 'no_show')
+                  .slice(0, 20)
+                  .map((queue) => (
+                    <div key={queue.id} className="flex items-center justify-between p-3 bg-gray-50 rounded">
+                      <div className="flex-1 grid grid-cols-5 gap-4">
+                        <div>
+                          <p className="text-sm font-medium">{queue.patientName}</p>
+                          <p className="text-xs text-gray-500">{queue.patientId}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm">{queue.department}</p>
+                          <p className="text-xs text-gray-500">{queue.service}</p>
+                        </div>
+                        <div>
+                          <Badge className={getStatusColor(queue.status)}>
+                            {queue.status.replace('_', ' ')}
+                          </Badge>
+                        </div>
+                        <div>
+                          <p className="text-sm">{queue.actualWaitTime || 0}m wait</p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-gray-500">
+                            {queue.completedTime ? new Date(queue.completedTime).toLocaleTimeString() : '-'}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+
+      {/* Add to Queue Modal */}
+      <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Add Patient to Queue</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>Patient Name</Label>
+                <Input
+                  value={queueForm.patientName || ''}
+                  onChange={(e) => setQueueForm({ ...queueForm, patientName: e.target.value })}
+                  placeholder="Enter patient name"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Patient ID</Label>
+                <Input
+                  value={queueForm.patientId || ''}
+                  onChange={(e) => setQueueForm({ ...queueForm, patientId: e.target.value })}
+                  placeholder="Enter patient ID"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Department</Label>
+                <select
+                  value={queueForm.department || ''}
+                  onChange={(e) => setQueueForm({ ...queueForm, department: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                >
+                  <option value="">Select Department</option>
+                  {departments.map(dept => (
+                    <option key={dept} value={dept}>{dept}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="space-y-2">
+                <Label>Service</Label>
+                <select
+                  value={queueForm.service || ''}
+                  onChange={(e) => setQueueForm({ ...queueForm, service: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                >
+                  <option value="">Select Service</option>
+                  {services.map(service => (
+                    <option key={service} value={service}>{service}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="space-y-2">
+                <Label>Priority</Label>
+                <select
+                  value={queueForm.priority || 'normal'}
+                  onChange={(e) => setQueueForm({ ...queueForm, priority: e.target.value as QueueItem['priority'] })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                >
+                  <option value="low">Low</option>
+                  <option value="normal">Normal</option>
+                  <option value="high">High</option>
+                  <option value="urgent">Urgent</option>
+                </select>
+              </div>
+              <div className="space-y-2">
+                <Label>Appointment ID (Optional)</Label>
+                <Input
+                  value={queueForm.appointmentId || ''}
+                  onChange={(e) => setQueueForm({ ...queueForm, appointmentId: e.target.value })}
+                  placeholder="Enter appointment ID"
+                />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label>Notes (Optional)</Label>
+              <textarea
+                value={queueForm.notes || ''}
+                onChange={(e) => setQueueForm({ ...queueForm, notes: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md h-20 resize-none"
+                placeholder="Additional notes..."
+              />
+            </div>
+          </div>
+          <div className="flex justify-end gap-2">
+            <Button variant="outline" onClick={() => setIsAddModalOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleAddToQueue} disabled={loading} className="bg-[#38bdf8] hover:bg-[#0ea5e9]">
+              {loading ? 'Adding...' : 'Add to Queue'}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}

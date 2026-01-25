@@ -1,0 +1,215 @@
+import { useState } from 'react';
+import { motion } from 'motion/react';
+import { Activity, Mail, Lock, User } from 'lucide-react';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { Label } from './ui/label';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+
+
+interface AuthPageProps {
+  supabase: any;
+}
+
+export function AuthPage({ supabase }: AuthPageProps) {
+  const [isLogin, setIsLogin] = useState(true);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) throw error;
+    } catch (error: any) {
+      setError(error.message || 'Failed to login');
+      console.error('Login error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+
+    try {
+      // Direct Supabase signup
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            name,
+            role: 'user'
+          }
+        }
+      });
+
+      if (error) throw error;
+
+      // If signup successful, try to sign in
+      if (data.user) {
+        const { error: loginError } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+        
+        if (loginError) {
+          // If auto-login fails, show success message for email confirmation
+          setError('Account created! Please check your email to verify your account.');
+        }
+      }
+    } catch (error: any) {
+      setError(error.message || 'Failed to sign up');
+      console.error('Signup error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-[#3ba8c9] via-primary to-[#4dcde8] flex items-center justify-center p-4">
+      <div className="w-full max-w-6xl flex items-center gap-8">
+        {/* Left side - Form */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="w-full max-w-md"
+        >
+          <div className="text-center mb-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="flex items-center justify-center gap-3 mb-4"
+            >
+              <Activity className="size-8 text-white" />
+              <span className="text-2xl font-bold text-white">SmartCare</span>
+            </motion.div>
+            <p className="text-white/90">Hospital Management System</p>
+          </div>
+
+          <Card className="shadow-2xl">
+          <CardHeader>
+            <CardTitle className="text-center">
+              {isLogin ? 'Welcome Back' : 'Create Account'}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={isLogin ? handleLogin : handleSignup} className="space-y-4">
+              {!isLogin && (
+                <div className="space-y-2">
+                  <Label htmlFor="name">Full Name</Label>
+                  <div className="relative">
+                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
+                    <Input
+                      id="name"
+                      type="text"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="Enter your name"
+                      className="pl-10"
+                      required
+                    />
+                  </div>
+                </div>
+              )}
+
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
+                  <Input
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter your email"
+                    className="pl-10"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
+                  <Input
+                    id="password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Enter your password"
+                    className="pl-10"
+                    required
+                  />
+                </div>
+              </div>
+
+              {error && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="bg-destructive/10 border border-destructive/30 text-destructive px-4 py-3 rounded-lg text-sm"
+                >
+                  {error}
+                </motion.div>
+              )}
+
+              <Button
+                type="submit"
+                className="w-full bg-primary hover:bg-primary/90"
+                disabled={loading}
+              >
+                {loading ? 'Please wait...' : isLogin ? 'Sign In' : 'Sign Up'}
+              </Button>
+            </form>
+
+            <div className="mt-4 text-center">
+              <button
+                type="button"
+                onClick={() => {
+                  setIsLogin(!isLogin);
+                  setError('');
+                }}
+                className="text-sm text-primary hover:text-primary/80"
+              >
+                {isLogin
+                  ? "Don't have an account? Sign up"
+                  : 'Already have an account? Sign in'}
+              </button>
+            </div>
+          </CardContent>
+        </Card>
+        </motion.div>
+
+        {/* Right side - Image */}
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.3 }}
+          className="hidden lg:block w-full max-w-lg"
+        >
+          <img 
+            src="/Assests/login.png" 
+            alt="Hospital Management" 
+            className="w-full h-full max-h-screen object-cover rounded-2xl shadow-2xl"
+          />
+        </motion.div>
+      </div>
+    </div>
+  );
+}

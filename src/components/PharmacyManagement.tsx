@@ -1,0 +1,574 @@
+import { useState } from 'react';
+import { motion } from 'motion/react';
+import {
+  Pill,
+  Package,
+  ShoppingCart,
+  AlertTriangle,
+  TrendingDown,
+  Search,
+  Plus,
+  Edit,
+  Trash2,
+  FileText,
+  DollarSign,
+  Calendar,
+  User,
+} from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { Badge } from './ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from './ui/dialog';
+import { Label } from './ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from './ui/select';
+
+interface Medication {
+  id: string;
+  name: string;
+  category: string;
+  stock: number;
+  minStock: number;
+  price: number;
+  expiryDate: string;
+  manufacturer: string;
+  batchNumber: string;
+}
+
+interface Prescription {
+  id: string;
+  patientName: string;
+  doctorName: string;
+  medications: string[];
+  date: string;
+  status: 'pending' | 'dispensed' | 'completed';
+}
+
+export function PharmacyManagement() {
+  const [medications, setMedications] = useState<Medication[]>([
+    {
+      id: '1',
+      name: 'Amoxicillin 500mg',
+      category: 'Antibiotic',
+      stock: 450,
+      minStock: 200,
+      price: 12.5,
+      expiryDate: '2025-08-15',
+      manufacturer: 'PharmaCorp',
+      batchNumber: 'AMX2024-001',
+    },
+    {
+      id: '2',
+      name: 'Paracetamol 500mg',
+      category: 'Pain Relief',
+      stock: 120,
+      minStock: 300,
+      price: 5.0,
+      expiryDate: '2025-12-20',
+      manufacturer: 'MediCare',
+      batchNumber: 'PAR2024-045',
+    },
+    {
+      id: '3',
+      name: 'Insulin Glargine',
+      category: 'Diabetes',
+      stock: 85,
+      minStock: 100,
+      price: 45.0,
+      expiryDate: '2025-06-30',
+      manufacturer: 'DiabetesRx',
+      batchNumber: 'INS2024-012',
+    },
+    {
+      id: '4',
+      name: 'Lisinopril 10mg',
+      category: 'Cardiovascular',
+      stock: 380,
+      minStock: 150,
+      price: 18.5,
+      expiryDate: '2026-03-10',
+      manufacturer: 'HeartMed',
+      batchNumber: 'LIS2024-078',
+    },
+  ]);
+
+  const [prescriptions, setPrescriptions] = useState<Prescription[]>([
+    {
+      id: '1',
+      patientName: 'John Smith',
+      doctorName: 'Dr. Sarah Johnson',
+      medications: ['Amoxicillin 500mg', 'Paracetamol 500mg'],
+      date: '2024-12-08',
+      status: 'pending',
+    },
+    {
+      id: '2',
+      patientName: 'Emily Davis',
+      doctorName: 'Dr. Michael Chen',
+      medications: ['Insulin Glargine'],
+      date: '2024-12-08',
+      status: 'dispensed',
+    },
+    {
+      id: '3',
+      patientName: 'Robert Wilson',
+      doctorName: 'Dr. Sarah Johnson',
+      medications: ['Lisinopril 10mg'],
+      date: '2024-12-07',
+      status: 'completed',
+    },
+  ]);
+
+  const [searchTerm, setSearchTerm] = useState('');
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [formData, setFormData] = useState<Partial<Medication>>({});
+
+  const stats = [
+    {
+      label: 'Total Medications',
+      value: medications.length.toString(),
+      icon: Pill,
+      color: 'bg-blue-500',
+    },
+    {
+      label: 'Low Stock Items',
+      value: medications.filter((m) => m.stock < m.minStock).length.toString(),
+      icon: AlertTriangle,
+      color: 'bg-red-500',
+    },
+    {
+      label: 'Pending Prescriptions',
+      value: prescriptions.filter((p) => p.status === 'pending').length.toString(),
+      icon: FileText,
+      color: 'bg-amber-500',
+    },
+    {
+      label: 'Today\'s Revenue',
+      value: '$2,450',
+      icon: DollarSign,
+      color: 'bg-green-500',
+    },
+  ];
+
+  const filteredMedications = medications.filter(
+    (med) =>
+      med.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      med.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      med.manufacturer.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const lowStockMeds = medications.filter((m) => m.stock < m.minStock);
+
+  const handleAddMedication = () => {
+    const newMed: Medication = {
+      id: Date.now().toString(),
+      name: formData.name || '',
+      category: formData.category || '',
+      stock: formData.stock || 0,
+      minStock: formData.minStock || 0,
+      price: formData.price || 0,
+      expiryDate: formData.expiryDate || '',
+      manufacturer: formData.manufacturer || '',
+      batchNumber: formData.batchNumber || '',
+    };
+    setMedications([...medications, newMed]);
+    setFormData({});
+    setIsAddModalOpen(false);
+  };
+
+  const handleDispensePrescription = (id: string) => {
+    setPrescriptions(
+      prescriptions.map((p) =>
+        p.id === id ? { ...p, status: 'dispensed' as const } : p
+      )
+    );
+  };
+
+  return (
+    <div className="p-6 space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl text-gray-900">Pharmacy Management</h1>
+          <p className="text-gray-600">Manage medications, prescriptions, and inventory</p>
+        </div>
+      </div>
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {stats.map((stat, index) => {
+          const Icon = stat.icon;
+          return (
+            <motion.div
+              key={stat.label}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+            >
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-gray-600">{stat.label}</p>
+                      <p className="text-2xl mt-2">{stat.value}</p>
+                    </div>
+                    <div className={`${stat.color} p-3 rounded-lg`}>
+                      <Icon className="size-6 text-white" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          );
+        })}
+      </div>
+
+      <Tabs defaultValue="inventory" className="space-y-4">
+        <TabsList>
+          <TabsTrigger value="inventory">Medication Inventory</TabsTrigger>
+          <TabsTrigger value="prescriptions">Prescriptions</TabsTrigger>
+          <TabsTrigger value="low-stock">Low Stock Alerts</TabsTrigger>
+        </TabsList>
+
+        {/* Inventory Tab */}
+        <TabsContent value="inventory" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle>Medication Inventory</CardTitle>
+                <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
+                  <DialogTrigger asChild>
+                    <Button onClick={() => setFormData({})}>
+                      <Plus className="size-4 mr-2" />
+                      Add Medication
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-2xl">
+                    <DialogHeader>
+                      <DialogTitle>Add New Medication</DialogTitle>
+                      <DialogDescription>
+                        Add a new medication to the inventory.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="grid grid-cols-2 gap-4 py-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="name">Medication Name</Label>
+                        <Input
+                          id="name"
+                          value={formData.name || ''}
+                          onChange={(e) =>
+                            setFormData({ ...formData, name: e.target.value })
+                          }
+                          placeholder="Enter medication name"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="category">Category</Label>
+                        <Select
+                          value={formData.category}
+                          onValueChange={(value) =>
+                            setFormData({ ...formData, category: value })
+                          }
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select category" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="Antibiotic">Antibiotic</SelectItem>
+                            <SelectItem value="Pain Relief">Pain Relief</SelectItem>
+                            <SelectItem value="Diabetes">Diabetes</SelectItem>
+                            <SelectItem value="Cardiovascular">Cardiovascular</SelectItem>
+                            <SelectItem value="Respiratory">Respiratory</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="stock">Stock Quantity</Label>
+                        <Input
+                          id="stock"
+                          type="number"
+                          value={formData.stock || ''}
+                          onChange={(e) =>
+                            setFormData({ ...formData, stock: Number(e.target.value) })
+                          }
+                          placeholder="0"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="minStock">Minimum Stock</Label>
+                        <Input
+                          id="minStock"
+                          type="number"
+                          value={formData.minStock || ''}
+                          onChange={(e) =>
+                            setFormData({ ...formData, minStock: Number(e.target.value) })
+                          }
+                          placeholder="0"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="price">Price ($)</Label>
+                        <Input
+                          id="price"
+                          type="number"
+                          step="0.01"
+                          value={formData.price || ''}
+                          onChange={(e) =>
+                            setFormData({ ...formData, price: Number(e.target.value) })
+                          }
+                          placeholder="0.00"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="expiryDate">Expiry Date</Label>
+                        <Input
+                          id="expiryDate"
+                          type="date"
+                          value={formData.expiryDate || ''}
+                          onChange={(e) =>
+                            setFormData({ ...formData, expiryDate: e.target.value })
+                          }
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="manufacturer">Manufacturer</Label>
+                        <Input
+                          id="manufacturer"
+                          value={formData.manufacturer || ''}
+                          onChange={(e) =>
+                            setFormData({ ...formData, manufacturer: e.target.value })
+                          }
+                          placeholder="Enter manufacturer"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="batchNumber">Batch Number</Label>
+                        <Input
+                          id="batchNumber"
+                          value={formData.batchNumber || ''}
+                          onChange={(e) =>
+                            setFormData({ ...formData, batchNumber: e.target.value })
+                          }
+                          placeholder="Enter batch number"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex justify-end gap-3">
+                      <Button variant="outline" onClick={() => setIsAddModalOpen(false)}>
+                        Cancel
+                      </Button>
+                      <Button onClick={handleAddMedication}>Add Medication</Button>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="mb-4 relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
+                <Input
+                  placeholder="Search medications..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10"
+                />
+              </div>
+
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b">
+                      <th className="text-left p-3 text-sm text-gray-600">Medication</th>
+                      <th className="text-left p-3 text-sm text-gray-600">Category</th>
+                      <th className="text-left p-3 text-sm text-gray-600">Stock</th>
+                      <th className="text-left p-3 text-sm text-gray-600">Price</th>
+                      <th className="text-left p-3 text-sm text-gray-600">Expiry Date</th>
+                      <th className="text-left p-3 text-sm text-gray-600">Batch</th>
+                      <th className="text-right p-3 text-sm text-gray-600">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredMedications.map((med) => (
+                      <motion.tr
+                        key={med.id}
+                        whileHover={{ backgroundColor: '#f9fafb' }}
+                        className="border-b"
+                      >
+                        <td className="p-3">
+                          <div>
+                            <p className="text-gray-900">{med.name}</p>
+                            <p className="text-xs text-gray-500">{med.manufacturer}</p>
+                          </div>
+                        </td>
+                        <td className="p-3">
+                          <Badge variant="outline">{med.category}</Badge>
+                        </td>
+                        <td className="p-3">
+                          <span
+                            className={
+                              med.stock < med.minStock
+                                ? 'text-red-600'
+                                : 'text-gray-900'
+                            }
+                          >
+                            {med.stock}
+                          </span>
+                          <span className="text-xs text-gray-500"> / {med.minStock}</span>
+                        </td>
+                        <td className="p-3">${med.price.toFixed(2)}</td>
+                        <td className="p-3 text-sm text-gray-600">{med.expiryDate}</td>
+                        <td className="p-3 text-sm text-gray-600">{med.batchNumber}</td>
+                        <td className="p-3">
+                          <div className="flex justify-end gap-2">
+                            <Button size="sm" variant="outline">
+                              <Edit className="size-4" />
+                            </Button>
+                            <Button size="sm" variant="outline">
+                              <Trash2 className="size-4 text-red-600" />
+                            </Button>
+                          </div>
+                        </td>
+                      </motion.tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Prescriptions Tab */}
+        <TabsContent value="prescriptions" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Prescription Queue</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {prescriptions.map((prescription) => (
+                  <motion.div
+                    key={prescription.id}
+                    whileHover={{ scale: 1.01 }}
+                    className="p-4 bg-gray-50 rounded-lg"
+                  >
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white">
+                          <User className="size-5" />
+                        </div>
+                        <div>
+                          <p className="text-gray-900">{prescription.patientName}</p>
+                          <p className="text-sm text-gray-600">{prescription.doctorName}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Badge
+                          variant={
+                            prescription.status === 'pending'
+                              ? 'default'
+                              : prescription.status === 'dispensed'
+                              ? 'secondary'
+                              : 'outline'
+                          }
+                          className={
+                            prescription.status === 'pending'
+                              ? 'bg-amber-100 text-amber-700'
+                              : prescription.status === 'dispensed'
+                              ? 'bg-blue-100 text-blue-700'
+                              : 'bg-green-100 text-green-700'
+                          }
+                        >
+                          {prescription.status}
+                        </Badge>
+                        {prescription.status === 'pending' && (
+                          <Button
+                            size="sm"
+                            onClick={() => handleDispensePrescription(prescription.id)}
+                          >
+                            Dispense
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                    <div className="space-y-1">
+                      <p className="text-sm text-gray-600">Medications:</p>
+                      {prescription.medications.map((med, idx) => (
+                        <div
+                          key={idx}
+                          className="flex items-center gap-2 text-sm text-gray-900"
+                        >
+                          <Pill className="size-4 text-primary" />
+                          {med}
+                        </div>
+                      ))}
+                    </div>
+                    <p className="text-xs text-gray-500 mt-2 flex items-center gap-1">
+                      <Calendar className="size-3" />
+                      {prescription.date}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Low Stock Tab */}
+        <TabsContent value="low-stock" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <AlertTriangle className="size-5 text-red-500" />
+                Low Stock Alerts
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {lowStockMeds.map((med) => (
+                  <motion.div
+                    key={med.id}
+                    whileHover={{ scale: 1.01 }}
+                    className="p-4 bg-red-50 border border-red-200 rounded-lg"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-gray-900">{med.name}</p>
+                        <p className="text-sm text-gray-600">{med.category}</p>
+                        <p className="text-sm text-red-600 mt-1">
+                          Current Stock: {med.stock} / Min: {med.minStock}
+                        </p>
+                      </div>
+                      <Button>
+                        <ShoppingCart className="size-4 mr-2" />
+                        Reorder
+                      </Button>
+                    </div>
+                  </motion.div>
+                ))}
+                {lowStockMeds.length === 0 && (
+                  <div className="text-center py-8 text-gray-500">
+                    All medications are adequately stocked
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+}
