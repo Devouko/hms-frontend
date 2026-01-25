@@ -5,6 +5,7 @@ import { projectId, publicAnonKey } from './utils/supabase/info';
 import { AuthPage } from './components/AuthPage';
 import { MainApp } from './components/MainApp';
 import { ThemeProvider } from './components/ThemeProvider';
+import { ThemeInitializer } from './components/ThemeInitializer';
 
 const supabase = createClient(
   `https://${projectId}.supabase.co`,
@@ -51,6 +52,7 @@ export default function App() {
 
   return (
     <ThemeProvider>
+      <ThemeInitializer />
       {!session ? (
         <AuthPage supabase={supabase} />
       ) : (

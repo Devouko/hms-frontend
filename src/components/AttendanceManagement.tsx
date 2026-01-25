@@ -146,10 +146,10 @@ export function AttendanceManagement({ session }: AttendanceManagementProps) {
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600">Present</p>
-                  <p className="text-2xl font-bold text-green-600">{presentCount}</p>
+                  <p className="text-sm text-muted-foreground">Present</p>
+                  <p className="text-2xl font-bold text-primary">{presentCount}</p>
                 </div>
-                <CheckCircle className="h-8 w-8 text-green-600" />
+                <CheckCircle className="h-8 w-8 text-primary" />
               </div>
             </CardContent>
           </Card>
@@ -158,10 +158,10 @@ export function AttendanceManagement({ session }: AttendanceManagementProps) {
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600">Absent</p>
-                  <p className="text-2xl font-bold text-red-600">{absentCount}</p>
+                  <p className="text-sm text-muted-foreground">Absent</p>
+                  <p className="text-2xl font-bold text-destructive">{absentCount}</p>
                 </div>
-                <XCircle className="h-8 w-8 text-red-600" />
+                <XCircle className="h-8 w-8 text-destructive" />
               </div>
             </CardContent>
           </Card>
@@ -170,7 +170,7 @@ export function AttendanceManagement({ session }: AttendanceManagementProps) {
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600">Late</p>
+                  <p className="text-sm text-muted-foreground">Late</p>
                   <p className="text-2xl font-bold text-yellow-600">{lateCount}</p>
                 </div>
                 <Clock className="h-8 w-8 text-yellow-600" />
@@ -182,10 +182,10 @@ export function AttendanceManagement({ session }: AttendanceManagementProps) {
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600">Total Staff</p>
-                  <p className="text-2xl font-bold text-blue-600">{staff.length}</p>
+                  <p className="text-sm text-muted-foreground">Total Staff</p>
+                  <p className="text-2xl font-bold text-primary">{staff.length}</p>
                 </div>
-                <Clock className="h-8 w-8 text-blue-600" />
+                <Clock className="h-8 w-8 text-primary" />
               </div>
             </CardContent>
           </Card>
@@ -218,19 +218,19 @@ export function AttendanceManagement({ session }: AttendanceManagementProps) {
                         <div key={member.id} className="flex items-center justify-between p-3 border rounded">
                           <div>
                             <p className="font-medium">{member.name}</p>
-                            <p className="text-sm text-gray-600">{member.role}</p>
+                            <p className="text-sm text-muted-foreground">{member.role}</p>
                           </div>
                           <div className="flex space-x-2">
-                            <Button size="sm" onClick={() => markAttendance(member.id, 'Present')} className="bg-green-600 hover:bg-green-700">
+                            <Button size="sm" onClick={() => markAttendance(member.id, 'Present')} className="bg-primary hover:bg-green-700">
                               Present
                             </Button>
                             <Button size="sm" onClick={() => markAttendance(member.id, 'Late')} className="bg-yellow-600 hover:bg-yellow-700">
                               Late
                             </Button>
-                            <Button size="sm" onClick={() => markAttendance(member.id, 'Half Day')} className="bg-orange-600 hover:bg-orange-700">
+                            <Button size="sm" onClick={() => markAttendance(member.id, 'Half Day')} className="bg-primary hover:bg-orange-700">
                               Half Day
                             </Button>
-                            <Button size="sm" onClick={() => markAttendance(member.id, 'Absent')} className="bg-red-600 hover:bg-red-700">
+                            <Button size="sm" onClick={() => markAttendance(member.id, 'Absent')} className="bg-destructive hover:bg-red-700">
                               Absent
                             </Button>
                           </div>
@@ -244,7 +244,7 @@ export function AttendanceManagement({ session }: AttendanceManagementProps) {
           </CardHeader>
           <CardContent>
             <div className="flex items-center space-x-2 mb-4">
-              <Search className="size-4 text-gray-400" />
+              <Search className="size-4 text-muted-foreground" />
               <Input
                 placeholder="Search staff..."
                 value={searchTerm}
@@ -254,25 +254,25 @@ export function AttendanceManagement({ session }: AttendanceManagementProps) {
             </div>
 
             <div className="overflow-x-auto">
-              <table className="w-full border-collapse border border-gray-200">
+              <table className="w-full border-collapse border border-border">
                 <thead>
-                  <tr className="bg-gray-50">
-                    <th className="border border-gray-200 px-4 py-2 text-left">Staff Name</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Check In</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Check Out</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Working Hours</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Status</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Actions</th>
+                  <tr className="bg-muted/50">
+                    <th className="border border-border px-4 py-2 text-left">Staff Name</th>
+                    <th className="border border-border px-4 py-2 text-left">Check In</th>
+                    <th className="border border-border px-4 py-2 text-left">Check Out</th>
+                    <th className="border border-border px-4 py-2 text-left">Working Hours</th>
+                    <th className="border border-border px-4 py-2 text-left">Status</th>
+                    <th className="border border-border px-4 py-2 text-left">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredAttendance.map((record) => (
-                    <tr key={record.id} className="hover:bg-gray-50">
-                      <td className="border border-gray-200 px-4 py-2">{record.staffName}</td>
-                      <td className="border border-gray-200 px-4 py-2">{record.checkIn}</td>
-                      <td className="border border-gray-200 px-4 py-2">{record.checkOut || '-'}</td>
-                      <td className="border border-gray-200 px-4 py-2">{record.workingHours || 0} hrs</td>
-                      <td className="border border-gray-200 px-4 py-2">
+                    <tr key={record.id} className="hover:bg-muted/50">
+                      <td className="border border-border px-4 py-2">{record.staffName}</td>
+                      <td className="border border-border px-4 py-2">{record.checkIn}</td>
+                      <td className="border border-border px-4 py-2">{record.checkOut || '-'}</td>
+                      <td className="border border-border px-4 py-2">{record.workingHours || 0} hrs</td>
+                      <td className="border border-border px-4 py-2">
                         <span className={`px-2 py-1 rounded text-sm ${
                           record.status === 'Present' ? 'bg-green-100 text-green-800' :
                           record.status === 'Late' ? 'bg-yellow-100 text-yellow-800' :
@@ -282,7 +282,7 @@ export function AttendanceManagement({ session }: AttendanceManagementProps) {
                           {record.status}
                         </span>
                       </td>
-                      <td className="border border-gray-200 px-4 py-2">
+                      <td className="border border-border px-4 py-2">
                         {!record.checkOut && record.status !== 'Absent' && (
                           <Button size="sm" onClick={() => checkOut(record.id)} className="bg-[#38bdf8] hover:bg-[#0ea5e9]">
                             Check Out
@@ -296,7 +296,7 @@ export function AttendanceManagement({ session }: AttendanceManagementProps) {
             </div>
 
             {filteredAttendance.length === 0 && (
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-muted-foreground">
                 No attendance records found for {selectedDate}.
               </div>
             )}

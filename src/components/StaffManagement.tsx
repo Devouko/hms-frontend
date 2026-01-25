@@ -147,7 +147,7 @@ export function StaffManagement({ session }: StaffManagementProps) {
                           id="role"
                           value={formData.role || ''}
                           onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                          className="w-full px-3 py-2 border border-border rounded-md"
                         >
                           <option value="">Select role</option>
                           {roles.map(role => (
@@ -163,7 +163,7 @@ export function StaffManagement({ session }: StaffManagementProps) {
                           id="department"
                           value={formData.department || ''}
                           onChange={(e) => setFormData({ ...formData, department: e.target.value })}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                          className="w-full px-3 py-2 border border-border rounded-md"
                         >
                           <option value="">Select department</option>
                           {departments.map(dept => (
@@ -202,7 +202,7 @@ export function StaffManagement({ session }: StaffManagementProps) {
           </CardHeader>
           <CardContent>
             <div className="flex items-center space-x-2 mb-4">
-              <Search className="size-4 text-gray-400" />
+              <Search className="size-4 text-muted-foreground" />
               <Input
                 placeholder="Search staff..."
                 value={searchTerm}
@@ -212,28 +212,28 @@ export function StaffManagement({ session }: StaffManagementProps) {
             </div>
 
             <div className="overflow-x-auto">
-              <table className="w-full border-collapse border border-gray-200">
+              <table className="w-full border-collapse border border-border">
                 <thead>
-                  <tr className="bg-gray-50">
-                    <th className="border border-gray-200 px-4 py-2 text-left">Name</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Contact</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Role</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Department</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Salary</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Status</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Actions</th>
+                  <tr className="bg-muted/50">
+                    <th className="border border-border px-4 py-2 text-left">Name</th>
+                    <th className="border border-border px-4 py-2 text-left">Contact</th>
+                    <th className="border border-border px-4 py-2 text-left">Role</th>
+                    <th className="border border-border px-4 py-2 text-left">Department</th>
+                    <th className="border border-border px-4 py-2 text-left">Salary</th>
+                    <th className="border border-border px-4 py-2 text-left">Status</th>
+                    <th className="border border-border px-4 py-2 text-left">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredStaff.map((member) => (
-                    <tr key={member.id} className="hover:bg-gray-50">
-                      <td className="border border-gray-200 px-4 py-2">
+                    <tr key={member.id} className="hover:bg-muted/50">
+                      <td className="border border-border px-4 py-2">
                         <div className="flex items-center">
                           <User className="h-4 w-4 mr-2" />
                           {member.name}
                         </div>
                       </td>
-                      <td className="border border-gray-200 px-4 py-2">
+                      <td className="border border-border px-4 py-2">
                         <div className="space-y-1">
                           <div className="flex items-center text-sm">
                             <Mail className="h-3 w-3 mr-1" />
@@ -247,10 +247,10 @@ export function StaffManagement({ session }: StaffManagementProps) {
                           )}
                         </div>
                       </td>
-                      <td className="border border-gray-200 px-4 py-2">{member.role}</td>
-                      <td className="border border-gray-200 px-4 py-2">{member.department}</td>
-                      <td className="border border-gray-200 px-4 py-2">${member.salary}</td>
-                      <td className="border border-gray-200 px-4 py-2">
+                      <td className="border border-border px-4 py-2">{member.role}</td>
+                      <td className="border border-border px-4 py-2">{member.department}</td>
+                      <td className="border border-border px-4 py-2">${member.salary}</td>
+                      <td className="border border-border px-4 py-2">
                         <button
                           onClick={() => toggleStatus(member.id)}
                           className={`px-2 py-1 rounded text-sm ${
@@ -260,7 +260,7 @@ export function StaffManagement({ session }: StaffManagementProps) {
                           {member.status}
                         </button>
                       </td>
-                      <td className="border border-gray-200 px-4 py-2">
+                      <td className="border border-border px-4 py-2">
                         <Button
                           size="sm"
                           variant="destructive"
@@ -276,7 +276,7 @@ export function StaffManagement({ session }: StaffManagementProps) {
             </div>
 
             {filteredStaff.length === 0 && (
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-muted-foreground">
                 No staff members found.
               </div>
             )}

@@ -116,8 +116,8 @@ export function InventoryManagement({ session }: InventoryManagementProps) {
       case 'in_stock': return 'bg-green-100 text-green-800';
       case 'low_stock': return 'bg-yellow-100 text-yellow-800';
       case 'out_of_stock': return 'bg-red-100 text-red-800';
-      case 'expired': return 'bg-gray-100 text-gray-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'expired': return 'bg-muted text-gray-800';
+      default: return 'bg-muted text-gray-800';
     }
   };
 
@@ -127,7 +127,7 @@ export function InventoryManagement({ session }: InventoryManagementProps) {
       case 'equipment': return 'bg-purple-100 text-purple-800';
       case 'supplies': return 'bg-green-100 text-green-800';
       case 'consumables': return 'bg-orange-100 text-orange-800';
-      default: return 'bg-gray-100 text-gray-800';
+      default: return 'bg-muted text-gray-800';
     }
   };
 
@@ -146,7 +146,7 @@ export function InventoryManagement({ session }: InventoryManagementProps) {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-white rounded-lg border p-4 hover:shadow-md transition-shadow"
+        className="bg-card rounded-lg border p-4 hover:shadow-md transition-shadow"
       >
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center gap-3">
@@ -155,7 +155,7 @@ export function InventoryManagement({ session }: InventoryManagementProps) {
             </div>
             <div>
               <h3 className="font-semibold text-gray-900">{item.item_name}</h3>
-              <p className="text-sm text-gray-600">SKU: {item.sku}</p>
+              <p className="text-sm text-muted-foreground">SKU: {item.sku}</p>
             </div>
           </div>
           <div className="flex flex-col gap-1">
@@ -170,31 +170,31 @@ export function InventoryManagement({ session }: InventoryManagementProps) {
 
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-600">Current Stock:</span>
+            <span className="text-sm text-muted-foreground">Current Stock:</span>
             <div className="flex items-center gap-2">
               <span className={`font-medium ${
-                stockLevel === 'critical' ? 'text-red-600' :
+                stockLevel === 'critical' ? 'text-destructive' :
                 stockLevel === 'low' ? 'text-yellow-600' :
-                stockLevel === 'medium' ? 'text-blue-600' : 'text-green-600'
+                stockLevel === 'medium' ? 'text-primary' : 'text-primary'
               }`}>
                 {item.current_stock}
               </span>
-              {stockLevel === 'critical' && <AlertTriangle className="size-4 text-red-500" />}
+              {stockLevel === 'critical' && <AlertTriangle className="size-4 text-destructive" />}
             </div>
           </div>
 
-          <div className="w-full bg-gray-200 rounded-full h-2">
+          <div className="w-full bg-muted rounded-full h-2">
             <div
               className={`h-2 rounded-full ${
-                stockLevel === 'critical' ? 'bg-red-500' :
+                stockLevel === 'critical' ? 'bg-destructive' :
                 stockLevel === 'low' ? 'bg-yellow-500' :
-                stockLevel === 'medium' ? 'bg-blue-500' : 'bg-green-500'
+                stockLevel === 'medium' ? 'bg-primary' : 'bg-primary'
               }`}
               style={{ width: `${Math.min((item.current_stock / item.maximum_stock) * 100, 100)}%` }}
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-2 text-sm text-gray-600">
+          <div className="grid grid-cols-2 gap-2 text-sm text-muted-foreground">
             <div>Min: {item.minimum_stock}</div>
             <div>Max: {item.maximum_stock}</div>
             <div>Price: ${item.unit_price}</div>
@@ -202,12 +202,12 @@ export function InventoryManagement({ session }: InventoryManagementProps) {
           </div>
 
           {item.expiry_date && (
-            <div className="text-sm text-gray-600">
+            <div className="text-sm text-muted-foreground">
               Expires: {new Date(item.expiry_date).toLocaleDateString()}
             </div>
           )}
 
-          <div className="text-sm text-gray-600">
+          <div className="text-sm text-muted-foreground">
             Supplier: {item.supplier}
           </div>
         </div>
@@ -244,7 +244,7 @@ export function InventoryManagement({ session }: InventoryManagementProps) {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Inventory Management</h1>
-          <p className="text-gray-600">Track medical supplies, equipment, and medications</p>
+          <p className="text-muted-foreground">Track medical supplies, equipment, and medications</p>
         </div>
         <Button onClick={() => setShowAddItem(true)}>
           <Plus className="size-4 mr-2" />
@@ -257,31 +257,31 @@ export function InventoryManagement({ session }: InventoryManagementProps) {
         <Card>
           <CardContent className="p-4 text-center">
             <div className="text-2xl font-bold text-gray-900">{inventoryStats.total}</div>
-            <div className="text-sm text-gray-600">Total Items</div>
+            <div className="text-sm text-muted-foreground">Total Items</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-green-600">{inventoryStats.in_stock}</div>
-            <div className="text-sm text-gray-600">In Stock</div>
+            <div className="text-2xl font-bold text-primary">{inventoryStats.in_stock}</div>
+            <div className="text-sm text-muted-foreground">In Stock</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
             <div className="text-2xl font-bold text-yellow-600">{inventoryStats.low_stock}</div>
-            <div className="text-sm text-gray-600">Low Stock</div>
+            <div className="text-sm text-muted-foreground">Low Stock</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-red-600">{inventoryStats.out_of_stock}</div>
-            <div className="text-sm text-gray-600">Out of Stock</div>
+            <div className="text-2xl font-bold text-destructive">{inventoryStats.out_of_stock}</div>
+            <div className="text-sm text-muted-foreground">Out of Stock</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-blue-600">${inventoryStats.total_value.toFixed(0)}</div>
-            <div className="text-sm text-gray-600">Total Value</div>
+            <div className="text-2xl font-bold text-primary">${inventoryStats.total_value.toFixed(0)}</div>
+            <div className="text-sm text-muted-foreground">Total Value</div>
           </CardContent>
         </Card>
       </div>
@@ -289,7 +289,7 @@ export function InventoryManagement({ session }: InventoryManagementProps) {
       {/* Filters */}
       <div className="flex gap-4 items-center">
         <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
           <Input
             placeholder="Search inventory..."
             value={searchTerm}

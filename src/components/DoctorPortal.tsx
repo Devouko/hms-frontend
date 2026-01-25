@@ -17,6 +17,7 @@ import { Button } from './ui/button';
 import { Badge } from './ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Avatar, AvatarFallback } from './ui/avatar';
+import { TodoListWidget } from './TodoListWidget';
 
 interface DoctorPortalProps {
   session: any;
@@ -26,10 +27,10 @@ export function DoctorPortal({ session }: DoctorPortalProps) {
   const doctorName = session?.user?.user_metadata?.name || 'Doctor';
 
   const stats = [
-    { label: 'Today\'s Appointments', value: '12', icon: Calendar, color: 'bg-blue-500' },
-    { label: 'Patients Treated', value: '8', icon: Users, color: 'bg-green-500' },
+    { label: 'Today\'s Appointments', value: '12', icon: Calendar, color: 'bg-primary' },
+    { label: 'Patients Treated', value: '8', icon: Users, color: 'bg-primary' },
     { label: 'Pending Consultations', value: '4', icon: Clock, color: 'bg-amber-500' },
-    { label: 'Lab Reports', value: '15', icon: FileText, color: 'bg-purple-500' },
+    { label: 'Lab Reports', value: '15', icon: FileText, color: 'bg-primary' },
   ];
 
   const todayAppointments = [
@@ -59,10 +60,10 @@ export function DoctorPortal({ session }: DoctorPortalProps) {
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-gradient-to-r from-primary to-blue-600 rounded-xl p-6 text-white"
+        className="bg-gradient-to-r from-primary to-blue-600 rounded-xl p-6 text-card-foreground"
       >
         <h1 className="text-2xl mb-2">Welcome back, Dr. {doctorName}</h1>
-        <p className="text-white/90">You have 4 appointments scheduled for today</p>
+        <p className="text-card-foreground/90">You have 4 appointments scheduled for today</p>
       </motion.div>
 
       {/* Stats Cards */}
@@ -80,11 +81,11 @@ export function DoctorPortal({ session }: DoctorPortalProps) {
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600">{stat.label}</p>
+                      <p className="text-sm text-muted-foreground">{stat.label}</p>
                       <p className="text-2xl mt-2">{stat.value}</p>
                     </div>
                     <div className={`${stat.color} p-3 rounded-lg`}>
-                      <Icon className="size-6 text-white" />
+                      <Icon className="size-6 text-card-foreground" />
                     </div>
                   </div>
                 </CardContent>
@@ -110,7 +111,7 @@ export function DoctorPortal({ session }: DoctorPortalProps) {
                   <motion.div
                     key={appointment.id}
                     whileHover={{ scale: 1.02 }}
-                    className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                    className="flex items-center justify-between p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors"
                   >
                     <div className="flex items-center gap-4">
                       <div className="text-center">
@@ -118,7 +119,7 @@ export function DoctorPortal({ session }: DoctorPortalProps) {
                       </div>
                       <div>
                         <p className="text-gray-900">{appointment.patient}</p>
-                        <p className="text-sm text-gray-600">{appointment.type}</p>
+                        <p className="text-sm text-muted-foreground">{appointment.type}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
@@ -132,7 +133,7 @@ export function DoctorPortal({ session }: DoctorPortalProps) {
                         }
                         className={
                           appointment.status === 'completed'
-                            ? 'bg-green-100 text-green-700'
+                            ? 'bg-green-100 text-primary'
                             : appointment.status === 'in-progress'
                             ? 'bg-amber-100 text-amber-700'
                             : ''
@@ -167,11 +168,11 @@ export function DoctorPortal({ session }: DoctorPortalProps) {
                   <motion.div
                     key={patient.id}
                     whileHover={{ scale: 1.01 }}
-                    className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                    className="flex items-center justify-between p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors"
                   >
                     <div className="flex items-center gap-3">
                       <Avatar>
-                        <AvatarFallback className="bg-primary text-white">
+                        <AvatarFallback className="bg-primary text-card-foreground">
                           {patient.name
                             .split(' ')
                             .map((n) => n[0])
@@ -180,18 +181,18 @@ export function DoctorPortal({ session }: DoctorPortalProps) {
                       </Avatar>
                       <div>
                         <p className="text-gray-900">{patient.name}</p>
-                        <p className="text-sm text-gray-600">{patient.diagnosis}</p>
+                        <p className="text-sm text-muted-foreground">{patient.diagnosis}</p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-sm text-gray-600">{patient.lastVisit}</p>
+                      <p className="text-sm text-muted-foreground">{patient.lastVisit}</p>
                       <Badge
                         variant="outline"
                         className={
                           patient.status === 'stable'
-                            ? 'border-green-500 text-green-700'
+                            ? 'border-primary text-primary'
                             : patient.status === 'improved'
-                            ? 'border-blue-500 text-blue-700'
+                            ? 'border-primary text-primary'
                             : 'border-amber-500 text-amber-700'
                         }
                       >
@@ -207,6 +208,9 @@ export function DoctorPortal({ session }: DoctorPortalProps) {
 
         {/* Sidebar */}
         <div className="space-y-6">
+          {/* Todo List Widget */}
+          <TodoListWidget session={session} maxItems={3} />
+
           {/* Pending Lab Reports */}
           <Card>
             <CardHeader>
@@ -220,7 +224,7 @@ export function DoctorPortal({ session }: DoctorPortalProps) {
                 {pendingReports.map((report) => (
                   <div
                     key={report.id}
-                    className="p-3 bg-gray-50 rounded-lg"
+                    className="p-3 bg-muted/50 rounded-lg"
                   >
                     <div className="flex items-start justify-between mb-2">
                       <p className="text-sm text-gray-900">{report.patient}</p>
@@ -228,17 +232,17 @@ export function DoctorPortal({ session }: DoctorPortalProps) {
                         variant="outline"
                         className={
                           report.priority === 'urgent'
-                            ? 'border-red-500 text-red-700'
+                            ? 'border-destructive text-destructive'
                             : report.priority === 'high'
                             ? 'border-amber-500 text-amber-700'
-                            : 'border-gray-500 text-gray-700'
+                            : 'border-gray-500 text-foreground'
                         }
                       >
                         {report.priority}
                       </Badge>
                     </div>
-                    <p className="text-sm text-gray-600">{report.test}</p>
-                    <p className="text-xs text-gray-500 mt-1">{report.ordered}</p>
+                    <p className="text-sm text-muted-foreground">{report.test}</p>
+                    <p className="text-xs text-muted-foreground mt-1">{report.ordered}</p>
                   </div>
                 ))}
               </div>
@@ -270,7 +274,7 @@ export function DoctorPortal({ session }: DoctorPortalProps) {
                 <Calendar className="size-4 mr-2" />
                 Manage Schedule
               </Button>
-              <Button className="w-full justify-start bg-primary text-white hover:bg-primary/90">
+              <Button className="w-full justify-start bg-primary text-card-foreground hover:bg-primary/90">
                 <Activity className="size-4 mr-2" />
                 Patient Workflow
               </Button>
@@ -287,20 +291,20 @@ export function DoctorPortal({ session }: DoctorPortalProps) {
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex justify-between">
-                <span className="text-sm text-gray-600">Patients Treated</span>
+                <span className="text-sm text-muted-foreground">Patients Treated</span>
                 <span className="text-sm text-gray-900">142</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-sm text-gray-600">Consultations</span>
+                <span className="text-sm text-muted-foreground">Consultations</span>
                 <span className="text-sm text-gray-900">168</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-sm text-gray-600">Success Rate</span>
-                <span className="text-sm text-green-600">96.5%</span>
+                <span className="text-sm text-muted-foreground">Success Rate</span>
+                <span className="text-sm text-primary">96.5%</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-sm text-gray-600">Patient Satisfaction</span>
-                <span className="text-sm text-green-600">4.8/5.0</span>
+                <span className="text-sm text-muted-foreground">Patient Satisfaction</span>
+                <span className="text-sm text-primary">4.8/5.0</span>
               </div>
             </CardContent>
           </Card>

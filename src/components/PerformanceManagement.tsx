@@ -146,17 +146,17 @@ export function PerformanceManagement({ session }: { session: any }) {
   };
 
   const getRatingColor = (rating: number) => {
-    if (rating >= 4) return 'text-green-600';
+    if (rating >= 4) return 'text-primary';
     if (rating >= 3) return 'text-yellow-600';
-    return 'text-red-600';
+    return 'text-destructive';
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'Completed': return 'bg-green-100 text-green-700';
-      case 'In Progress': return 'bg-blue-100 text-blue-700';
-      case 'Overdue': return 'bg-red-100 text-red-700';
-      default: return 'bg-gray-100 text-gray-700';
+      case 'Completed': return 'bg-green-100 text-primary';
+      case 'In Progress': return 'bg-blue-100 text-primary';
+      case 'Overdue': return 'bg-red-100 text-destructive';
+      default: return 'bg-muted text-foreground';
     }
   };
 
@@ -175,7 +175,7 @@ export function PerformanceManagement({ session }: { session: any }) {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-gray-900 mb-2">Performance Management</h2>
-            <p className="text-gray-600 text-sm">Track employee performance and goals</p>
+            <p className="text-muted-foreground text-sm">Track employee performance and goals</p>
           </div>
         </div>
 
@@ -220,7 +220,7 @@ export function PerformanceManagement({ session }: { session: any }) {
                             <select
                               value={reviewFormData.staffId || ''}
                               onChange={(e) => setReviewFormData({ ...reviewFormData, staffId: e.target.value })}
-                              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                              className="w-full px-3 py-2 border border-border rounded-md"
                             >
                               <option value="">Select staff member</option>
                               {staff.map(member => (
@@ -252,7 +252,7 @@ export function PerformanceManagement({ session }: { session: any }) {
                                     [category]: parseInt(e.target.value)
                                   } as any
                                 })}
-                                className="px-3 py-1 border border-gray-300 rounded-md"
+                                className="px-3 py-1 border border-border rounded-md"
                               >
                                 <option value={0}>Select Rating</option>
                                 <option value={1}>1 - Poor</option>
@@ -271,7 +271,7 @@ export function PerformanceManagement({ session }: { session: any }) {
                             value={reviewFormData.feedback || ''}
                             onChange={(e) => setReviewFormData({ ...reviewFormData, feedback: e.target.value })}
                             placeholder="Detailed feedback and comments"
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                            className="w-full px-3 py-2 border border-border rounded-md"
                             rows={4}
                           />
                         </div>
@@ -283,7 +283,7 @@ export function PerformanceManagement({ session }: { session: any }) {
                     </DialogContent>
                   </Dialog>
                   <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
                     <Input
                       placeholder="Search reviews..."
                       value={searchTerm}
@@ -303,7 +303,7 @@ export function PerformanceManagement({ session }: { session: any }) {
                         <User className="size-5 text-primary" />
                         <div>
                           <h3 className="font-semibold">{review.staffName}</h3>
-                          <p className="text-sm text-gray-600">{review.reviewPeriod}</p>
+                          <p className="text-sm text-muted-foreground">{review.reviewPeriod}</p>
                         </div>
                       </div>
                       <div className="text-right">
@@ -322,12 +322,12 @@ export function PerformanceManagement({ session }: { session: any }) {
                         </div>
                       </div>
                     </div>
-                    <div className="text-sm text-gray-600 space-y-1">
+                    <div className="text-sm text-muted-foreground space-y-1">
                       <p>Reviewed by: {review.reviewedBy}</p>
                       <p>Date: {review.reviewDate}</p>
                       <span className={`inline-block px-2 py-1 rounded text-xs ${
-                        review.status === 'Completed' ? 'bg-green-100 text-green-700' :
-                        review.status === 'Approved' ? 'bg-blue-100 text-blue-700' :
+                        review.status === 'Completed' ? 'bg-green-100 text-primary' :
+                        review.status === 'Approved' ? 'bg-blue-100 text-primary' :
                         'bg-yellow-100 text-yellow-700'
                       }`}>
                         {review.status}
@@ -363,7 +363,7 @@ export function PerformanceManagement({ session }: { session: any }) {
                           <select
                             value={goalFormData.staffId || ''}
                             onChange={(e) => setGoalFormData({ ...goalFormData, staffId: e.target.value })}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                            className="w-full px-3 py-2 border border-border rounded-md"
                           >
                             <option value="">Select staff member</option>
                             {staff.map(member => (
@@ -385,7 +385,7 @@ export function PerformanceManagement({ session }: { session: any }) {
                             value={goalFormData.description || ''}
                             onChange={(e) => setGoalFormData({ ...goalFormData, description: e.target.value })}
                             placeholder="Detailed description of the goal"
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                            className="w-full px-3 py-2 border border-border rounded-md"
                             rows={3}
                           />
                         </div>
@@ -405,7 +405,7 @@ export function PerformanceManagement({ session }: { session: any }) {
                     </DialogContent>
                   </Dialog>
                   <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
                     <Input
                       placeholder="Search goals..."
                       value={searchTerm}
@@ -423,19 +423,19 @@ export function PerformanceManagement({ session }: { session: any }) {
                     <div className="flex items-center justify-between mb-3">
                       <div>
                         <h3 className="font-semibold">{goal.title}</h3>
-                        <p className="text-sm text-gray-600">{goal.staffName}</p>
+                        <p className="text-sm text-muted-foreground">{goal.staffName}</p>
                       </div>
                       <span className={`px-2 py-1 rounded text-xs ${getStatusColor(goal.status)}`}>
                         {goal.status}
                       </span>
                     </div>
-                    <p className="text-sm text-gray-700 mb-3">{goal.description}</p>
+                    <p className="text-sm text-foreground mb-3">{goal.description}</p>
                     <div className="flex items-center justify-between">
-                      <div className="text-sm text-gray-600">
+                      <div className="text-sm text-muted-foreground">
                         Target: {goal.targetDate}
                       </div>
                       <div className="flex items-center gap-2">
-                        <div className="w-24 bg-gray-200 rounded-full h-2">
+                        <div className="w-24 bg-muted rounded-full h-2">
                           <div
                             className="bg-primary h-2 rounded-full"
                             style={{ width: `${goal.progress}%` }}

@@ -32,6 +32,7 @@ import {
 import { Label } from './ui/label';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
+import { TodoListWidget } from './TodoListWidget';
 
 interface Patient {
   id: string;
@@ -188,13 +189,13 @@ export function NursingStation() {
       label: 'Total Patients',
       value: patients.length.toString(),
       icon: User,
-      color: 'bg-blue-500',
+      color: 'bg-primary',
     },
     {
       label: 'Critical Cases',
       value: patients.filter((p) => p.condition === 'critical').length.toString(),
       icon: AlertCircle,
-      color: 'bg-red-500',
+      color: 'bg-destructive',
     },
     {
       label: 'Pending Tasks',
@@ -206,7 +207,7 @@ export function NursingStation() {
       label: 'Active Alerts',
       value: patients.reduce((acc, p) => acc + p.alerts.length, 0).toString(),
       icon: Bell,
-      color: 'bg-purple-500',
+      color: 'bg-primary',
     },
   ];
 
@@ -252,18 +253,18 @@ export function NursingStation() {
 
   const getConditionBadge = (condition: Patient['condition']) => {
     const config = {
-      critical: { className: 'bg-red-100 text-red-700', label: 'Critical' },
-      stable: { className: 'bg-green-100 text-green-700', label: 'Stable' },
-      recovering: { className: 'bg-blue-100 text-blue-700', label: 'Recovering' },
+      critical: { className: 'bg-red-100 text-destructive', label: 'Critical' },
+      stable: { className: 'bg-green-100 text-primary', label: 'Stable' },
+      recovering: { className: 'bg-blue-100 text-primary', label: 'Recovering' },
     };
     return config[condition];
   };
 
   const getPriorityBadge = (priority: Task['priority']) => {
     const config = {
-      high: { className: 'bg-red-100 text-red-700', label: 'High' },
+      high: { className: 'bg-red-100 text-destructive', label: 'High' },
       medium: { className: 'bg-amber-100 text-amber-700', label: 'Medium' },
-      low: { className: 'bg-gray-100 text-gray-700', label: 'Low' },
+      low: { className: 'bg-muted text-foreground', label: 'Low' },
     };
     return config[priority];
   };
@@ -274,7 +275,7 @@ export function NursingStation() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl text-gray-900">Nursing Station</h1>
-          <p className="text-gray-600">Monitor patients, record vitals, and manage care tasks</p>
+          <p className="text-muted-foreground">Monitor patients, record vitals, and manage care tasks</p>
         </div>
       </div>
 
@@ -293,11 +294,11 @@ export function NursingStation() {
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600">{stat.label}</p>
+                      <p className="text-sm text-muted-foreground">{stat.label}</p>
                       <p className="text-2xl mt-2">{stat.value}</p>
                     </div>
                     <div className={`${stat.color} p-3 rounded-lg`}>
-                      <Icon className="size-6 text-white" />
+                      <Icon className="size-6 text-card-foreground" />
                     </div>
                   </div>
                 </CardContent>
@@ -323,12 +324,12 @@ export function NursingStation() {
                   <motion.div
                     key={patient.id}
                     whileHover={{ scale: 1.01 }}
-                    className="p-4 bg-gray-50 rounded-lg"
+                    className="p-4 bg-muted/50 rounded-lg"
                   >
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex items-center gap-3">
                         <Avatar>
-                          <AvatarFallback className="bg-primary text-white">
+                          <AvatarFallback className="bg-primary text-card-foreground">
                             {patient.name
                               .split(' ')
                               .map((n) => n[0])
@@ -345,10 +346,10 @@ export function NursingStation() {
                               {getConditionBadge(patient.condition).label}
                             </Badge>
                           </div>
-                          <p className="text-sm text-gray-600">
+                          <p className="text-sm text-muted-foreground">
                             Room {patient.room} - Bed {patient.bed}
                           </p>
-                          <p className="text-xs text-gray-500 mt-1">
+                          <p className="text-xs text-muted-foreground mt-1">
                             Last check: {patient.lastCheckTime}
                           </p>
                         </div>
@@ -367,46 +368,46 @@ export function NursingStation() {
 
                     {/* Vitals Grid */}
                     <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-3">
-                      <div className="flex items-center gap-2 p-2 bg-white rounded">
-                        <Heart className="size-4 text-red-500" />
+                      <div className="flex items-center gap-2 p-2 bg-card rounded">
+                        <Heart className="size-4 text-destructive" />
                         <div>
-                          <p className="text-xs text-gray-600">HR</p>
+                          <p className="text-xs text-muted-foreground">HR</p>
                           <p className="text-sm text-gray-900">
                             {patient.vitals.heartRate} bpm
                           </p>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2 p-2 bg-white rounded">
-                        <Activity className="size-4 text-blue-500" />
+                      <div className="flex items-center gap-2 p-2 bg-card rounded">
+                        <Activity className="size-4 text-primary" />
                         <div>
-                          <p className="text-xs text-gray-600">BP</p>
+                          <p className="text-xs text-muted-foreground">BP</p>
                           <p className="text-sm text-gray-900">
                             {patient.vitals.bloodPressure}
                           </p>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2 p-2 bg-white rounded">
-                        <Thermometer className="size-4 text-orange-500" />
+                      <div className="flex items-center gap-2 p-2 bg-card rounded">
+                        <Thermometer className="size-4 text-primary" />
                         <div>
-                          <p className="text-xs text-gray-600">Temp</p>
+                          <p className="text-xs text-muted-foreground">Temp</p>
                           <p className="text-sm text-gray-900">
                             {patient.vitals.temperature}°F
                           </p>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2 p-2 bg-white rounded">
+                      <div className="flex items-center gap-2 p-2 bg-card rounded">
                         <Droplet className="size-4 text-cyan-500" />
                         <div>
-                          <p className="text-xs text-gray-600">SpO2</p>
+                          <p className="text-xs text-muted-foreground">SpO2</p>
                           <p className="text-sm text-gray-900">
                             {patient.vitals.oxygenLevel}%
                           </p>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2 p-2 bg-white rounded">
-                        <Wind className="size-4 text-green-500" />
+                      <div className="flex items-center gap-2 p-2 bg-card rounded">
+                        <Wind className="size-4 text-primary" />
                         <div>
-                          <p className="text-xs text-gray-600">RR</p>
+                          <p className="text-xs text-muted-foreground">RR</p>
                           <p className="text-sm text-gray-900">
                             {patient.vitals.respiratoryRate}/min
                           </p>
@@ -417,7 +418,7 @@ export function NursingStation() {
                     {/* Medications */}
                     {patient.medications.length > 0 && (
                       <div className="mb-3">
-                        <p className="text-xs text-gray-600 mb-2">Current Medications:</p>
+                        <p className="text-xs text-muted-foreground mb-2">Current Medications:</p>
                         <div className="flex flex-wrap gap-2">
                           {patient.medications.map((med, idx) => (
                             <Badge key={idx} variant="outline" className="text-xs">
@@ -432,10 +433,10 @@ export function NursingStation() {
                     {/* Alerts */}
                     {patient.alerts.length > 0 && (
                       <div className="flex items-center gap-2 p-2 bg-red-50 rounded border border-red-200">
-                        <AlertCircle className="size-4 text-red-600" />
+                        <AlertCircle className="size-4 text-destructive" />
                         <div className="flex flex-wrap gap-2">
                           {patient.alerts.map((alert, idx) => (
-                            <span key={idx} className="text-xs text-red-700">
+                            <span key={idx} className="text-xs text-destructive">
                               {alert}
                             </span>
                           ))}
@@ -451,6 +452,9 @@ export function NursingStation() {
 
         {/* Sidebar - Tasks */}
         <div className="space-y-6">
+          {/* Todo List Widget */}
+          <TodoListWidget maxItems={3} />
+
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -466,8 +470,8 @@ export function NursingStation() {
                     whileHover={{ scale: 1.02 }}
                     className={`p-3 rounded-lg border ${
                       task.status === 'completed'
-                        ? 'bg-gray-50 border-gray-200 opacity-60'
-                        : 'bg-white border-gray-200'
+                        ? 'bg-muted/50 border-border opacity-60'
+                        : 'bg-card border-border'
                     }`}
                   >
                     <div className="flex items-start justify-between mb-2">
@@ -477,13 +481,13 @@ export function NursingStation() {
                       >
                         {getPriorityBadge(task.priority).label}
                       </Badge>
-                      <span className="text-xs text-gray-500 flex items-center gap-1">
+                      <span className="text-xs text-muted-foreground flex items-center gap-1">
                         <Clock className="size-3" />
                         {task.time}
                       </span>
                     </div>
                     <p className="text-sm text-gray-900 mb-1">{task.task}</p>
-                    <p className="text-xs text-gray-600 mb-2">
+                    <p className="text-xs text-muted-foreground mb-2">
                       {task.patientName} - Room {task.room}
                     </p>
                     {task.status === 'pending' ? (
@@ -496,7 +500,7 @@ export function NursingStation() {
                         Mark Complete
                       </Button>
                     ) : (
-                      <div className="flex items-center justify-center gap-1 text-xs text-green-600">
+                      <div className="flex items-center justify-center gap-1 text-xs text-primary">
                         <ClipboardList className="size-3" />
                         Completed
                       </div>
@@ -514,15 +518,15 @@ export function NursingStation() {
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex justify-between">
-                <span className="text-sm text-gray-600">Vitals Recorded</span>
+                <span className="text-sm text-muted-foreground">Vitals Recorded</span>
                 <span className="text-sm text-gray-900">24</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-sm text-gray-600">Medications Given</span>
+                <span className="text-sm text-muted-foreground">Medications Given</span>
                 <span className="text-sm text-gray-900">18</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-sm text-gray-600">Tasks Completed</span>
+                <span className="text-sm text-muted-foreground">Tasks Completed</span>
                 <span className="text-sm text-gray-900">
                   {tasks.filter((t) => t.status === 'completed').length}/
                   {tasks.length}
@@ -530,7 +534,7 @@ export function NursingStation() {
               </div>
               <div>
                 <div className="flex justify-between text-sm mb-2">
-                  <span className="text-gray-600">Shift Progress</span>
+                  <span className="text-muted-foreground">Shift Progress</span>
                   <span className="text-gray-900">
                     {Math.round((tasks.filter((t) => t.status === 'completed').length / tasks.length) * 100)}%
                   </span>
@@ -556,9 +560,9 @@ export function NursingStation() {
           </DialogHeader>
           {selectedPatient && (
             <div className="space-y-4">
-              <div className="p-4 bg-gray-50 rounded-lg">
+              <div className="p-4 bg-muted/50 rounded-lg">
                 <p className="text-gray-900">{selectedPatient.name}</p>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-muted-foreground">
                   Room {selectedPatient.room} - Bed {selectedPatient.bed}
                 </p>
               </div>

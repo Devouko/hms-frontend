@@ -32,7 +32,7 @@ export function EmployeePageNew({ session }: EmployeePageNewProps) {
       const data = await employeeService.getAll();
       setEmployees(data);
     } catch (error) {
-      console.error('Error fetching employees:', error);
+      // Silent fallback
       setEmployees([]);
     } finally {
       setLoading(false);
@@ -137,7 +137,7 @@ export function EmployeePageNew({ session }: EmployeePageNewProps) {
       >
         <div>
           <h2 className="text-gray-900 mb-2">Employee Management</h2>
-          <p className="text-gray-600 text-sm">Manage hospital staff and personnel</p>
+          <p className="text-muted-foreground text-sm">Manage hospital staff and personnel</p>
         </div>
         {isAdmin && (
           <Button
@@ -172,7 +172,7 @@ export function EmployeePageNew({ session }: EmployeePageNewProps) {
                       <Icon className="size-6" />
                     </div>
                     <div>
-                      <p className="text-sm text-gray-600">{stat.label}</p>
+                      <p className="text-sm text-muted-foreground">{stat.label}</p>
                       <h3 className="text-gray-900">{stat.value}</h3>
                     </div>
                   </div>
@@ -189,7 +189,7 @@ export function EmployeePageNew({ session }: EmployeePageNewProps) {
           <div className="flex items-center justify-between">
             <CardTitle>Staff Directory</CardTitle>
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
               <Input
                 type="search"
                 placeholder="Search employees..."
@@ -208,15 +208,15 @@ export function EmployeePageNew({ session }: EmployeePageNewProps) {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.05 }}
-                className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                className="flex items-center justify-between p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white">
+                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-card-foreground">
                     {employee.name?.charAt(0)?.toUpperCase() || 'E'}
                   </div>
                   <div>
                     <h4 className="text-gray-900">{employee.name}</h4>
-                    <p className="text-sm text-gray-600">{employee.position} • {employee.department}</p>
+                    <p className="text-sm text-muted-foreground">{employee.position} • {employee.department}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
@@ -265,7 +265,7 @@ export function EmployeePageNew({ session }: EmployeePageNewProps) {
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-white rounded-lg p-6 max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto"
+            className="bg-card rounded-lg p-6 max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto"
           >
             <h3 className="text-gray-900 mb-4">
               {selectedEmployee ? 'Edit Employee' : 'Add Employee'}
@@ -317,7 +317,7 @@ export function EmployeePageNew({ session }: EmployeePageNewProps) {
                 <select
                   value={formData.status || 'active'}
                   onChange={(e) => setFormData({ ...formData, status: e.target.value as 'active' | 'inactive' })}
-                  className="w-full px-3 py-2 border border-gray-200 rounded-lg bg-white"
+                  className="w-full px-3 py-2 border border-border rounded-lg bg-card"
                 >
                   <option value="active">Active</option>
                   <option value="inactive">Inactive</option>

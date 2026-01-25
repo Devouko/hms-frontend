@@ -18,7 +18,7 @@ export function HelpCenter() {
           <HelpCircle className="size-8 text-primary" />
           Help & Support Center
         </h1>
-        <p className="text-sm text-gray-600 mt-1">Get help and support for using the system</p>
+        <p className="text-sm text-muted-foreground mt-1">Get help and support for using the system</p>
       </motion.div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -26,7 +26,7 @@ export function HelpCenter() {
           <CardContent className="p-6 text-center">
             <Book className="size-12 text-primary mx-auto mb-4" />
             <h3 className="font-semibold text-gray-900 mb-2">Documentation</h3>
-            <p className="text-sm text-gray-600 mb-4">Browse our comprehensive guides</p>
+            <p className="text-sm text-muted-foreground mb-4">Browse our comprehensive guides</p>
             <Button variant="outline" size="sm">View Docs</Button>
           </CardContent>
         </Card>
@@ -35,7 +35,7 @@ export function HelpCenter() {
           <CardContent className="p-6 text-center">
             <MessageCircle className="size-12 text-primary mx-auto mb-4" />
             <h3 className="font-semibold text-gray-900 mb-2">Live Chat</h3>
-            <p className="text-sm text-gray-600 mb-4">Chat with our support team</p>
+            <p className="text-sm text-muted-foreground mb-4">Chat with our support team</p>
             <Button variant="outline" size="sm">Start Chat</Button>
           </CardContent>
         </Card>
@@ -44,7 +44,7 @@ export function HelpCenter() {
           <CardContent className="p-6 text-center">
             <Mail className="size-12 text-primary mx-auto mb-4" />
             <h3 className="font-semibold text-gray-900 mb-2">Email Support</h3>
-            <p className="text-sm text-gray-600 mb-4">support@hospital.com</p>
+            <p className="text-sm text-muted-foreground mb-4">support@hospital.com</p>
             <Button variant="outline" size="sm">Send Email</Button>
           </CardContent>
         </Card>
@@ -65,7 +65,7 @@ export function HelpCenter() {
                 className="p-4 border rounded-lg"
               >
                 <h4 className="font-semibold text-gray-900 mb-2">{faq.q}</h4>
-                <p className="text-sm text-gray-600">{faq.a}</p>
+                <p className="text-sm text-muted-foreground">{faq.a}</p>
               </motion.div>
             ))}
           </div>

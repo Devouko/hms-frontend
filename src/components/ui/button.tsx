@@ -1,6 +1,6 @@
 import * as React from "react";
-import { Slot } from "@radix-ui/react-slot@1.1.2";
-import { cva, type VariantProps } from "class-variance-authority@0.7.1";
+import { Slot } from "@radix-ui/react-slot";
+import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "./utils";
 
@@ -9,16 +9,16 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-[#38bdf8] text-primary-foreground hover:bg-[#38bdf8]/90",
+        default: "glass-bg bg-primary/80 text-primary-foreground hover:bg-primary/90 backdrop-blur-xl",
         destructive:
-          "bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
+          "glass-bg bg-destructive/80 text-card-foreground hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 backdrop-blur-xl",
         outline:
-          "border bg-background text-foreground hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
+          "glass-bg text-foreground hover:bg-card/20 dark:hover:bg-card/10 backdrop-blur-xl",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+          "glass-bg bg-secondary/80 text-secondary-foreground hover:bg-secondary/90 backdrop-blur-xl",
         ghost:
-          "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
-        link: "text-[#38bdf8] underline-offset-4 hover:underline",
+          "hover:bg-card/20 dark:hover:bg-card/10 hover:text-accent-foreground",
+        link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",

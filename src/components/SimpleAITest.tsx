@@ -44,7 +44,7 @@ export function SimpleAITest() {
     return (
       <button
         onClick={() => setOpen(true)}
-        className="fixed bottom-6 left-6 bg-primary text-white p-3 rounded-full shadow-lg z-50"
+        className="fixed bottom-6 left-6 bg-primary text-card-foreground p-3 rounded-full shadow-lg z-50"
       >
         <Bot className="size-5" />
       </button>
@@ -52,8 +52,8 @@ export function SimpleAITest() {
   }
 
   return (
-    <div className="fixed bottom-6 left-6 w-96 bg-white rounded-lg shadow-2xl z-50 border">
-      <div className="bg-primary text-white p-3 rounded-t-lg flex justify-between items-center">
+    <div className="fixed bottom-6 left-6 w-96 bg-card rounded-lg shadow-2xl z-50 border">
+      <div className="bg-primary text-card-foreground p-3 rounded-t-lg flex justify-between items-center">
         <span className="font-medium">AI Test</span>
         <button onClick={() => setOpen(false)}>
           <X className="size-4" />
@@ -71,13 +71,13 @@ export function SimpleAITest() {
         <button
           onClick={testAI}
           disabled={loading}
-          className="w-full bg-primary text-white py-2 rounded flex items-center justify-center gap-2"
+          className="w-full bg-primary text-card-foreground py-2 rounded flex items-center justify-center gap-2"
         >
           <Send className="size-4" />
           {loading ? 'Sending...' : 'Send'}
         </button>
         {response && (
-          <div className="p-3 bg-gray-50 rounded text-sm">
+          <div className="p-3 bg-muted/50 rounded text-sm">
             <strong>Response:</strong>
             <p className="mt-1">{response}</p>
           </div>

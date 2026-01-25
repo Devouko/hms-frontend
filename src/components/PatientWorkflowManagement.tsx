@@ -21,17 +21,17 @@ interface WorkflowPatient extends Patient {
 }
 
 const workflowStages = [
-  { id: 'registration', label: 'Registration', icon: UserPlus, color: 'bg-blue-500' },
-  { id: 'appointment', label: 'Schedule Appointment', icon: Calendar, color: 'bg-green-500' },
+  { id: 'registration', label: 'Registration', icon: UserPlus, color: 'bg-primary' },
+  { id: 'appointment', label: 'Schedule Appointment', icon: Calendar, color: 'bg-primary' },
   { id: 'checkin', label: 'Check In Patient', icon: CheckCircle, color: 'bg-yellow-500' },
-  { id: 'waiting', label: 'Waiting Room', icon: Clock, color: 'bg-orange-500' },
-  { id: 'consultation', label: 'Doctor Consultation', icon: User, color: 'bg-purple-500' },
-  { id: 'lab_tests', label: 'Lab Tests', icon: FlaskConical, color: 'bg-red-500' },
-  { id: 'prescriptions', label: 'Prescriptions', icon: FileText, color: 'bg-indigo-500' },
+  { id: 'waiting', label: 'Waiting Room', icon: Clock, color: 'bg-primary' },
+  { id: 'consultation', label: 'Doctor Consultation', icon: User, color: 'bg-primary' },
+  { id: 'lab_tests', label: 'Lab Tests', icon: FlaskConical, color: 'bg-destructive' },
+  { id: 'prescriptions', label: 'Prescriptions', icon: FileText, color: 'bg-primary' },
   { id: 'pharmacy', label: 'Pharmacy', icon: Pill, color: 'bg-pink-500' },
-  { id: 'billing', label: 'Billing', icon: CreditCard, color: 'bg-teal-500' },
+  { id: 'billing', label: 'Billing', icon: CreditCard, color: 'bg-primary' },
   { id: 'payment', label: 'Payment', icon: Receipt, color: 'bg-cyan-500' },
-  { id: 'completed', label: 'Completed', icon: CheckCircle2, color: 'bg-green-600' }
+  { id: 'completed', label: 'Completed', icon: CheckCircle2, color: 'bg-primary' }
 ];
 
 export function PatientWorkflowManagement({ session }: PatientWorkflowProps) {
@@ -45,16 +45,29 @@ export function PatientWorkflowManagement({ session }: PatientWorkflowProps) {
 
   const fetchPatients = async () => {
     try {
-      const data = await patientService.getAll();
-      // Add workflow stages to patients (mock data for demo)
+      // Try to get patients from database first
+      let data = [];
+      try {
+        data = await patientService.getAll();
+      } catch (dbError) {
+        console.warn('Database unavailable, using localStorage:', dbError);
+        // Fallback to localStorage
+        const localPatients = localStorage.getItem('hospital_patients');
+        if (localPatients) {
+          data = JSON.parse(localPatients);
+        }
+      }
+      
+      // Add workflow stages to patients
       const workflowPatients = data.map(patient => ({
         ...patient,
-        workflow_stage: getRandomStage(),
-        workflow_status: 'active'
+        workflow_stage: patient.workflow_stage || getRandomStage(),
+        workflow_status: patient.workflow_status || 'active'
       }));
       setPatients(workflowPatients);
     } catch (error) {
       console.error('Error fetching patients:', error);
+      // Final fallback - empty array
       setPatients([]);
     } finally {
       setLoading(false);
@@ -110,7 +123,7 @@ export function PatientWorkflowManagement({ session }: PatientWorkflowProps) {
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-2xl font-bold text-gray-900">Hospital Workflow Management</h2>
-            <p className="text-gray-600">Complete patient journey from registration to billing</p>
+            <p className="text-muted-foreground">Complete patient journey from registration to billing</p>
           </div>
           <Button className="bg-primary hover:bg-primary/90">
             <UserPlus className="size-4 mr-2" />
@@ -140,11 +153,11 @@ export function PatientWorkflowManagement({ session }: PatientWorkflowProps) {
                     <motion.div
                       whileHover={{ scale: 1.05 }}
                       className={`flex flex-col items-center p-4 rounded-lg cursor-pointer transition-all ${
-                        selectedStage === stage.id ? 'bg-primary/10 border-2 border-primary' : 'hover:bg-gray-50'
+                        selectedStage === stage.id ? 'bg-primary/10 border-2 border-primary' : 'hover:bg-muted/50'
                       }`}
                       onClick={() => setSelectedStage(stage.id)}
                     >
-                      <div className={`${stage.color} p-3 rounded-full text-white mb-2`}>
+                      <div className={`${stage.color} p-3 rounded-full text-card-foreground mb-2`}>
                         <Icon className="size-6" />
                       </div>
                       <span className="text-sm font-medium text-center">{stage.label}</span>
@@ -153,7 +166,7 @@ export function PatientWorkflowManagement({ session }: PatientWorkflowProps) {
                       </Badge>
                     </motion.div>
                     {index < workflowStages.length - 1 && (
-                      <ArrowRight className="size-4 text-gray-400 mx-2" />
+                      <ArrowRight className="size-4 text-muted-foreground mx-2" />
                     )}
                   </div>
                 );
@@ -202,18 +215,18 @@ export function PatientWorkflowManagement({ session }: PatientWorkflowProps) {
                   <div className="flex items-start justify-between mb-4">
                     <div>
                       <h3 className="font-semibold text-lg">{patient.name}</h3>
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm text-muted-foreground">
                         Age: {patient.date_of_birth ? new Date().getFullYear() - new Date(patient.date_of_birth).getFullYear() : 'N/A'}
                       </p>
                       {patient.phone && (
-                        <div className="flex items-center gap-1 text-sm text-gray-600 mt-1">
+                        <div className="flex items-center gap-1 text-sm text-muted-foreground mt-1">
                           <Phone className="size-3" />
                           {patient.phone}
                         </div>
                       )}
                     </div>
                     <Badge 
-                      className={`${stageInfo?.color} text-white`}
+                      className={`${stageInfo?.color} text-card-foreground`}
                       variant="secondary"
                     >
                       {patient.workflow_stage.toUpperCase()}
@@ -221,7 +234,7 @@ export function PatientWorkflowManagement({ session }: PatientWorkflowProps) {
                   </div>
 
                   <div className="flex items-center gap-2 mb-4">
-                    <div className={`${stageInfo?.color} p-2 rounded-full text-white`}>
+                    <div className={`${stageInfo?.color} p-2 rounded-full text-card-foreground`}>
                       <StageIcon className="size-4" />
                     </div>
                     <span className="text-sm font-medium">{stageInfo?.label}</span>
@@ -253,7 +266,7 @@ export function PatientWorkflowManagement({ session }: PatientWorkflowProps) {
       </div>
 
       {filteredPatients.length === 0 && (
-        <div className="text-center py-12 text-gray-500">
+        <div className="text-center py-12 text-muted-foreground">
           No patients found in {selectedStage === 'all' ? 'the system' : `${getStageInfo(selectedStage)?.label} stage`}.
         </div>
       )}

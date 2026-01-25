@@ -15,7 +15,7 @@ export function FloatingAIButton({ currentPage, userRole }: FloatingAIButtonProp
     <>
       <motion.button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-[#38bdf8] to-[#0ea5e9] text-white p-4 rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300"
+        className="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-[#38bdf8] to-[#0ea5e9] text-card-foreground p-4 rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300"
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         animate={{

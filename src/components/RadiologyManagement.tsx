@@ -168,7 +168,7 @@ export function RadiologyManagement({ session }: RadiologyManagementProps) {
                         id="testType"
                         value={formData.testType || 'X-Ray'}
                         onChange={(e) => setFormData({ ...formData, testType: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                        className="w-full px-3 py-2 border border-border rounded-md"
                       >
                         {testTypes.map(type => (
                           <option key={type} value={type}>{type}</option>
@@ -210,7 +210,7 @@ export function RadiologyManagement({ session }: RadiologyManagementProps) {
                         value={formData.notes || ''}
                         onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                         placeholder="Enter any additional notes"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                        className="w-full px-3 py-2 border border-border rounded-md"
                         rows={3}
                       />
                     </div>
@@ -229,7 +229,7 @@ export function RadiologyManagement({ session }: RadiologyManagementProps) {
           </CardHeader>
           <CardContent>
             <div className="flex items-center space-x-2 mb-4">
-              <Search className="size-4 text-gray-400" />
+              <Search className="size-4 text-muted-foreground" />
               <Input
                 placeholder="Search tests..."
                 value={searchTerm}
@@ -239,28 +239,28 @@ export function RadiologyManagement({ session }: RadiologyManagementProps) {
             </div>
 
             <div className="overflow-x-auto">
-              <table className="w-full border-collapse border border-gray-200">
+              <table className="w-full border-collapse border border-border">
                 <thead>
-                  <tr className="bg-gray-50">
-                    <th className="border border-gray-200 px-4 py-2 text-left">Patient</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Test Name</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Type</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Doctor</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Test Date</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Status</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Cost</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Actions</th>
+                  <tr className="bg-muted/50">
+                    <th className="border border-border px-4 py-2 text-left">Patient</th>
+                    <th className="border border-border px-4 py-2 text-left">Test Name</th>
+                    <th className="border border-border px-4 py-2 text-left">Type</th>
+                    <th className="border border-border px-4 py-2 text-left">Doctor</th>
+                    <th className="border border-border px-4 py-2 text-left">Test Date</th>
+                    <th className="border border-border px-4 py-2 text-left">Status</th>
+                    <th className="border border-border px-4 py-2 text-left">Cost</th>
+                    <th className="border border-border px-4 py-2 text-left">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredTests.map((test) => (
-                    <tr key={test.id} className="hover:bg-gray-50">
-                      <td className="border border-gray-200 px-4 py-2">{test.patientName}</td>
-                      <td className="border border-gray-200 px-4 py-2">{test.testName}</td>
-                      <td className="border border-gray-200 px-4 py-2">{test.testType}</td>
-                      <td className="border border-gray-200 px-4 py-2">{test.doctorName}</td>
-                      <td className="border border-gray-200 px-4 py-2">{test.testDate}</td>
-                      <td className="border border-gray-200 px-4 py-2">
+                    <tr key={test.id} className="hover:bg-muted/50">
+                      <td className="border border-border px-4 py-2">{test.patientName}</td>
+                      <td className="border border-border px-4 py-2">{test.testName}</td>
+                      <td className="border border-border px-4 py-2">{test.testType}</td>
+                      <td className="border border-border px-4 py-2">{test.doctorName}</td>
+                      <td className="border border-border px-4 py-2">{test.testDate}</td>
+                      <td className="border border-border px-4 py-2">
                         <select
                           value={test.status}
                           onChange={(e) => handleStatusUpdate(test.id, e.target.value as RadiologyTest['status'])}
@@ -275,8 +275,8 @@ export function RadiologyManagement({ session }: RadiologyManagementProps) {
                           <option value="Completed">Completed</option>
                         </select>
                       </td>
-                      <td className="border border-gray-200 px-4 py-2">${test.cost}</td>
-                      <td className="border border-gray-200 px-4 py-2">
+                      <td className="border border-border px-4 py-2">${test.cost}</td>
+                      <td className="border border-border px-4 py-2">
                         <div className="flex space-x-2">
                           {test.status === 'Completed' && (
                             <>
@@ -304,7 +304,7 @@ export function RadiologyManagement({ session }: RadiologyManagementProps) {
             </div>
 
             {filteredTests.length === 0 && (
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-muted-foreground">
                 No radiology tests found.
               </div>
             )}

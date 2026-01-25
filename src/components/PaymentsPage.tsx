@@ -111,7 +111,7 @@ export function PaymentsPage({ session }: PaymentsPageProps) {
         animate={{ opacity: 1, y: 0 }}
       >
         <h2 className="text-gray-900 mb-2">Payments & Billing</h2>
-        <p className="text-gray-600 text-sm">Manage all financial transactions</p>
+        <p className="text-muted-foreground text-sm">Manage all financial transactions</p>
       </motion.div>
 
       {/* Stats Cards */}
@@ -129,11 +129,11 @@ export function PaymentsPage({ session }: PaymentsPageProps) {
                 <CardContent className="p-6">
                   <div className="flex items-start justify-between mb-4">
                     <div className={`bg-gradient-to-br ${stat.color} p-3 rounded-xl`}>
-                      <Icon className="size-6 text-white" />
+                      <Icon className="size-6 text-card-foreground" />
                     </div>
-                    <span className="text-sm text-green-600">{stat.change}</span>
+                    <span className="text-sm text-primary">{stat.change}</span>
                   </div>
-                  <p className="text-sm text-gray-600 mb-1">{stat.label}</p>
+                  <p className="text-sm text-muted-foreground mb-1">{stat.label}</p>
                   <h3 className="text-gray-900">{stat.value}</h3>
                 </CardContent>
               </Card>
@@ -186,7 +186,7 @@ export function PaymentsPage({ session }: PaymentsPageProps) {
                         id="payment_method"
                         value={formData.payment_method || ''}
                         onChange={(e) => setFormData({ ...formData, payment_method: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                        className="w-full px-3 py-2 border border-border rounded-md"
                       >
                         <option value="">Select Method</option>
                         <option value="cash">Cash</option>
@@ -201,7 +201,7 @@ export function PaymentsPage({ session }: PaymentsPageProps) {
                         id="status"
                         value={formData.status || 'pending'}
                         onChange={(e) => setFormData({ ...formData, status: e.target.value as 'pending' | 'completed' | 'failed' })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                        className="w-full px-3 py-2 border border-border rounded-md"
                       >
                         <option value="pending">Pending</option>
                         <option value="completed">Completed</option>
@@ -237,7 +237,7 @@ export function PaymentsPage({ session }: PaymentsPageProps) {
           <CardContent>
             <div className="mb-4">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
                 <Input
                   placeholder="Search payments..."
                   value={searchTerm}
@@ -253,26 +253,26 @@ export function PaymentsPage({ session }: PaymentsPageProps) {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.5 + index * 0.05 }}
-                  className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                  className="flex items-center justify-between p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors"
                 >
                   <div className="flex items-center gap-4">
                     <div className="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center">
-                      <DollarSign className="size-6 text-teal-700" />
+                      <DollarSign className="size-6 text-primary" />
                     </div>
                     <div>
                       <p className="text-gray-900">{payment.description || 'Payment'}</p>
-                      <p className="text-sm text-gray-500">{new Date(payment.created_at).toLocaleDateString()}</p>
+                      <p className="text-sm text-muted-foreground">{new Date(payment.created_at).toLocaleDateString()}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-6">
                     <span className="text-gray-900">${payment.amount}</span>
-                    <span className="text-sm text-gray-600">{payment.payment_method}</span>
+                    <span className="text-sm text-muted-foreground">{payment.payment_method}</span>
                     <span className={`px-3 py-1 rounded-full text-sm ${
                       payment.status === 'completed' 
-                        ? 'bg-green-100 text-green-700' 
+                        ? 'bg-green-100 text-primary' 
                         : payment.status === 'pending'
                         ? 'bg-yellow-100 text-yellow-700'
-                        : 'bg-red-100 text-red-700'
+                        : 'bg-red-100 text-destructive'
                     }`}>
                       {payment.status}
                     </span>
@@ -293,7 +293,7 @@ export function PaymentsPage({ session }: PaymentsPageProps) {
                 </motion.div>
               ))}
               {filteredPayments.length === 0 && (
-                <div className="text-center py-12 text-gray-500">
+                <div className="text-center py-12 text-muted-foreground">
                   No payments found. Click "Add Payment" to create one.
                 </div>
               )}

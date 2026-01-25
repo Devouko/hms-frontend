@@ -13,7 +13,7 @@ export function SettingsPage() {
           <Settings className="size-8 text-primary" />
           System Settings
         </h1>
-        <p className="text-sm text-gray-600 mt-1">Configure system preferences and settings</p>
+        <p className="text-sm text-muted-foreground mt-1">Configure system preferences and settings</p>
       </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

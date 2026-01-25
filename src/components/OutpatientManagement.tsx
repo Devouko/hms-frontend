@@ -85,10 +85,10 @@ export function OutpatientManagement({ session }: OutpatientManagementProps) {
   };
 
   const stats = [
-    { label: 'Today\'s Appointments', value: appointments.filter(a => a.appointmentDate === selectedDate).length, icon: Calendar, color: 'bg-blue-500' },
-    { label: 'Checked In', value: appointments.filter(a => a.status === 'checked-in').length, icon: CheckCircle, color: 'bg-green-500' },
+    { label: 'Today\'s Appointments', value: appointments.filter(a => a.appointmentDate === selectedDate).length, icon: Calendar, color: 'bg-primary' },
+    { label: 'Checked In', value: appointments.filter(a => a.status === 'checked-in').length, icon: CheckCircle, color: 'bg-primary' },
     { label: 'In Consultation', value: appointments.filter(a => a.status === 'in-consultation').length, icon: Clock, color: 'bg-yellow-500' },
-    { label: 'Completed Today', value: appointments.filter(a => a.status === 'completed' && a.appointmentDate === selectedDate).length, icon: FileText, color: 'bg-purple-500' }
+    { label: 'Completed Today', value: appointments.filter(a => a.status === 'completed' && a.appointmentDate === selectedDate).length, icon: FileText, color: 'bg-primary' }
   ];
 
   const filteredAppointments = appointments.filter(appointment =>
@@ -153,13 +153,13 @@ export function OutpatientManagement({ session }: OutpatientManagementProps) {
 
   const getStatusColor = (status: string) => {
     const colors = {
-      'scheduled': 'bg-blue-100 text-blue-700',
-      'checked-in': 'bg-green-100 text-green-700',
+      'scheduled': 'bg-blue-100 text-primary',
+      'checked-in': 'bg-green-100 text-primary',
       'in-consultation': 'bg-yellow-100 text-yellow-700',
-      'completed': 'bg-purple-100 text-purple-700',
-      'cancelled': 'bg-red-100 text-red-700'
+      'completed': 'bg-purple-100 text-primary',
+      'cancelled': 'bg-red-100 text-destructive'
     };
-    return colors[status as keyof typeof colors] || 'bg-gray-100 text-gray-700';
+    return colors[status as keyof typeof colors] || 'bg-muted text-foreground';
   };
 
   return (
@@ -167,7 +167,7 @@ export function OutpatientManagement({ session }: OutpatientManagementProps) {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl text-gray-900">Outpatient Management</h1>
-          <p className="text-gray-600">Manage outpatient appointments and consultations</p>
+          <p className="text-muted-foreground">Manage outpatient appointments and consultations</p>
         </div>
         <Button onClick={() => setIsAppointmentModalOpen(true)} className="bg-primary hover:bg-primary/90">
           <Plus className="size-4 mr-2" />
@@ -190,11 +190,11 @@ export function OutpatientManagement({ session }: OutpatientManagementProps) {
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600">{stat.label}</p>
+                      <p className="text-sm text-muted-foreground">{stat.label}</p>
                       <p className="text-2xl mt-2">{stat.value}</p>
                     </div>
                     <div className={`${stat.color} p-3 rounded-lg`}>
-                      <Icon className="size-6 text-white" />
+                      <Icon className="size-6 text-card-foreground" />
                     </div>
                   </div>
                 </CardContent>
@@ -224,7 +224,7 @@ export function OutpatientManagement({ session }: OutpatientManagementProps) {
                     className="w-40"
                   />
                   <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
                     <Input
                       placeholder="Search appointments..."
                       value={searchTerm}
@@ -238,30 +238,30 @@ export function OutpatientManagement({ session }: OutpatientManagementProps) {
             <CardContent>
               <div className="space-y-3">
                 {filteredAppointments.map((appointment) => (
-                  <div key={appointment.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                  <div key={appointment.id} className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
                     <div className="flex-1 grid grid-cols-6 gap-4">
                       <div>
-                        <p className="text-xs text-gray-600">Time</p>
+                        <p className="text-xs text-muted-foreground">Time</p>
                         <p className="text-sm text-gray-900">{appointment.appointmentTime}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-gray-600">Patient</p>
+                        <p className="text-xs text-muted-foreground">Patient</p>
                         <p className="text-sm text-gray-900">{appointment.patientName}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-gray-600">Doctor</p>
+                        <p className="text-xs text-muted-foreground">Doctor</p>
                         <p className="text-sm text-gray-900">{appointment.doctorName}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-gray-600">Department</p>
+                        <p className="text-xs text-muted-foreground">Department</p>
                         <p className="text-sm text-gray-900">{appointment.department}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-gray-600">Type</p>
+                        <p className="text-xs text-muted-foreground">Type</p>
                         <Badge variant="outline">{appointment.type}</Badge>
                       </div>
                       <div>
-                        <p className="text-xs text-gray-600">Status</p>
+                        <p className="text-xs text-muted-foreground">Status</p>
                         <Badge className={getStatusColor(appointment.status)}>
                           {appointment.status}
                         </Badge>
@@ -297,17 +297,17 @@ export function OutpatientManagement({ session }: OutpatientManagementProps) {
             <CardContent>
               <div className="space-y-3">
                 {consultations.map((consultation) => (
-                  <div key={consultation.id} className="p-4 bg-gray-50 rounded-lg">
+                  <div key={consultation.id} className="p-4 bg-muted/50 rounded-lg">
                     <div className="flex items-center justify-between mb-2">
                       <h4 className="text-gray-900">{consultation.patientName}</h4>
-                      <span className="text-sm text-gray-600">{consultation.date}</span>
+                      <span className="text-sm text-muted-foreground">{consultation.date}</span>
                     </div>
-                    <p className="text-sm text-gray-600 mb-2">Doctor: {consultation.doctorName}</p>
-                    <p className="text-sm text-gray-700">Chief Complaint: {consultation.chiefComplaint}</p>
+                    <p className="text-sm text-muted-foreground mb-2">Doctor: {consultation.doctorName}</p>
+                    <p className="text-sm text-foreground">Chief Complaint: {consultation.chiefComplaint}</p>
                   </div>
                 ))}
                 {consultations.length === 0 && (
-                  <div className="text-center py-8 text-gray-500">
+                  <div className="text-center py-8 text-muted-foreground">
                     No consultations recorded yet
                   </div>
                 )}
@@ -324,14 +324,14 @@ export function OutpatientManagement({ session }: OutpatientManagementProps) {
             <CardContent>
               <div className="space-y-3">
                 {appointments.filter(a => a.status === 'checked-in' || a.status === 'in-consultation').map((appointment, index) => (
-                  <div key={appointment.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                  <div key={appointment.id} className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
                     <div className="flex items-center gap-4">
-                      <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white text-sm">
+                      <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-card-foreground text-sm">
                         {index + 1}
                       </div>
                       <div>
                         <p className="text-gray-900">{appointment.patientName}</p>
-                        <p className="text-sm text-gray-600">{appointment.doctorName} - {appointment.department}</p>
+                        <p className="text-sm text-muted-foreground">{appointment.doctorName} - {appointment.department}</p>
                       </div>
                     </div>
                     <Badge className={getStatusColor(appointment.status)}>
@@ -373,7 +373,7 @@ export function OutpatientManagement({ session }: OutpatientManagementProps) {
               <select
                 value={appointmentForm.doctorName || ''}
                 onChange={(e) => setAppointmentForm({ ...appointmentForm, doctorName: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                className="w-full px-3 py-2 border border-border rounded-md"
               >
                 <option value="">Select Doctor</option>
                 <option value="Dr. Sarah Johnson">Dr. Sarah Johnson</option>
@@ -387,7 +387,7 @@ export function OutpatientManagement({ session }: OutpatientManagementProps) {
               <select
                 value={appointmentForm.department || ''}
                 onChange={(e) => setAppointmentForm({ ...appointmentForm, department: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                className="w-full px-3 py-2 border border-border rounded-md"
               >
                 <option value="">Select Department</option>
                 <option value="Cardiology">Cardiology</option>
@@ -418,7 +418,7 @@ export function OutpatientManagement({ session }: OutpatientManagementProps) {
               <select
                 value={appointmentForm.type || ''}
                 onChange={(e) => setAppointmentForm({ ...appointmentForm, type: e.target.value as 'new' | 'follow-up' })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                className="w-full px-3 py-2 border border-border rounded-md"
               >
                 <option value="">Select Type</option>
                 <option value="new">New Patient</option>
@@ -511,7 +511,7 @@ export function OutpatientManagement({ session }: OutpatientManagementProps) {
               <textarea
                 value={consultationForm.history || ''}
                 onChange={(e) => setConsultationForm({ ...consultationForm, history: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md h-20 resize-none"
+                className="w-full px-3 py-2 border border-border rounded-md h-20 resize-none"
                 placeholder="Patient's history..."
               />
             </div>
@@ -521,7 +521,7 @@ export function OutpatientManagement({ session }: OutpatientManagementProps) {
               <textarea
                 value={consultationForm.examination || ''}
                 onChange={(e) => setConsultationForm({ ...consultationForm, examination: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md h-20 resize-none"
+                className="w-full px-3 py-2 border border-border rounded-md h-20 resize-none"
                 placeholder="Examination findings..."
               />
             </div>
@@ -531,7 +531,7 @@ export function OutpatientManagement({ session }: OutpatientManagementProps) {
               <textarea
                 value={consultationForm.assessment || ''}
                 onChange={(e) => setConsultationForm({ ...consultationForm, assessment: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md h-20 resize-none"
+                className="w-full px-3 py-2 border border-border rounded-md h-20 resize-none"
                 placeholder="Clinical assessment..."
               />
             </div>
@@ -541,7 +541,7 @@ export function OutpatientManagement({ session }: OutpatientManagementProps) {
               <textarea
                 value={consultationForm.plan || ''}
                 onChange={(e) => setConsultationForm({ ...consultationForm, plan: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md h-20 resize-none"
+                className="w-full px-3 py-2 border border-border rounded-md h-20 resize-none"
                 placeholder="Treatment plan..."
               />
             </div>

@@ -141,8 +141,8 @@ export function LeaveManagement({ session }: { session: any }) {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'Approved': return 'bg-green-100 text-green-700';
-      case 'Rejected': return 'bg-red-100 text-red-700';
+      case 'Approved': return 'bg-green-100 text-primary';
+      case 'Rejected': return 'bg-red-100 text-destructive';
       default: return 'bg-yellow-100 text-yellow-700';
     }
   };
@@ -153,7 +153,7 @@ export function LeaveManagement({ session }: { session: any }) {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-gray-900 mb-2">Leave Management</h2>
-            <p className="text-gray-600 text-sm">Manage staff leave requests and balances</p>
+            <p className="text-muted-foreground text-sm">Manage staff leave requests and balances</p>
           </div>
           <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
             <DialogTrigger asChild>
@@ -172,7 +172,7 @@ export function LeaveManagement({ session }: { session: any }) {
                   <select
                     value={formData.staffId || ''}
                     onChange={(e) => setFormData({ ...formData, staffId: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    className="w-full px-3 py-2 border border-border rounded-md"
                   >
                     <option value="">Select staff member</option>
                     {staff.map(member => (
@@ -185,7 +185,7 @@ export function LeaveManagement({ session }: { session: any }) {
                   <select
                     value={formData.leaveType || ''}
                     onChange={(e) => setFormData({ ...formData, leaveType: e.target.value as LeaveRequest['leaveType'] })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    className="w-full px-3 py-2 border border-border rounded-md"
                   >
                     <option value="">Select leave type</option>
                     <option value="Annual">Annual Leave</option>
@@ -219,7 +219,7 @@ export function LeaveManagement({ session }: { session: any }) {
                     value={formData.reason || ''}
                     onChange={(e) => setFormData({ ...formData, reason: e.target.value })}
                     placeholder="Enter reason for leave"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    className="w-full px-3 py-2 border border-border rounded-md"
                     rows={3}
                   />
                 </div>
@@ -253,7 +253,7 @@ export function LeaveManagement({ session }: { session: any }) {
               <div className="flex items-center justify-between">
                 <CardTitle>Leave Requests</CardTitle>
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
                   <Input
                     placeholder="Search requests..."
                     value={searchTerm}
@@ -265,50 +265,50 @@ export function LeaveManagement({ session }: { session: any }) {
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto">
-                <table className="w-full border-collapse border border-gray-200">
+                <table className="w-full border-collapse border border-border">
                   <thead>
-                    <tr className="bg-gray-50">
-                      <th className="border border-gray-200 px-4 py-2 text-left">Staff</th>
-                      <th className="border border-gray-200 px-4 py-2 text-left">Leave Type</th>
-                      <th className="border border-gray-200 px-4 py-2 text-left">Duration</th>
-                      <th className="border border-gray-200 px-4 py-2 text-left">Days</th>
-                      <th className="border border-gray-200 px-4 py-2 text-left">Status</th>
-                      <th className="border border-gray-200 px-4 py-2 text-left">Actions</th>
+                    <tr className="bg-muted/50">
+                      <th className="border border-border px-4 py-2 text-left">Staff</th>
+                      <th className="border border-border px-4 py-2 text-left">Leave Type</th>
+                      <th className="border border-border px-4 py-2 text-left">Duration</th>
+                      <th className="border border-border px-4 py-2 text-left">Days</th>
+                      <th className="border border-border px-4 py-2 text-left">Status</th>
+                      <th className="border border-border px-4 py-2 text-left">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     {filteredRequests.map((request) => (
-                      <tr key={request.id} className="hover:bg-gray-50">
-                        <td className="border border-gray-200 px-4 py-2">
+                      <tr key={request.id} className="hover:bg-muted/50">
+                        <td className="border border-border px-4 py-2">
                           <div className="flex items-center gap-2">
                             <User className="size-4" />
                             {request.staffName}
                           </div>
                         </td>
-                        <td className="border border-gray-200 px-4 py-2">{request.leaveType}</td>
-                        <td className="border border-gray-200 px-4 py-2">
+                        <td className="border border-border px-4 py-2">{request.leaveType}</td>
+                        <td className="border border-border px-4 py-2">
                           {request.startDate} to {request.endDate}
                         </td>
-                        <td className="border border-gray-200 px-4 py-2">{request.days}</td>
-                        <td className="border border-gray-200 px-4 py-2">
+                        <td className="border border-border px-4 py-2">{request.days}</td>
+                        <td className="border border-border px-4 py-2">
                           <span className={`px-2 py-1 rounded text-xs ${getStatusColor(request.status)}`}>
                             {request.status}
                           </span>
                         </td>
-                        <td className="border border-gray-200 px-4 py-2">
+                        <td className="border border-border px-4 py-2">
                           {request.status === 'Pending' && (
                             <div className="flex space-x-2">
                               <Button
                                 size="sm"
                                 onClick={() => handleApproval(request.id, 'Approved')}
-                                className="bg-green-600 hover:bg-green-700"
+                                className="bg-primary hover:bg-green-700"
                               >
                                 <CheckCircle className="size-4" />
                               </Button>
                               <Button
                                 size="sm"
                                 onClick={() => handleApproval(request.id, 'Rejected')}
-                                className="bg-red-600 hover:bg-red-700"
+                                className="bg-destructive hover:bg-red-700"
                               >
                                 <XCircle className="size-4" />
                               </Button>
@@ -337,7 +337,7 @@ export function LeaveManagement({ session }: { session: any }) {
                       <User className="size-5 text-primary" />
                       <div>
                         <h3 className="font-semibold">{member.name}</h3>
-                        <p className="text-sm text-gray-600">{member.role}</p>
+                        <p className="text-sm text-muted-foreground">{member.role}</p>
                       </div>
                     </div>
                     <div className="space-y-2 text-sm">

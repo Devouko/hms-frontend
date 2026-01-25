@@ -145,24 +145,24 @@ export function SampleTracking({ session }: { session: any }) {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'collected': return 'bg-blue-100 text-blue-700';
-      case 'received': return 'bg-purple-100 text-purple-700';
+      case 'collected': return 'bg-blue-100 text-primary';
+      case 'received': return 'bg-purple-100 text-primary';
       case 'processing': return 'bg-yellow-100 text-yellow-700';
-      case 'completed': return 'bg-green-100 text-green-700';
-      case 'rejected': return 'bg-red-100 text-red-700';
-      case 'pass': return 'bg-green-100 text-green-700';
-      case 'fail': return 'bg-red-100 text-red-700';
+      case 'completed': return 'bg-green-100 text-primary';
+      case 'rejected': return 'bg-red-100 text-destructive';
+      case 'pass': return 'bg-green-100 text-primary';
+      case 'fail': return 'bg-red-100 text-destructive';
       case 'pending': return 'bg-yellow-100 text-yellow-700';
-      default: return 'bg-gray-100 text-gray-700';
+      default: return 'bg-muted text-foreground';
     }
   };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'stat': return 'bg-red-100 text-red-700';
-      case 'urgent': return 'bg-orange-100 text-orange-700';
-      case 'routine': return 'bg-green-100 text-green-700';
-      default: return 'bg-gray-100 text-gray-700';
+      case 'stat': return 'bg-red-100 text-destructive';
+      case 'urgent': return 'bg-orange-100 text-primary';
+      case 'routine': return 'bg-green-100 text-primary';
+      default: return 'bg-muted text-foreground';
     }
   };
 
@@ -179,7 +179,7 @@ export function SampleTracking({ session }: { session: any }) {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Sample Tracking & QC</h1>
-          <p className="text-gray-600">Track samples and manage quality control</p>
+          <p className="text-muted-foreground">Track samples and manage quality control</p>
         </div>
         <div className="flex gap-2">
           <Button onClick={() => setShowAddSample(true)}>
@@ -194,13 +194,13 @@ export function SampleTracking({ session }: { session: any }) {
       </div>
 
       {/* Tab Navigation */}
-      <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg w-fit">
+      <div className="flex space-x-1 bg-muted p-1 rounded-lg w-fit">
         <button
           onClick={() => setActiveTab('samples')}
           className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
             activeTab === 'samples'
-              ? 'bg-white text-primary shadow-sm'
-              : 'text-gray-600 hover:text-gray-900'
+              ? 'bg-card text-primary shadow-sm'
+              : 'text-muted-foreground hover:text-gray-900'
           }`}
         >
           <Beaker className="size-4 mr-2 inline" />
@@ -210,8 +210,8 @@ export function SampleTracking({ session }: { session: any }) {
           onClick={() => setActiveTab('quality_control')}
           className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
             activeTab === 'quality_control'
-              ? 'bg-white text-primary shadow-sm'
-              : 'text-gray-600 hover:text-gray-900'
+              ? 'bg-card text-primary shadow-sm'
+              : 'text-muted-foreground hover:text-gray-900'
           }`}
         >
           <CheckCircle className="size-4 mr-2 inline" />
@@ -222,7 +222,7 @@ export function SampleTracking({ session }: { session: any }) {
       {/* Filters */}
       <div className="flex gap-4 items-center">
         <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
           <Input
             placeholder="Search samples..."
             value={searchTerm}
@@ -277,7 +277,7 @@ export function SampleTracking({ session }: { session: any }) {
                             {sample.priority}
                           </Badge>
                         </div>
-                        <p className="text-sm text-gray-600">{sample.patient_name} (ID: {sample.patient_id})</p>
+                        <p className="text-sm text-muted-foreground">{sample.patient_name} (ID: {sample.patient_id})</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
@@ -331,7 +331,7 @@ export function SampleTracking({ session }: { session: any }) {
                       <span className="font-medium text-green-800">Results:</span>
                       <p className="text-green-900">{sample.results}</p>
                       {sample.verified_by && (
-                        <p className="text-sm text-green-700 mt-1">Verified by: {sample.verified_by}</p>
+                        <p className="text-sm text-primary mt-1">Verified by: {sample.verified_by}</p>
                       )}
                     </div>
                   )}
@@ -339,7 +339,7 @@ export function SampleTracking({ session }: { session: any }) {
                   {sample.notes && (
                     <div className="mb-3 text-sm">
                       <span className="font-medium">Notes:</span>
-                      <p className="text-gray-700">{sample.notes}</p>
+                      <p className="text-foreground">{sample.notes}</p>
                     </div>
                   )}
 
@@ -367,7 +367,7 @@ export function SampleTracking({ session }: { session: any }) {
                           const results = prompt('Enter test results:');
                           if (results) handleAddResults(sample.id, results);
                         }}
-                        className="bg-green-600 hover:bg-green-700"
+                        className="bg-primary hover:bg-green-700"
                       >
                         Add Results
                       </Button>
@@ -397,34 +397,34 @@ export function SampleTracking({ session }: { session: any }) {
           </CardHeader>
           <CardContent>
             <div className="overflow-x-auto">
-              <table className="w-full border-collapse border border-gray-200">
+              <table className="w-full border-collapse border border-border">
                 <thead>
-                  <tr className="bg-gray-50">
-                    <th className="border border-gray-200 px-4 py-2 text-left">Test Name</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Control Type</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Expected Range</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Actual Value</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Status</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Run Date</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Technician</th>
+                  <tr className="bg-muted/50">
+                    <th className="border border-border px-4 py-2 text-left">Test Name</th>
+                    <th className="border border-border px-4 py-2 text-left">Control Type</th>
+                    <th className="border border-border px-4 py-2 text-left">Expected Range</th>
+                    <th className="border border-border px-4 py-2 text-left">Actual Value</th>
+                    <th className="border border-border px-4 py-2 text-left">Status</th>
+                    <th className="border border-border px-4 py-2 text-left">Run Date</th>
+                    <th className="border border-border px-4 py-2 text-left">Technician</th>
                   </tr>
                 </thead>
                 <tbody>
                   {qcRecords.map((qc) => (
-                    <tr key={qc.id} className="hover:bg-gray-50">
-                      <td className="border border-gray-200 px-4 py-2 font-medium">{qc.test_name}</td>
-                      <td className="border border-gray-200 px-4 py-2">
+                    <tr key={qc.id} className="hover:bg-muted/50">
+                      <td className="border border-border px-4 py-2 font-medium">{qc.test_name}</td>
+                      <td className="border border-border px-4 py-2">
                         <Badge variant="outline">{qc.control_type}</Badge>
                       </td>
-                      <td className="border border-gray-200 px-4 py-2">{qc.expected_range}</td>
-                      <td className="border border-gray-200 px-4 py-2">{qc.actual_value}</td>
-                      <td className="border border-gray-200 px-4 py-2">
+                      <td className="border border-border px-4 py-2">{qc.expected_range}</td>
+                      <td className="border border-border px-4 py-2">{qc.actual_value}</td>
+                      <td className="border border-border px-4 py-2">
                         <Badge className={getStatusColor(qc.status)}>
                           {qc.status}
                         </Badge>
                       </td>
-                      <td className="border border-gray-200 px-4 py-2">{qc.run_date}</td>
-                      <td className="border border-gray-200 px-4 py-2">{qc.technician}</td>
+                      <td className="border border-border px-4 py-2">{qc.run_date}</td>
+                      <td className="border border-border px-4 py-2">{qc.technician}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -503,7 +503,7 @@ export function SampleTracking({ session }: { session: any }) {
             <div>
               <Label>Notes</Label>
               <textarea
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                className="w-full px-3 py-2 border border-border rounded-md"
                 rows={3}
                 placeholder="Additional notes..."
               />

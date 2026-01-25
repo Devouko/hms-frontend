@@ -129,21 +129,21 @@ export function ComplaintManagement({ session }: ComplaintManagementProps) {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'Open': return 'bg-red-100 text-red-700';
+      case 'Open': return 'bg-red-100 text-destructive';
       case 'In Progress': return 'bg-yellow-100 text-yellow-700';
-      case 'Resolved': return 'bg-green-100 text-green-700';
-      case 'Closed': return 'bg-gray-100 text-gray-700';
-      default: return 'bg-gray-100 text-gray-700';
+      case 'Resolved': return 'bg-green-100 text-primary';
+      case 'Closed': return 'bg-muted text-foreground';
+      default: return 'bg-muted text-foreground';
     }
   };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'Critical': return 'bg-red-100 text-red-700';
-      case 'High': return 'bg-orange-100 text-orange-700';
+      case 'Critical': return 'bg-red-100 text-destructive';
+      case 'High': return 'bg-orange-100 text-primary';
       case 'Medium': return 'bg-yellow-100 text-yellow-700';
-      case 'Low': return 'bg-green-100 text-green-700';
-      default: return 'bg-gray-100 text-gray-700';
+      case 'Low': return 'bg-green-100 text-primary';
+      default: return 'bg-muted text-foreground';
     }
   };
 
@@ -190,7 +190,7 @@ export function ComplaintManagement({ session }: ComplaintManagementProps) {
                         id="source"
                         value={formData.source || 'Patient'}
                         onChange={(e) => setFormData({ ...formData, source: e.target.value as Complaint['source'] })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                        className="w-full px-3 py-2 border border-border rounded-md"
                       >
                         <option value="Patient">Patient</option>
                         <option value="Staff">Staff</option>
@@ -223,7 +223,7 @@ export function ComplaintManagement({ session }: ComplaintManagementProps) {
                         id="complaintType"
                         value={formData.complaintType || ''}
                         onChange={(e) => setFormData({ ...formData, complaintType: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                        className="w-full px-3 py-2 border border-border rounded-md"
                       >
                         <option value="">Select Type</option>
                         {complaintTypes.map(type => (
@@ -237,7 +237,7 @@ export function ComplaintManagement({ session }: ComplaintManagementProps) {
                         id="priority"
                         value={formData.priority || 'Medium'}
                         onChange={(e) => setFormData({ ...formData, priority: e.target.value as Complaint['priority'] })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                        className="w-full px-3 py-2 border border-border rounded-md"
                       >
                         <option value="Low">Low</option>
                         <option value="Medium">Medium</option>
@@ -261,7 +261,7 @@ export function ComplaintManagement({ session }: ComplaintManagementProps) {
                         value={formData.description || ''}
                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                         placeholder="Describe the complaint in detail"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                        className="w-full px-3 py-2 border border-border rounded-md"
                         rows={4}
                       />
                     </div>
@@ -280,7 +280,7 @@ export function ComplaintManagement({ session }: ComplaintManagementProps) {
           </CardHeader>
           <CardContent>
             <div className="flex items-center space-x-2 mb-4">
-              <Search className="size-4 text-gray-400" />
+              <Search className="size-4 text-muted-foreground" />
               <Input
                 placeholder="Search complaints..."
                 value={searchTerm}
@@ -290,30 +290,30 @@ export function ComplaintManagement({ session }: ComplaintManagementProps) {
             </div>
 
             <div className="overflow-x-auto">
-              <table className="w-full border-collapse border border-gray-200">
+              <table className="w-full border-collapse border border-border">
                 <thead>
-                  <tr className="bg-gray-50">
-                    <th className="border border-gray-200 px-4 py-2 text-left">Complaint By</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Type</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Source</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Priority</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Status</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Date</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Actions</th>
+                  <tr className="bg-muted/50">
+                    <th className="border border-border px-4 py-2 text-left">Complaint By</th>
+                    <th className="border border-border px-4 py-2 text-left">Type</th>
+                    <th className="border border-border px-4 py-2 text-left">Source</th>
+                    <th className="border border-border px-4 py-2 text-left">Priority</th>
+                    <th className="border border-border px-4 py-2 text-left">Status</th>
+                    <th className="border border-border px-4 py-2 text-left">Date</th>
+                    <th className="border border-border px-4 py-2 text-left">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredComplaints.map((complaint) => (
-                    <tr key={complaint.id} className="hover:bg-gray-50">
-                      <td className="border border-gray-200 px-4 py-2">{complaint.complaintBy}</td>
-                      <td className="border border-gray-200 px-4 py-2">{complaint.complaintType}</td>
-                      <td className="border border-gray-200 px-4 py-2">{complaint.source}</td>
-                      <td className="border border-gray-200 px-4 py-2">
+                    <tr key={complaint.id} className="hover:bg-muted/50">
+                      <td className="border border-border px-4 py-2">{complaint.complaintBy}</td>
+                      <td className="border border-border px-4 py-2">{complaint.complaintType}</td>
+                      <td className="border border-border px-4 py-2">{complaint.source}</td>
+                      <td className="border border-border px-4 py-2">
                         <span className={`px-2 py-1 rounded text-xs ${getPriorityColor(complaint.priority)}`}>
                           {complaint.priority}
                         </span>
                       </td>
-                      <td className="border border-gray-200 px-4 py-2">
+                      <td className="border border-border px-4 py-2">
                         <select
                           value={complaint.status}
                           onChange={(e) => handleStatusUpdate(complaint.id, e.target.value as Complaint['status'])}
@@ -325,8 +325,8 @@ export function ComplaintManagement({ session }: ComplaintManagementProps) {
                           <option value="Closed">Closed</option>
                         </select>
                       </td>
-                      <td className="border border-gray-200 px-4 py-2">{complaint.date}</td>
-                      <td className="border border-gray-200 px-4 py-2">
+                      <td className="border border-border px-4 py-2">{complaint.date}</td>
+                      <td className="border border-border px-4 py-2">
                         <div className="flex space-x-2">
                           <Button
                             size="sm"
@@ -354,7 +354,7 @@ export function ComplaintManagement({ session }: ComplaintManagementProps) {
             </div>
 
             {filteredComplaints.length === 0 && (
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-muted-foreground">
                 No complaints found.
               </div>
             )}
@@ -414,7 +414,7 @@ export function ComplaintManagement({ session }: ComplaintManagementProps) {
               </div>
               <div>
                 <Label>Description</Label>
-                <p className="mt-1 p-3 bg-gray-50 rounded-md">{selectedComplaint.description}</p>
+                <p className="mt-1 p-3 bg-muted/50 rounded-md">{selectedComplaint.description}</p>
               </div>
               {selectedComplaint.actionTaken && (
                 <div>

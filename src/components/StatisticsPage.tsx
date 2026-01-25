@@ -41,7 +41,7 @@ export function StatisticsPage({ session }: StatisticsPageProps) {
         animate={{ opacity: 1, y: 0 }}
       >
         <h2 className="text-gray-900 mb-2">Statistics & Analytics</h2>
-        <p className="text-gray-600 text-sm">Comprehensive hospital performance metrics</p>
+        <p className="text-muted-foreground text-sm">Comprehensive hospital performance metrics</p>
       </motion.div>
 
       {/* Stats Cards */}
@@ -58,10 +58,10 @@ export function StatisticsPage({ session }: StatisticsPageProps) {
               <Card className="hover:shadow-lg transition-shadow">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-4">
-                    <Icon className="size-8 text-teal-600" />
-                    <span className="text-sm text-green-600">{stat.change}</span>
+                    <Icon className="size-8 text-primary" />
+                    <span className="text-sm text-primary">{stat.change}</span>
                   </div>
-                  <p className="text-sm text-gray-600 mb-1">{stat.label}</p>
+                  <p className="text-sm text-muted-foreground mb-1">{stat.label}</p>
                   <h3 className="text-gray-900">{stat.value}</h3>
                 </CardContent>
               </Card>
@@ -86,13 +86,13 @@ export function StatisticsPage({ session }: StatisticsPageProps) {
               <div className="w-full h-[300px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={monthlyData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                     <XAxis dataKey="month" />
                     <YAxis yAxisId="left" />
                     <YAxis yAxisId="right" orientation="right" />
                     <Tooltip />
-                    <Line yAxisId="left" type="monotone" dataKey="patients" stroke="#14b8a6" strokeWidth={2} />
-                    <Line yAxisId="right" type="monotone" dataKey="revenue" stroke="#3b82f6" strokeWidth={2} />
+                    <Line yAxisId="left" type="monotone" dataKey="patients" stroke="hsl(var(--primary))" strokeWidth={2} />
+                    <Line yAxisId="right" type="monotone" dataKey="revenue" stroke="hsl(var(--primary))" strokeWidth={2} />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
@@ -120,7 +120,7 @@ export function StatisticsPage({ session }: StatisticsPageProps) {
                     labelLine={false}
                     label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
                     outerRadius={100}
-                    fill="#8884d8"
+                    fill="hsl(var(--primary))"
                     dataKey="value"
                   >
                     {departmentData.map((entry, index) => (
@@ -149,11 +149,11 @@ export function StatisticsPage({ session }: StatisticsPageProps) {
             <div className="w-full h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={monthlyData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                   <XAxis dataKey="month" />
                   <YAxis />
                   <Tooltip />
-                  <Bar dataKey="patients" fill="#14b8a6" radius={[8, 8, 0, 0]} />
+                  <Bar dataKey="patients" fill="hsl(var(--primary))" radius={[8, 8, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>

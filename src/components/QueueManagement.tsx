@@ -112,7 +112,7 @@ export function QueueManagement({ session, onUpdate }: QueueManagementProps) {
     <div className="space-y-4 mt-4">
       <div className="flex items-center justify-between">
         <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
           <Input
             placeholder="Search by patient, token, or department..."
             value={searchTerm}
@@ -147,7 +147,7 @@ export function QueueManagement({ session, onUpdate }: QueueManagementProps) {
                   id="department"
                   value={formData.department || ''}
                   onChange={(e) => setFormData({ ...formData, department: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  className="w-full px-3 py-2 border border-border rounded-md"
                 >
                   <option value="">Select Department</option>
                   <option value="Cardiology">Cardiology</option>
@@ -172,7 +172,7 @@ export function QueueManagement({ session, onUpdate }: QueueManagementProps) {
                   id="priority"
                   value={formData.priority || 'Normal'}
                   onChange={(e) => setFormData({ ...formData, priority: e.target.value as QueueItem['priority'] })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  className="w-full px-3 py-2 border border-border rounded-md"
                 >
                   <option value="Normal">Normal</option>
                   <option value="Urgent">Urgent</option>
@@ -200,7 +200,7 @@ export function QueueManagement({ session, onUpdate }: QueueManagementProps) {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: index * 0.05 }}
             className={`rounded-lg p-4 hover:shadow-md transition-all ${
-              item.priority === 'Emergency' ? 'bg-gradient-to-r from-red-50 to-red-100 border-l-4 border-red-500' :
+              item.priority === 'Emergency' ? 'bg-gradient-to-r from-red-50 to-red-100 border-l-4 border-destructive' :
               item.priority === 'Urgent' ? 'bg-gradient-to-r from-amber-50 to-amber-100 border-l-4 border-amber-500' :
               'bg-gradient-to-r from-gray-50 to-gray-100'
             }`}
@@ -208,38 +208,38 @@ export function QueueManagement({ session, onUpdate }: QueueManagementProps) {
             <div className="flex items-center justify-between">
               <div className="flex-1 grid grid-cols-6 gap-4">
                 <div>
-                  <p className="text-xs text-gray-600">Token</p>
+                  <p className="text-xs text-muted-foreground">Token</p>
                   <p className="text-lg text-gray-900">{item.tokenNumber}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-600">Patient</p>
+                  <p className="text-xs text-muted-foreground">Patient</p>
                   <p className="text-sm text-gray-900">{item.patientName}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-600">Department</p>
+                  <p className="text-xs text-muted-foreground">Department</p>
                   <p className="text-sm text-gray-900">{item.department}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-600">Doctor</p>
+                  <p className="text-xs text-muted-foreground">Doctor</p>
                   <p className="text-sm text-gray-900">{item.doctorName}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-600">Priority</p>
+                  <p className="text-xs text-muted-foreground">Priority</p>
                   <span className={`inline-block px-2 py-1 rounded text-xs ${
-                    item.priority === 'Emergency' ? 'bg-red-100 text-red-700' :
+                    item.priority === 'Emergency' ? 'bg-red-100 text-destructive' :
                     item.priority === 'Urgent' ? 'bg-amber-100 text-amber-700' :
-                    'bg-gray-100 text-gray-700'
+                    'bg-muted text-foreground'
                   }`}>
                     {item.priority}
                   </span>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-600">Status</p>
+                  <p className="text-xs text-muted-foreground">Status</p>
                   <span className={`inline-block px-2 py-1 rounded text-xs ${
                     item.status === 'Waiting' ? 'bg-amber-100 text-amber-700' :
                     item.status === 'In-Progress' ? 'bg-primary/10 text-primary' :
-                    item.status === 'Completed' ? 'bg-green-100 text-green-700' :
-                    'bg-gray-100 text-gray-700'
+                    item.status === 'Completed' ? 'bg-green-100 text-primary' :
+                    'bg-muted text-foreground'
                   }`}>
                     {item.status}
                   </span>
@@ -260,7 +260,7 @@ export function QueueManagement({ session, onUpdate }: QueueManagementProps) {
                   <Button
                     size="sm"
                     onClick={() => handleStatusChange(item.id, 'Completed')}
-                    className="bg-green-600 hover:bg-green-700"
+                    className="bg-primary hover:bg-green-700"
                   >
                     <CheckCircle className="size-4 mr-1" />
                     Complete
@@ -272,7 +272,7 @@ export function QueueManagement({ session, onUpdate }: QueueManagementProps) {
                     variant="outline"
                     onClick={() => handleStatusChange(item.id, 'Cancelled')}
                   >
-                    <XCircle className="size-4 text-red-600" />
+                    <XCircle className="size-4 text-destructive" />
                   </Button>
                 )}
               </div>
@@ -281,7 +281,7 @@ export function QueueManagement({ session, onUpdate }: QueueManagementProps) {
         ))}
 
         {filteredQueue.length === 0 && (
-          <div className="text-center py-12 text-gray-500">
+          <div className="text-center py-12 text-muted-foreground">
             No patients in queue. Click "Add to Queue" to add one.
           </div>
         )}

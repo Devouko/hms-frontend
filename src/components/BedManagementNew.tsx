@@ -100,7 +100,7 @@ export function BedManagement({ session }: BedManagementProps) {
       case 'occupied': return 'bg-red-100 text-red-800';
       case 'maintenance': return 'bg-yellow-100 text-yellow-800';
       case 'reserved': return 'bg-blue-100 text-blue-800';
-      default: return 'bg-gray-100 text-gray-800';
+      default: return 'bg-muted text-gray-800';
     }
   };
 
@@ -109,8 +109,8 @@ export function BedManagement({ session }: BedManagementProps) {
       case 'icu': return 'bg-red-100 text-red-800';
       case 'private': return 'bg-purple-100 text-purple-800';
       case 'semi_private': return 'bg-blue-100 text-blue-800';
-      case 'general': return 'bg-gray-100 text-gray-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'general': return 'bg-muted text-gray-800';
+      default: return 'bg-muted text-gray-800';
     }
   };
 
@@ -118,7 +118,7 @@ export function BedManagement({ session }: BedManagementProps) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-lg border p-4 hover:shadow-md transition-shadow"
+      className="bg-card rounded-lg border p-4 hover:shadow-md transition-shadow"
     >
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-3">
@@ -128,14 +128,14 @@ export function BedManagement({ session }: BedManagementProps) {
             bed.status === 'maintenance' ? 'bg-yellow-100' : 'bg-blue-100'
           }`}>
             <Bed className={`size-6 ${
-              bed.status === 'available' ? 'text-green-600' :
-              bed.status === 'occupied' ? 'text-red-600' :
-              bed.status === 'maintenance' ? 'text-yellow-600' : 'text-blue-600'
+              bed.status === 'available' ? 'text-primary' :
+              bed.status === 'occupied' ? 'text-destructive' :
+              bed.status === 'maintenance' ? 'text-yellow-600' : 'text-primary'
             }`} />
           </div>
           <div>
             <h3 className="font-semibold text-gray-900">Bed {bed.bed_number}</h3>
-            <p className="text-sm text-gray-600">{bed.ward}</p>
+            <p className="text-sm text-muted-foreground">{bed.ward}</p>
           </div>
         </div>
         <div className="flex flex-col gap-1">
@@ -149,7 +149,7 @@ export function BedManagement({ session }: BedManagementProps) {
       </div>
 
       {bed.status === 'occupied' && bed.patient_name && (
-        <div className="space-y-2 text-sm text-gray-600 mb-3">
+        <div className="space-y-2 text-sm text-muted-foreground mb-3">
           <div className="flex items-center gap-2">
             <User className="size-4" />
             <span>{bed.patient_name} ({bed.patient_id})</span>
@@ -211,7 +211,7 @@ export function BedManagement({ session }: BedManagementProps) {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Bed Management</h1>
-          <p className="text-gray-600">Monitor and manage hospital bed availability</p>
+          <p className="text-muted-foreground">Monitor and manage hospital bed availability</p>
         </div>
         <Button onClick={() => setShowAssignBed(true)}>
           <Plus className="size-4 mr-2" />
@@ -224,25 +224,25 @@ export function BedManagement({ session }: BedManagementProps) {
         <Card>
           <CardContent className="p-4 text-center">
             <div className="text-2xl font-bold text-gray-900">{bedStats.total}</div>
-            <div className="text-sm text-gray-600">Total Beds</div>
+            <div className="text-sm text-muted-foreground">Total Beds</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-green-600">{bedStats.available}</div>
-            <div className="text-sm text-gray-600">Available</div>
+            <div className="text-2xl font-bold text-primary">{bedStats.available}</div>
+            <div className="text-sm text-muted-foreground">Available</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-red-600">{bedStats.occupied}</div>
-            <div className="text-sm text-gray-600">Occupied</div>
+            <div className="text-2xl font-bold text-destructive">{bedStats.occupied}</div>
+            <div className="text-sm text-muted-foreground">Occupied</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
             <div className="text-2xl font-bold text-yellow-600">{bedStats.maintenance}</div>
-            <div className="text-sm text-gray-600">Maintenance</div>
+            <div className="text-sm text-muted-foreground">Maintenance</div>
           </CardContent>
         </Card>
       </div>
@@ -250,7 +250,7 @@ export function BedManagement({ session }: BedManagementProps) {
       {/* Filters */}
       <div className="flex gap-4 items-center">
         <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
           <Input
             placeholder="Search beds..."
             value={searchTerm}

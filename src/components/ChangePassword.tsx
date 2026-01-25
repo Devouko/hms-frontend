@@ -83,10 +83,10 @@ export function ChangePassword({ session }: ChangePasswordProps) {
   };
 
   const getStrengthColor = (strength: number) => {
-    if (strength <= 2) return 'bg-red-500';
+    if (strength <= 2) return 'bg-destructive';
     if (strength <= 3) return 'bg-yellow-500';
-    if (strength <= 4) return 'bg-blue-500';
-    return 'bg-green-500';
+    if (strength <= 4) return 'bg-primary';
+    return 'bg-primary';
   };
 
   const getStrengthText = (strength: number) => {
@@ -104,7 +104,7 @@ export function ChangePassword({ session }: ChangePasswordProps) {
         <div className="max-w-md mx-auto">
           <div className="text-center mb-6">
             <h1 className="text-2xl font-bold text-gray-900">Change Password</h1>
-            <p className="text-gray-600 mt-2">Update your account password for better security</p>
+            <p className="text-muted-foreground mt-2">Update your account password for better security</p>
           </div>
 
           <Card>
@@ -163,14 +163,14 @@ export function ChangePassword({ session }: ChangePasswordProps) {
                     <div className="flex items-center justify-between text-xs">
                       <span>Password Strength:</span>
                       <span className={`font-medium ${
-                        passwordStrength <= 2 ? 'text-red-600' :
+                        passwordStrength <= 2 ? 'text-destructive' :
                         passwordStrength <= 3 ? 'text-yellow-600' :
-                        passwordStrength <= 4 ? 'text-blue-600' : 'text-green-600'
+                        passwordStrength <= 4 ? 'text-primary' : 'text-primary'
                       }`}>
                         {getStrengthText(passwordStrength)}
                       </span>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="w-full bg-muted rounded-full h-2">
                       <div 
                         className={`h-2 rounded-full transition-all duration-300 ${getStrengthColor(passwordStrength)}`}
                         style={{ width: `${(passwordStrength / 5) * 100}%` }}
@@ -201,7 +201,7 @@ export function ChangePassword({ session }: ChangePasswordProps) {
                   </Button>
                 </div>
                 {formData.confirmPassword && formData.newPassword !== formData.confirmPassword && (
-                  <p className="text-xs text-red-600">Passwords do not match</p>
+                  <p className="text-xs text-destructive">Passwords do not match</p>
                 )}
               </div>
 
@@ -212,22 +212,22 @@ export function ChangePassword({ session }: ChangePasswordProps) {
                 </Button>
               </div>
 
-              <div className="text-xs text-gray-500 space-y-1 bg-gray-50 p-3 rounded-md">
+              <div className="text-xs text-muted-foreground space-y-1 bg-muted/50 p-3 rounded-md">
                 <p className="font-medium">Password requirements:</p>
                 <ul className="list-disc list-inside space-y-1">
-                  <li className={formData.newPassword.length >= 8 ? 'text-green-600' : ''}>
+                  <li className={formData.newPassword.length >= 8 ? 'text-primary' : ''}>
                     At least 8 characters long
                   </li>
-                  <li className={/[A-Z]/.test(formData.newPassword) ? 'text-green-600' : ''}>
+                  <li className={/[A-Z]/.test(formData.newPassword) ? 'text-primary' : ''}>
                     Include uppercase letters (A-Z)
                   </li>
-                  <li className={/[a-z]/.test(formData.newPassword) ? 'text-green-600' : ''}>
+                  <li className={/[a-z]/.test(formData.newPassword) ? 'text-primary' : ''}>
                     Include lowercase letters (a-z)
                   </li>
-                  <li className={/\d/.test(formData.newPassword) ? 'text-green-600' : ''}>
+                  <li className={/\d/.test(formData.newPassword) ? 'text-primary' : ''}>
                     Include at least one number (0-9)
                   </li>
-                  <li className={/[!@#$%^&*(),.?":{}|<>]/.test(formData.newPassword) ? 'text-green-600' : ''}>
+                  <li className={/[!@#$%^&*(),.?":{}|<>]/.test(formData.newPassword) ? 'text-primary' : ''}>
                     Include special characters (!@#$%^&*)
                   </li>
                 </ul>

@@ -95,8 +95,8 @@ export function NotificationsPanel() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <button className="relative p-2 hover:bg-gray-100 rounded-lg transition-colors">
-          <Bell className="size-5 text-gray-600" />
+        <button className="relative p-2 hover:bg-muted rounded-lg transition-colors">
+          <Bell className="size-5 text-muted-foreground" />
           {unreadCount > 0 && (
             <span className="absolute top-1 right-1 w-2 h-2 bg-destructive rounded-full"></span>
           )}
@@ -120,7 +120,7 @@ export function NotificationsPanel() {
             </div>
             
             {notifications.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-muted-foreground">
                 <Bell className="size-8 mx-auto mb-2 opacity-50" />
                 <p className="text-sm">No notifications</p>
               </div>
@@ -131,7 +131,7 @@ export function NotificationsPanel() {
                     key={notification.id}
                     className={`p-3 rounded-lg border transition-all ${
                       notification.read 
-                        ? 'bg-white border-gray-200' 
+                        ? 'bg-card border-border' 
                         : 'bg-primary/5 border-primary/20'
                     }`}
                   >
@@ -140,22 +140,22 @@ export function NotificationsPanel() {
                         notification.type === 'billing' ? 'bg-warning/10 text-warning' :
                         notification.type === 'patient' ? 'bg-success/10 text-success' :
                         notification.type === 'appointment' ? 'bg-primary/10 text-primary' :
-                        notification.type === 'workflow' ? 'bg-blue-100 text-blue-600' :
-                        notification.type === 'lab' ? 'bg-purple-100 text-purple-600' :
-                        notification.type === 'pharmacy' ? 'bg-green-100 text-green-600' :
-                        'bg-gray-100 text-gray-600'
+                        notification.type === 'workflow' ? 'bg-blue-100 text-primary' :
+                        notification.type === 'lab' ? 'bg-purple-100 text-primary' :
+                        notification.type === 'pharmacy' ? 'bg-green-100 text-primary' :
+                        'bg-muted text-muted-foreground'
                       }`}>
                         {getIcon(notification.type)}
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-gray-900">{notification.title}</p>
-                        <p className="text-xs text-gray-600 mt-1">{notification.message}</p>
-                        <p className="text-xs text-gray-400 mt-1">{notification.time}</p>
+                        <p className="text-xs text-muted-foreground mt-1">{notification.message}</p>
+                        <p className="text-xs text-muted-foreground mt-1">{notification.time}</p>
                       </div>
                       {!notification.read && (
                         <button
                           onClick={() => markAsRead(notification.id)}
-                          className="text-gray-400 hover:text-gray-600"
+                          className="text-muted-foreground hover:text-muted-foreground"
                         >
                           <X className="size-4" />
                         </button>
@@ -173,7 +173,7 @@ export function NotificationsPanel() {
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Mail className="size-4 text-gray-600" />
+                  <Mail className="size-4 text-muted-foreground" />
                   <Label htmlFor="email" className="text-sm cursor-pointer">Email Notifications</Label>
                 </div>
                 <Switch
@@ -185,7 +185,7 @@ export function NotificationsPanel() {
               
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <User className="size-4 text-gray-600" />
+                  <User className="size-4 text-muted-foreground" />
                   <Label htmlFor="patient" className="text-sm cursor-pointer">Patient Updates</Label>
                 </div>
                 <Switch
@@ -197,7 +197,7 @@ export function NotificationsPanel() {
               
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Calendar className="size-4 text-gray-600" />
+                  <Calendar className="size-4 text-muted-foreground" />
                   <Label htmlFor="appointment" className="text-sm cursor-pointer">Appointment Reminders</Label>
                 </div>
                 <Switch
@@ -209,7 +209,7 @@ export function NotificationsPanel() {
               
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <SettingsIcon className="size-4 text-gray-600" />
+                  <SettingsIcon className="size-4 text-muted-foreground" />
                   <Label htmlFor="system" className="text-sm cursor-pointer">System Updates</Label>
                 </div>
                 <Switch
@@ -221,7 +221,7 @@ export function NotificationsPanel() {
               
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <DollarSign className="size-4 text-gray-600" />
+                  <DollarSign className="size-4 text-muted-foreground" />
                   <Label htmlFor="billing" className="text-sm cursor-pointer">Billing Alerts</Label>
                 </div>
                 <Switch
@@ -233,7 +233,7 @@ export function NotificationsPanel() {
               
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Activity className="size-4 text-gray-600" />
+                  <Activity className="size-4 text-muted-foreground" />
                   <Label htmlFor="workflow" className="text-sm cursor-pointer">Workflow Updates</Label>
                 </div>
                 <Switch

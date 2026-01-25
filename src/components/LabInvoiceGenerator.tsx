@@ -83,7 +83,7 @@ export function LabInvoiceGenerator() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl text-gray-900">Lab Invoice Generator</h1>
-        <p className="text-gray-600">Create billing for lab tests</p>
+        <p className="text-muted-foreground">Create billing for lab tests</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -135,7 +135,7 @@ export function LabInvoiceGenerator() {
             </div>
 
             {newInvoice.selectedTests.length > 0 && (
-              <div className="p-3 bg-gray-50 rounded">
+              <div className="p-3 bg-muted/50 rounded">
                 <p className="text-sm font-semibold">
                   Total: ${newInvoice.selectedTests.reduce((sum, test) => sum + test.price, 0)}
                 </p>
@@ -162,13 +162,13 @@ export function LabInvoiceGenerator() {
                 <div className="flex items-center justify-between mb-2">
                   <div>
                     <p className="text-sm font-semibold">{invoice.id}</p>
-                    <p className="text-xs text-gray-600">{invoice.patientName} ({invoice.patientId})</p>
+                    <p className="text-xs text-muted-foreground">{invoice.patientName} ({invoice.patientId})</p>
                   </div>
                   <div className="text-right">
                     <p className="text-sm font-semibold">${invoice.total}</p>
                     <span className={`text-xs px-2 py-1 rounded ${
-                      invoice.status === 'paid' ? 'bg-green-100 text-green-700' :
-                      invoice.status === 'sent' ? 'bg-blue-100 text-blue-700' :
+                      invoice.status === 'paid' ? 'bg-green-100 text-primary' :
+                      invoice.status === 'sent' ? 'bg-blue-100 text-primary' :
                       'bg-yellow-100 text-yellow-700'
                     }`}>
                       {invoice.status}

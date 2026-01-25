@@ -224,7 +224,7 @@ export function PatientManagement() {
           <CardContent>
             <div className="mb-4">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
                 <Input
                   placeholder="Search patients by name, phone, or email..."
                   value={searchTerm}
@@ -246,26 +246,26 @@ export function PatientManagement() {
                   <div className="flex items-center justify-between">
                     <div className="flex-1 grid grid-cols-5 gap-4">
                       <div>
-                        <p className="text-xs text-gray-600">Name</p>
+                        <p className="text-xs text-muted-foreground">Name</p>
                         <p className="text-sm text-gray-900">{patient.name}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-gray-600">Age / Gender</p>
+                        <p className="text-xs text-muted-foreground">Age / Gender</p>
                         <p className="text-sm text-gray-900">{patient.age} / {patient.gender}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-gray-600">Blood Type</p>
+                        <p className="text-xs text-muted-foreground">Blood Type</p>
                         <p className="text-sm text-gray-900">{patient.bloodType}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-gray-600">Phone</p>
+                        <p className="text-xs text-muted-foreground">Phone</p>
                         <p className="text-sm text-gray-900">{patient.phone}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-gray-600">Condition</p>
+                        <p className="text-xs text-muted-foreground">Condition</p>
                         <span className={`inline-block px-2 py-1 rounded text-xs ${
-                          patient.condition === 'Critical' ? 'bg-red-100 text-red-700' :
-                          patient.condition === 'Stable' ? 'bg-green-100 text-green-700' :
+                          patient.condition === 'Critical' ? 'bg-red-100 text-destructive' :
+                          patient.condition === 'Stable' ? 'bg-green-100 text-primary' :
                           'bg-yellow-100 text-yellow-700'
                         }`}>
                           {patient.condition}
@@ -285,7 +285,7 @@ export function PatientManagement() {
                         variant="outline"
                         onClick={() => handleDelete(patient.id)}
                       >
-                        <Trash2 className="size-4 text-red-600" />
+                        <Trash2 className="size-4 text-destructive" />
                       </Button>
                     </div>
                   </div>
@@ -293,7 +293,7 @@ export function PatientManagement() {
               ))}
 
               {filteredPatients.length === 0 && (
-                <div className="text-center py-12 text-gray-500">
+                <div className="text-center py-12 text-muted-foreground">
                   No patients found
                 </div>
               )}

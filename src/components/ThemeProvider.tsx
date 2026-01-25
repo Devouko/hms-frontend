@@ -1,5 +1,8 @@
+'use client';
+
 import { createContext, useContext, useEffect, useState } from 'react';
 import { themeService } from '../utils/themeService';
+import { colorThemes, getCurrentTheme, setCurrentTheme, applyTheme } from '../utils/themeColors';
 
 type Theme = 'dark' | 'light' | 'system';
 
@@ -27,11 +30,16 @@ export function ThemeProvider({
   storageKey = 'hospital-ui-theme',
   ...props
 }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(
-    () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
-  );
+  const [theme, setTheme] = useState<Theme>(() => {
+    if (typeof window !== 'undefined') {
+      return (localStorage.getItem(storageKey) as Theme) || defaultTheme;
+    }
+    return defaultTheme;
+  });
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
     const root = window.document.documentElement;
 
     root.classList.remove('light', 'dark');
@@ -49,21 +57,51 @@ export function ThemeProvider({
 
     root.classList.add(effectiveTheme);
     
-    // Apply current color theme with proper dark/light mode support
-    const currentColorTheme = themeService.getCurrentTheme();
-    themeService.setTheme(currentColorTheme);
+    // Reapply current color theme when light/dark mode changes
+    const currentColorTheme = getCurrentTheme();
+    const colorTheme = colorThemes[currentColorTheme];
+    if (colorTheme) {
+      applyTheme(colorTheme);
+    }
     
-    // Force body style update
+    // Force reflow to ensure immediate application
     requestAnimationFrame(() => {
-      document.body.style.backgroundColor = effectiveTheme === 'dark' ? '#0f172a' : '#ffffff';
-      document.body.style.color = effectiveTheme === 'dark' ? '#f8fafc' : '#1f2937';
+      document.body.offsetHeight;
     });
   }, [theme]);
+
+  // Initialize color theme on mount and listen for changes
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const currentColorTheme = getCurrentTheme();
+      const colorTheme = colorThemes[currentColorTheme];
+      if (colorTheme) {
+        applyTheme(colorTheme);
+      }
+      
+      // Listen for theme changes
+      const handleThemeChange = (event: CustomEvent) => {
+        const themeKey = event.detail.theme;
+        const themeData = event.detail.themeData;
+        if (themeData) {
+          applyTheme(themeData);
+        }
+      };
+      
+      window.addEventListener('themeChanged', handleThemeChange as EventListener);
+      
+      return () => {
+        window.removeEventListener('themeChanged', handleThemeChange as EventListener);
+      };
+    }
+  }, []);
 
   const value = {
     theme,
     setTheme: (theme: Theme) => {
-      localStorage.setItem(storageKey, theme);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(storageKey, theme);
+      }
       setTheme(theme);
     },
   };

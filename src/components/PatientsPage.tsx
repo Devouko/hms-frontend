@@ -30,9 +30,8 @@ export function PatientsPage({ session }: PatientsPageProps) {
   const fetchPatients = async () => {
     try {
       const data = await patientService.getAll();
-      setPatients(data);
+      setPatients(data || []);
     } catch (error) {
-      console.error('Error fetching patients:', error);
       // Fallback to localStorage
       const localPatients = localStorage.getItem('hospital_patients');
       if (localPatients) {
@@ -156,7 +155,7 @@ export function PatientsPage({ session }: PatientsPageProps) {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <Card>
+        <Card className="glass-card">
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle>Patient Management</CardTitle>
@@ -204,7 +203,7 @@ export function PatientsPage({ session }: PatientsPageProps) {
                         id="gender"
                         value={formData.gender || ''}
                         onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                        className="w-full px-3 py-2 rounded-md bg-background"
                       >
                         <option value="">Select Gender</option>
                         <option value="Male">Male</option>
@@ -218,7 +217,7 @@ export function PatientsPage({ session }: PatientsPageProps) {
                         id="bloodType"
                         value={formData.bloodType || ''}
                         onChange={(e) => setFormData({ ...formData, bloodType: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                        className="w-full px-3 py-2 rounded-md bg-background"
                       >
                         <option value="">Select Blood Type</option>
                         <option value="A+">A+</option>
@@ -266,7 +265,7 @@ export function PatientsPage({ session }: PatientsPageProps) {
                         id="patientType"
                         value={formData.patientType || ''}
                         onChange={(e) => setFormData({ ...formData, patientType: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                        className="w-full px-3 py-2 rounded-md bg-background"
                       >
                         <option value="">Select Type</option>
                         <option value="inpatient">Inpatient</option>
@@ -279,7 +278,7 @@ export function PatientsPage({ session }: PatientsPageProps) {
                         id="condition"
                         value={formData.condition || ''}
                         onChange={(e) => setFormData({ ...formData, condition: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                        className="w-full px-3 py-2 rounded-md bg-background"
                       >
                         <option value="">Select Condition</option>
                         <option value="Stable">Stable</option>
@@ -318,7 +317,7 @@ export function PatientsPage({ session }: PatientsPageProps) {
           <CardContent>
             <div className="mb-4">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
                 <Input
                   placeholder="Search patients by name, phone, or email..."
                   value={searchTerm}
@@ -335,31 +334,31 @@ export function PatientsPage({ session }: PatientsPageProps) {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.05 }}
-                  className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg p-4 hover:shadow-md transition-all"
+                  className="glass-bg rounded-lg p-4 hover:shadow-md transition-all"
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex-1 grid grid-cols-5 gap-4">
                       <div>
-                        <p className="text-xs text-gray-600">Name</p>
+                        <p className="text-xs text-muted-foreground">Name</p>
                         <p className="text-sm text-gray-900">{patient.name}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-gray-600">Age / Gender</p>
+                        <p className="text-xs text-muted-foreground">Age / Gender</p>
                         <p className="text-sm text-gray-900">{patient.age} / {patient.gender}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-gray-600">Blood Type</p>
+                        <p className="text-xs text-muted-foreground">Blood Type</p>
                         <p className="text-sm text-gray-900">{patient.bloodType}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-gray-600">Phone</p>
+                        <p className="text-xs text-muted-foreground">Phone</p>
                         <p className="text-sm text-gray-900">{patient.phone}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-gray-600">Condition</p>
+                        <p className="text-xs text-muted-foreground">Condition</p>
                         <span className={`inline-block px-2 py-1 rounded text-xs ${
-                          patient.condition === 'Critical' ? 'bg-red-100 text-red-700' :
-                          patient.condition === 'Stable' ? 'bg-green-100 text-green-700' :
+                          patient.condition === 'Critical' ? 'bg-red-100 text-destructive' :
+                          patient.condition === 'Stable' ? 'bg-green-100 text-primary' :
                           'bg-yellow-100 text-yellow-700'
                         }`}>
                           {patient.condition}
@@ -379,7 +378,7 @@ export function PatientsPage({ session }: PatientsPageProps) {
                         variant="outline"
                         onClick={() => handleDelete(patient.id)}
                       >
-                        <Trash2 className="size-4 text-red-600" />
+                        <Trash2 className="size-4 text-destructive" />
                       </Button>
                     </div>
                   </div>
@@ -387,7 +386,7 @@ export function PatientsPage({ session }: PatientsPageProps) {
               ))}
 
               {filteredPatients.length === 0 && (
-                <div className="text-center py-12 text-gray-500">
+                <div className="text-center py-12 text-muted-foreground">
                   No patients found. Click "Add Patient" to create one.
                 </div>
               )}

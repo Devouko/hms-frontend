@@ -6,7 +6,7 @@ export function VisitorManagement({ session }: { session: any }) {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Visitor Management</h1>
-        <p className="text-gray-600">Manage hospital visitors and access control</p>
+        <p className="text-muted-foreground">Manage hospital visitors and access control</p>
       </div>
       <Card>
         <CardHeader>
@@ -28,7 +28,7 @@ export function QueueManagement({ session }: { session: any }) {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Queue Management</h1>
-        <p className="text-gray-600">Manage patient queues and waiting times</p>
+        <p className="text-muted-foreground">Manage patient queues and waiting times</p>
       </div>
       <Card>
         <CardHeader>
@@ -50,7 +50,7 @@ export function GynecologyDepartment({ session }: { session: any }) {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Gynecology Department</h1>
-        <p className="text-gray-600">Specialized gynecology services and management</p>
+        <p className="text-muted-foreground">Specialized gynecology services and management</p>
       </div>
       <Card>
         <CardContent className="p-6">
@@ -66,7 +66,7 @@ export function DepartmentManagement({ session }: { session: any }) {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Department Management</h1>
-        <p className="text-gray-600">Manage hospital departments and organization</p>
+        <p className="text-muted-foreground">Manage hospital departments and organization</p>
       </div>
       <Card>
         <CardHeader>
@@ -88,7 +88,7 @@ export function PayrollManagement({ session }: { session: any }) {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Payroll Management</h1>
-        <p className="text-gray-600">Manage staff payroll and compensation</p>
+        <p className="text-muted-foreground">Manage staff payroll and compensation</p>
       </div>
       <Card>
         <CardHeader>
@@ -110,7 +110,7 @@ export function AttendanceManagement({ session }: { session: any }) {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Attendance Management</h1>
-        <p className="text-gray-600">Track staff attendance and working hours</p>
+        <p className="text-muted-foreground">Track staff attendance and working hours</p>
       </div>
       <Card>
         <CardHeader>
@@ -132,7 +132,7 @@ export function RadiologyManagement({ session }: { session: any }) {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Radiology Management</h1>
-        <p className="text-gray-600">Manage radiology services and imaging</p>
+        <p className="text-muted-foreground">Manage radiology services and imaging</p>
       </div>
       <Card>
         <CardHeader>
@@ -154,7 +154,7 @@ export function OperationTheatreManagement({ session }: { session: any }) {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Operation Theatre Management</h1>
-        <p className="text-gray-600">Manage operation theatres and surgical procedures</p>
+        <p className="text-muted-foreground">Manage operation theatres and surgical procedures</p>
       </div>
       <Card>
         <CardHeader>
@@ -176,7 +176,7 @@ export function BackupManagement({ session }: { session: any }) {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Backup Management</h1>
-        <p className="text-gray-600">Manage system backups and data recovery</p>
+        <p className="text-muted-foreground">Manage system backups and data recovery</p>
       </div>
       <Card>
         <CardHeader>
@@ -198,7 +198,7 @@ export function ChangePassword({ session }: { session: any }) {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Change Password</h1>
-        <p className="text-gray-600">Update your account password</p>
+        <p className="text-muted-foreground">Update your account password</p>
       </div>
       <Card>
         <CardHeader>

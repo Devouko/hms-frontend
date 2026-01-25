@@ -295,33 +295,33 @@ export function WorkflowManagement({ session }: WorkflowManagementProps) {
 
   const getStatusColor = (status: string) => {
     const colors = {
-      'active': 'bg-green-100 text-green-700',
-      'inactive': 'bg-gray-100 text-gray-700',
+      'active': 'bg-green-100 text-primary',
+      'inactive': 'bg-muted text-foreground',
       'draft': 'bg-yellow-100 text-yellow-700',
-      'running': 'bg-blue-100 text-blue-700',
-      'completed': 'bg-green-100 text-green-700',
-      'paused': 'bg-orange-100 text-orange-700',
-      'cancelled': 'bg-red-100 text-red-700'
+      'running': 'bg-blue-100 text-primary',
+      'completed': 'bg-green-100 text-primary',
+      'paused': 'bg-orange-100 text-primary',
+      'cancelled': 'bg-red-100 text-destructive'
     };
-    return colors[status as keyof typeof colors] || 'bg-gray-100 text-gray-700';
+    return colors[status as keyof typeof colors] || 'bg-muted text-foreground';
   };
 
   const getPriorityColor = (priority: string) => {
     const colors = {
-      'low': 'bg-blue-100 text-blue-700',
+      'low': 'bg-blue-100 text-primary',
       'medium': 'bg-yellow-100 text-yellow-700',
-      'high': 'bg-orange-100 text-orange-700',
-      'critical': 'bg-red-100 text-red-700'
+      'high': 'bg-orange-100 text-primary',
+      'critical': 'bg-red-100 text-destructive'
     };
-    return colors[priority as keyof typeof colors] || 'bg-gray-100 text-gray-700';
+    return colors[priority as keyof typeof colors] || 'bg-muted text-foreground';
   };
 
   const getStepStatusIcon = (status: string) => {
     switch (status) {
-      case 'completed': return <CheckCircle className="size-4 text-green-600" />;
-      case 'in_progress': return <Clock className="size-4 text-blue-600" />;
-      case 'blocked': return <AlertTriangle className="size-4 text-red-600" />;
-      default: return <Clock className="size-4 text-gray-400" />;
+      case 'completed': return <CheckCircle className="size-4 text-primary" />;
+      case 'in_progress': return <Clock className="size-4 text-primary" />;
+      case 'blocked': return <AlertTriangle className="size-4 text-destructive" />;
+      default: return <Clock className="size-4 text-muted-foreground" />;
     }
   };
 
@@ -330,7 +330,7 @@ export function WorkflowManagement({ session }: WorkflowManagementProps) {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Workflow Management</h1>
-          <p className="text-gray-600">Manage hospital workflows and processes</p>
+          <p className="text-muted-foreground">Manage hospital workflows and processes</p>
         </div>
         <Button onClick={() => setIsWorkflowModalOpen(true)} className="bg-[#38bdf8] hover:bg-[#0ea5e9]">
           <Plus className="size-4 mr-2" />
@@ -354,7 +354,7 @@ export function WorkflowManagement({ session }: WorkflowManagementProps) {
                   <select
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
-                    className="px-3 py-2 border border-gray-300 rounded-md"
+                    className="px-3 py-2 border border-border rounded-md"
                   >
                     <option value="all">All Categories</option>
                     <option value="patient_care">Patient Care</option>
@@ -363,7 +363,7 @@ export function WorkflowManagement({ session }: WorkflowManagementProps) {
                     <option value="maintenance">Maintenance</option>
                   </select>
                   <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
                     <Input
                       placeholder="Search workflows..."
                       value={searchTerm}
@@ -394,8 +394,8 @@ export function WorkflowManagement({ session }: WorkflowManagementProps) {
                             {workflow.priority}
                           </Badge>
                         </div>
-                        <p className="text-sm text-gray-600 mb-2">{workflow.description}</p>
-                        <div className="flex items-center gap-4 text-xs text-gray-500">
+                        <p className="text-sm text-muted-foreground mb-2">{workflow.description}</p>
+                        <div className="flex items-center gap-4 text-xs text-muted-foreground">
                           <span>Category: {workflow.category.replace('_', ' ')}</span>
                           <span>Steps: {workflow.steps.length}</span>
                           <span>Modified: {workflow.lastModified}</span>
@@ -419,7 +419,7 @@ export function WorkflowManagement({ session }: WorkflowManagementProps) {
 
                     {workflow.steps.length > 0 && (
                       <div className="border-t pt-3">
-                        <h4 className="text-sm font-medium text-gray-700 mb-2">Workflow Steps:</h4>
+                        <h4 className="text-sm font-medium text-foreground mb-2">Workflow Steps:</h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
                           {workflow.steps.map((step, index) => (
                             <div key={step.id} className="flex items-center gap-2 text-sm">
@@ -460,11 +460,11 @@ export function WorkflowManagement({ session }: WorkflowManagementProps) {
                           </Badge>
                         </div>
                         {instance.patientName && (
-                          <p className="text-sm text-gray-600 mb-1">
+                          <p className="text-sm text-muted-foreground mb-1">
                             Patient: {instance.patientName} ({instance.patientId})
                           </p>
                         )}
-                        <div className="flex items-center gap-4 text-xs text-gray-500">
+                        <div className="flex items-center gap-4 text-xs text-muted-foreground">
                           <span>Step: {instance.currentStep}</span>
                           <span>Started: {new Date(instance.startedDate).toLocaleString()}</span>
                           <span>Staff: {instance.assignedStaff.join(', ')}</span>
@@ -484,7 +484,7 @@ export function WorkflowManagement({ session }: WorkflowManagementProps) {
                             <Button
                               size="sm"
                               onClick={() => handleCompleteWorkflow(instance.id)}
-                              className="bg-green-600 hover:bg-green-700"
+                              className="bg-primary hover:bg-green-700"
                             >
                               <CheckCircle className="size-4 mr-1" />
                               Complete
@@ -508,7 +508,7 @@ export function WorkflowManagement({ session }: WorkflowManagementProps) {
                   </motion.div>
                 ))}
                 {instances.length === 0 && (
-                  <div className="text-center py-8 text-gray-500">
+                  <div className="text-center py-8 text-muted-foreground">
                     No active workflow instances
                   </div>
                 )}
@@ -523,7 +523,7 @@ export function WorkflowManagement({ session }: WorkflowManagementProps) {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-600">Total Workflows</p>
+                    <p className="text-sm text-muted-foreground">Total Workflows</p>
                     <p className="text-2xl font-bold text-gray-900">{workflows.length}</p>
                   </div>
                   <Users className="size-8 text-[#38bdf8]" />
@@ -534,10 +534,10 @@ export function WorkflowManagement({ session }: WorkflowManagementProps) {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-600">Active Instances</p>
+                    <p className="text-sm text-muted-foreground">Active Instances</p>
                     <p className="text-2xl font-bold text-gray-900">{instances.filter(i => i.status === 'running').length}</p>
                   </div>
-                  <Play className="size-8 text-green-600" />
+                  <Play className="size-8 text-primary" />
                 </div>
               </CardContent>
             </Card>
@@ -545,10 +545,10 @@ export function WorkflowManagement({ session }: WorkflowManagementProps) {
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-600">Completed Today</p>
+                    <p className="text-sm text-muted-foreground">Completed Today</p>
                     <p className="text-2xl font-bold text-gray-900">{instances.filter(i => i.status === 'completed').length}</p>
                   </div>
-                  <CheckCircle className="size-8 text-purple-600" />
+                  <CheckCircle className="size-8 text-primary" />
                 </div>
               </CardContent>
             </Card>
@@ -577,7 +577,7 @@ export function WorkflowManagement({ session }: WorkflowManagementProps) {
                 <select
                   value={workflowForm.category || ''}
                   onChange={(e) => setWorkflowForm({ ...workflowForm, category: e.target.value as any })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  className="w-full px-3 py-2 border border-border rounded-md"
                 >
                   <option value="">Select Category</option>
                   <option value="patient_care">Patient Care</option>
@@ -592,7 +592,7 @@ export function WorkflowManagement({ session }: WorkflowManagementProps) {
               <select
                 value={workflowForm.priority || ''}
                 onChange={(e) => setWorkflowForm({ ...workflowForm, priority: e.target.value as any })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                className="w-full px-3 py-2 border border-border rounded-md"
               >
                 <option value="">Select Priority</option>
                 <option value="low">Low</option>
@@ -606,7 +606,7 @@ export function WorkflowManagement({ session }: WorkflowManagementProps) {
               <textarea
                 value={workflowForm.description || ''}
                 onChange={(e) => setWorkflowForm({ ...workflowForm, description: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md h-24 resize-none"
+                className="w-full px-3 py-2 border border-border rounded-md h-24 resize-none"
                 placeholder="Describe the workflow purpose and process"
               />
             </div>

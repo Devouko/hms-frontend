@@ -140,14 +140,14 @@ Role-Based Access:
         aria-label="AI Assistant"
       >
         {/* Header */}
-        <div className="h-[60px] bg-gradient-to-r from-primary to-primary/90 text-white flex items-center justify-between px-4 border-b border-white/10">
+        <div className="h-[60px] bg-gradient-to-r from-primary to-primary/90 text-card-foreground flex items-center justify-between px-4 border-b border-border/10">
           <div className="flex items-center gap-2">
             <Bot className="h-5 w-5" />
             <h2 className="font-semibold text-lg">AI Assistant</h2>
           </div>
           <button
             onClick={() => setIsOpen(false)}
-            className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+            className="p-2 hover:bg-card/10 rounded-lg transition-colors"
             aria-label="Close AI Assistant"
           >
             <X className="h-5 w-5" />
@@ -176,12 +176,12 @@ Role-Based Access:
             <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
               <div className={`max-w-[80%] rounded-xl p-3 ${
                 msg.role === 'user' 
-                  ? 'bg-primary text-white ml-auto' 
+                  ? 'bg-primary text-card-foreground ml-auto' 
                   : 'bg-muted text-foreground'
               }`}>
                 <p className="text-sm break-words whitespace-pre-wrap">{msg.content}</p>
                 <p className={`text-xs mt-1 ${
-                  msg.role === 'user' ? 'text-white/70' : 'text-muted-foreground'
+                  msg.role === 'user' ? 'text-card-foreground/70' : 'text-muted-foreground'
                 }`}>
                   {msg.timestamp}
                 </p>
@@ -218,6 +218,25 @@ Role-Based Access:
               disabled={loading}
               className="resize-none min-h-[44px] max-h-[120px]"
               rows={1}
+            />
+            <Button
+              onClick={sendMessage}
+              disabled={loading || !input.trim()}
+              size="icon"
+              className="h-[44px] w-[44px] shrink-0"
+            >
+              {loading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Send className="h-4 w-4" />
+              )}
+            </Button>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
               aria-label="Message input"
             />
             <Button 

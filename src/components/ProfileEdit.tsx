@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Button } from './ui/button';
 import { Label } from './ui/label';
 import { Upload, User } from 'lucide-react';
-import { toast } from 'sonner@2.0.3';
+import { toast } from 'sonner';
 
 interface ProfileEditProps {
   open: boolean;
@@ -69,11 +69,11 @@ export function ProfileEdit({ open, onClose, session, supabase }: ProfileEditPro
         <div className="space-y-6 py-4">
           {/* Current/Preview Image */}
           <div className="flex justify-center">
-            <div className="w-32 h-32 bg-gray-100 rounded-full flex items-center justify-center overflow-hidden">
+            <div className="w-32 h-32 bg-muted rounded-full flex items-center justify-center overflow-hidden">
               {previewUrl ? (
                 <img src={previewUrl} alt="Preview" className="w-full h-full object-cover" />
               ) : (
-                <User className="size-16 text-gray-400" />
+                <User className="size-16 text-muted-foreground" />
               )}
             </div>
           </div>
@@ -98,7 +98,7 @@ export function ProfileEdit({ open, onClose, session, supabase }: ProfileEditPro
                 {selectedFile ? selectedFile.name : 'Select Image'}
               </Button>
             </div>
-            <p className="text-xs text-gray-500">Max file size: 5MB. Supported formats: JPG, PNG, GIF</p>
+            <p className="text-xs text-muted-foreground">Max file size: 5MB. Supported formats: JPG, PNG, GIF</p>
           </div>
 
           {/* Action Buttons */}

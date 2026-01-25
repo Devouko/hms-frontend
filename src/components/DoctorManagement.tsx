@@ -35,7 +35,7 @@ export function DoctorManagement() {
       const doctorData = data.filter(emp => emp.position === 'Doctor');
       setDoctors(doctorData);
     } catch (error) {
-      console.error('Error fetching doctors:', error);
+      // Silent fallback to localStorage
       const localData = localStorage.getItem('hospital_doctors');
       setDoctors(localData ? JSON.parse(localData) : []);
     }
@@ -180,9 +180,9 @@ export function DoctorManagement() {
 
   const stats = [
     { label: 'Total Doctors', value: doctors.length, icon: Stethoscope, color: 'bg-primary' },
-    { label: 'Available', value: doctors.filter(d => d.availability === 'Available').length, icon: Users, color: 'bg-green-500' },
-    { label: 'Specializations', value: new Set(doctors.map(d => d.specialization).filter(Boolean)).size, icon: Award, color: 'bg-purple-500' },
-    { label: 'On Duty', value: doctors.filter(d => d.status === 'active').length, icon: Calendar, color: 'bg-blue-500' },
+    { label: 'Available', value: doctors.filter(d => d.availability === 'Available').length, icon: Users, color: 'bg-primary' },
+    { label: 'Specializations', value: new Set(doctors.map(d => d.specialization).filter(Boolean)).size, icon: Award, color: 'bg-primary' },
+    { label: 'On Duty', value: doctors.filter(d => d.status === 'active').length, icon: Calendar, color: 'bg-primary' },
   ];
 
   return (
@@ -194,7 +194,7 @@ export function DoctorManagement() {
       >
         <div>
           <h2 className="text-gray-900 mb-2">Doctor Management</h2>
-          <p className="text-gray-600 text-sm">Manage hospital doctors and medical staff</p>
+          <p className="text-muted-foreground text-sm">Manage hospital doctors and medical staff</p>
         </div>
       </motion.div>
 
@@ -213,11 +213,11 @@ export function DoctorManagement() {
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600">{stat.label}</p>
+                      <p className="text-sm text-muted-foreground">{stat.label}</p>
                       <p className="text-2xl mt-2">{stat.value}</p>
                     </div>
                     <div className={`${stat.color} p-3 rounded-lg`}>
-                      <Icon className="size-6 text-white" />
+                      <Icon className="size-6 text-card-foreground" />
                     </div>
                   </div>
                 </CardContent>
@@ -266,7 +266,7 @@ export function DoctorManagement() {
                         id="specialization"
                         value={formData.specialization || ''}
                         onChange={(e) => setFormData({ ...formData, specialization: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                        className="w-full px-3 py-2 border border-border rounded-md"
                         required
                       >
                         <option value="">Select Specialization</option>
@@ -286,7 +286,7 @@ export function DoctorManagement() {
                         id="department"
                         value={formData.department || ''}
                         onChange={(e) => setFormData({ ...formData, department: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                        className="w-full px-3 py-2 border border-border rounded-md"
                         required
                       >
                         <option value="">Select Department</option>
@@ -365,7 +365,7 @@ export function DoctorManagement() {
                         id="availability"
                         value={formData.availability || 'Available'}
                         onChange={(e) => setFormData({ ...formData, availability: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                        className="w-full px-3 py-2 border border-border rounded-md"
                       >
                         <option value="Available">Available</option>
                         <option value="On Leave">On Leave</option>
@@ -389,7 +389,7 @@ export function DoctorManagement() {
                 </DialogContent>
               </Dialog>
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
                 <Input
                   placeholder="Search doctors..."
                   value={searchTerm}
@@ -409,44 +409,44 @@ export function DoctorManagement() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: index * 0.05 }}
                 whileHover={{ scale: 1.02 }}
-                className="bg-gradient-to-br from-white to-gray-50 rounded-lg p-4 shadow-md hover:shadow-lg transition-all border border-gray-200"
+                className="bg-gradient-to-br from-white to-gray-50 rounded-lg p-4 shadow-md hover:shadow-lg transition-all border border-border"
               >
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-gradient-to-br from-primary to-blue-600 rounded-full flex items-center justify-center text-white">
+                    <div className="w-12 h-12 bg-gradient-to-br from-primary to-blue-600 rounded-full flex items-center justify-center text-card-foreground">
                       <Stethoscope className="size-6" />
                     </div>
                     <div>
                       <h4 className="text-gray-900">{doctor.name}</h4>
-                      <p className="text-sm text-gray-600">{doctor.specialization}</p>
+                      <p className="text-sm text-muted-foreground">{doctor.specialization}</p>
                     </div>
                   </div>
                 </div>
 
                 <div className="space-y-2 mb-4">
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Department:</span>
+                    <span className="text-muted-foreground">Department:</span>
                     <span className="text-gray-900">{doctor.department}</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Experience:</span>
+                    <span className="text-muted-foreground">Experience:</span>
                     <span className="text-gray-900">{doctor.experience || 0} years</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Status:</span>
+                    <span className="text-muted-foreground">Status:</span>
                     <span className={`px-2 py-1 rounded text-xs ${
                       doctor.availability === 'Available' 
-                        ? 'bg-green-100 text-green-700' 
+                        ? 'bg-green-100 text-primary' 
                         : doctor.availability === 'Busy'
                         ? 'bg-amber-100 text-amber-700'
-                        : 'bg-red-100 text-red-700'
+                        : 'bg-red-100 text-destructive'
                     }`}>
                       {doctor.availability || 'Available'}
                     </span>
                   </div>
                   {doctor.consultation_fee && (
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Consultation:</span>
+                      <span className="text-muted-foreground">Consultation:</span>
                       <span className="text-gray-900">${doctor.consultation_fee}</span>
                     </div>
                   )}
@@ -471,14 +471,14 @@ export function DoctorManagement() {
                     variant="outline"
                     onClick={() => handleDelete(doctor.id)}
                   >
-                    <Trash2 className="size-4 text-red-600" />
+                    <Trash2 className="size-4 text-destructive" />
                   </Button>
                 </div>
               </motion.div>
             ))}
 
             {filteredDoctors.length === 0 && (
-              <div className="col-span-full text-center py-12 text-gray-500">
+              <div className="col-span-full text-center py-12 text-muted-foreground">
                 No doctors found. Click "Add Doctor" to add one.
               </div>
             )}

@@ -21,6 +21,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
+import { TodoListWidget } from './TodoListWidget';
 
 interface ReceptionistDashboardProps {
   session: any;
@@ -63,28 +64,28 @@ export function ReceptionistDashboard({ session }: ReceptionistDashboardProps) {
       title: 'Patient Registration',
       description: 'Register new patients',
       icon: UserPlus,
-      color: 'bg-blue-500',
+      color: 'bg-primary',
       action: 'register',
     },
     {
       title: 'New Appointment',
       description: 'Schedule appointments',
       icon: CalendarPlus,
-      color: 'bg-green-500',
+      color: 'bg-primary',
       action: 'appointment',
     },
     {
       title: 'Generate Invoice',
       description: 'Create billing invoice',
       icon: FileText,
-      color: 'bg-purple-500',
+      color: 'bg-primary',
       action: 'invoice',
     },
     {
       title: 'Admit Patient',
       description: 'Patient admission process',
       icon: UserCheck,
-      color: 'bg-orange-500',
+      color: 'bg-primary',
       action: 'admit',
     },
     {
@@ -98,7 +99,7 @@ export function ReceptionistDashboard({ session }: ReceptionistDashboardProps) {
       title: 'Billing Center',
       description: 'Payment & transactions',
       icon: DollarSign,
-      color: 'bg-teal-500',
+      color: 'bg-primary',
       action: 'billing',
     },
   ];
@@ -135,7 +136,7 @@ export function ReceptionistDashboard({ session }: ReceptionistDashboardProps) {
         animate={{ opacity: 1, y: 0 }}
       >
         <h1 className="text-gray-900">Hello, {userName} 👋</h1>
-        <p className="text-gray-600 text-sm mt-1">
+        <p className="text-muted-foreground text-sm mt-1">
           Welcome to your reception desk. Here's today's overview and quick actions.
         </p>
       </motion.div>
@@ -155,11 +156,11 @@ export function ReceptionistDashboard({ session }: ReceptionistDashboardProps) {
                 <CardContent className="p-5">
                   <div className="flex items-start justify-between mb-4">
                     <div className={`bg-gradient-to-br ${stat.color} p-3 rounded-xl`}>
-                      <Icon className="size-6 text-white" />
+                      <Icon className="size-6 text-card-foreground" />
                     </div>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600 mb-1">{stat.label}</p>
+                    <p className="text-sm text-muted-foreground mb-1">{stat.label}</p>
                     <h3 className="text-gray-900">{stat.value}</h3>
                   </div>
                 </CardContent>
@@ -180,7 +181,7 @@ export function ReceptionistDashboard({ session }: ReceptionistDashboardProps) {
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle>Patient Workflow Status</CardTitle>
-                <p className="text-sm text-gray-600 mt-1">Real-time patient journey tracking</p>
+                <p className="text-sm text-muted-foreground mt-1">Real-time patient journey tracking</p>
               </div>
               <Activity className="size-5 text-primary" />
             </div>
@@ -188,39 +189,39 @@ export function ReceptionistDashboard({ session }: ReceptionistDashboardProps) {
           <CardContent>
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
               <div className="text-center p-4 bg-blue-50 rounded-lg">
-                <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <UserPlus className="size-6 text-white" />
+                <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center mx-auto mb-2">
+                  <UserPlus className="size-6 text-card-foreground" />
                 </div>
-                <p className="text-2xl text-blue-600 mb-1">12</p>
-                <p className="text-xs text-gray-600">Registered</p>
+                <p className="text-2xl text-primary mb-1">12</p>
+                <p className="text-xs text-muted-foreground">Registered</p>
               </div>
               <div className="text-center p-4 bg-green-50 rounded-lg">
-                <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <CalendarIcon className="size-6 text-white" />
+                <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center mx-auto mb-2">
+                  <CalendarIcon className="size-6 text-card-foreground" />
                 </div>
-                <p className="text-2xl text-green-600 mb-1">8</p>
-                <p className="text-xs text-gray-600">In Queue</p>
+                <p className="text-2xl text-primary mb-1">8</p>
+                <p className="text-xs text-muted-foreground">In Queue</p>
               </div>
               <div className="text-center p-4 bg-yellow-50 rounded-lg">
                 <div className="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <Activity className="size-6 text-white" />
+                  <Activity className="size-6 text-card-foreground" />
                 </div>
                 <p className="text-2xl text-yellow-600 mb-1">5</p>
-                <p className="text-xs text-gray-600">In Consultation</p>
+                <p className="text-xs text-muted-foreground">In Consultation</p>
               </div>
               <div className="text-center p-4 bg-purple-50 rounded-lg">
-                <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <FileText className="size-6 text-white" />
+                <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center mx-auto mb-2">
+                  <FileText className="size-6 text-card-foreground" />
                 </div>
-                <p className="text-2xl text-purple-600 mb-1">3</p>
-                <p className="text-xs text-gray-600">Lab/Pharmacy</p>
+                <p className="text-2xl text-primary mb-1">3</p>
+                <p className="text-xs text-muted-foreground">Lab/Pharmacy</p>
               </div>
               <div className="text-center p-4 bg-teal-50 rounded-lg">
-                <div className="w-12 h-12 bg-teal-500 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <DollarSign className="size-6 text-white" />
+                <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center mx-auto mb-2">
+                  <DollarSign className="size-6 text-card-foreground" />
                 </div>
-                <p className="text-2xl text-teal-600 mb-1">15</p>
-                <p className="text-xs text-gray-600">Completed</p>
+                <p className="text-2xl text-primary mb-1">15</p>
+                <p className="text-xs text-muted-foreground">Completed</p>
               </div>
             </div>
           </CardContent>
@@ -238,7 +239,7 @@ export function ReceptionistDashboard({ session }: ReceptionistDashboardProps) {
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle>Front Office - Quick Actions</CardTitle>
-                <p className="text-sm text-gray-600 mt-1">Common reception operations for faster workflow</p>
+                <p className="text-sm text-muted-foreground mt-1">Common reception operations for faster workflow</p>
               </div>
             </div>
           </CardHeader>
@@ -254,16 +255,16 @@ export function ReceptionistDashboard({ session }: ReceptionistDashboardProps) {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 + index * 0.05 }}
-                    className="flex items-start gap-4 p-4 bg-white border border-gray-200 rounded-xl hover:border-primary hover:shadow-md transition-all group"
+                    className="flex items-start gap-4 p-4 bg-card border border-border rounded-xl hover:border-primary hover:shadow-md transition-all group"
                   >
-                    <div className={`${item.color} p-3 rounded-lg text-white`}>
+                    <div className={`${item.color} p-3 rounded-lg text-card-foreground`}>
                       <Icon className="size-6" />
                     </div>
                     <div className="flex-1 text-left">
                       <h4 className="text-sm text-gray-900 mb-1 group-hover:text-primary transition-colors">{item.title}</h4>
-                      <p className="text-xs text-gray-600">{item.description}</p>
+                      <p className="text-xs text-muted-foreground">{item.description}</p>
                     </div>
-                    <ArrowRight className="size-4 text-gray-400 group-hover:text-primary group-hover:translate-x-1 transition-all" />
+                    <ArrowRight className="size-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
                   </motion.button>
                 );
               })}
@@ -272,7 +273,7 @@ export function ReceptionistDashboard({ session }: ReceptionistDashboardProps) {
         </Card>
       </motion.div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* OPD Queue Management */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
@@ -282,19 +283,19 @@ export function ReceptionistDashboard({ session }: ReceptionistDashboardProps) {
           <Card>
             <CardHeader>
               <CardTitle>OPD Queue Status</CardTitle>
-              <p className="text-sm text-gray-600">Current waiting patients by department</p>
+              <p className="text-sm text-muted-foreground">Current waiting patients by department</p>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {queueStatus.map((queue, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div key={index} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
                     <div>
                       <p className="text-sm text-gray-900">{queue.department}</p>
-                      <p className="text-xs text-gray-600">Avg wait: {queue.avgWait}</p>
+                      <p className="text-xs text-muted-foreground">Avg wait: {queue.avgWait}</p>
                     </div>
                     <div className="text-right">
                       <p className="text-lg text-primary">{queue.waiting}</p>
-                      <p className="text-xs text-gray-600">waiting</p>
+                      <p className="text-xs text-muted-foreground">waiting</p>
                     </div>
                   </div>
                 ))}
@@ -312,21 +313,21 @@ export function ReceptionistDashboard({ session }: ReceptionistDashboardProps) {
           <Card>
             <CardHeader>
               <CardTitle>Today's Appointments</CardTitle>
-              <p className="text-sm text-gray-600">Scheduled appointments for today</p>
+              <p className="text-sm text-muted-foreground">Scheduled appointments for today</p>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
                 {todayAppointments.map((apt, index) => (
-                  <div key={index} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-                    <div className="text-sm text-gray-600 w-16">{apt.time}</div>
+                  <div key={index} className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
+                    <div className="text-sm text-muted-foreground w-16">{apt.time}</div>
                     <div className="flex-1">
                       <p className="text-sm text-gray-900">{apt.patient}</p>
-                      <p className="text-xs text-gray-600">{apt.doctor} • {apt.department}</p>
+                      <p className="text-xs text-muted-foreground">{apt.doctor} • {apt.department}</p>
                     </div>
                     <span className={`px-2 py-1 rounded text-xs ${
-                      apt.status === 'Confirmed' ? 'bg-green-100 text-green-700' :
+                      apt.status === 'Confirmed' ? 'bg-green-100 text-primary' :
                       apt.status === 'Waiting' ? 'bg-yellow-100 text-yellow-700' :
-                      'bg-blue-100 text-blue-700'
+                      'bg-blue-100 text-primary'
                     }`}>
                       {apt.status}
                     </span>
@@ -335,6 +336,15 @@ export function ReceptionistDashboard({ session }: ReceptionistDashboardProps) {
               </div>
             </CardContent>
           </Card>
+        </motion.div>
+
+        {/* Todo List Widget */}
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.7 }}
+        >
+          <TodoListWidget session={session} maxItems={4} />
         </motion.div>
       </div>
 
@@ -348,12 +358,12 @@ export function ReceptionistDashboard({ session }: ReceptionistDashboardProps) {
           <Card>
             <CardHeader>
               <CardTitle>Patient Search & Lookup</CardTitle>
-              <p className="text-sm text-gray-600">Quick patient information access</p>
+              <p className="text-sm text-muted-foreground">Quick patient information access</p>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
                   <Input
                     placeholder="Search by name, phone, or patient ID..."
                     className="pl-10"
@@ -393,7 +403,7 @@ export function ReceptionistDashboard({ session }: ReceptionistDashboardProps) {
               <div className="flex items-center justify-between">
                 <div>
                   <CardTitle>Visitor Management</CardTitle>
-                  <p className="text-sm text-gray-600">Recent visitor registrations</p>
+                  <p className="text-sm text-muted-foreground">Recent visitor registrations</p>
                 </div>
                 <Button size="sm">
                   <UserPlus className="size-4 mr-2" />
@@ -404,16 +414,16 @@ export function ReceptionistDashboard({ session }: ReceptionistDashboardProps) {
             <CardContent>
               <div className="space-y-3">
                 {recentVisitors.map((visitor, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div key={index} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
                     <div>
                       <p className="text-sm text-gray-900">{visitor.name}</p>
-                      <p className="text-xs text-gray-600">Visiting: {visitor.visiting}</p>
-                      <p className="text-xs text-gray-500">{visitor.time}</p>
+                      <p className="text-xs text-muted-foreground">Visiting: {visitor.visiting}</p>
+                      <p className="text-xs text-muted-foreground">{visitor.time}</p>
                     </div>
                     <span className={`px-2 py-1 rounded text-xs ${
                       visitor.status === 'Active' 
-                        ? 'bg-green-100 text-green-700' 
-                        : 'bg-gray-100 text-gray-700'
+                        ? 'bg-green-100 text-primary' 
+                        : 'bg-muted text-foreground'
                     }`}>
                       {visitor.status}
                     </span>

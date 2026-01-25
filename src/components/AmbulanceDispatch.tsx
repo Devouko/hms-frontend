@@ -200,26 +200,26 @@ export function AmbulanceDispatch({ session }: { session: any }) {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'available': return 'bg-green-100 text-green-700';
-      case 'dispatched': return 'bg-blue-100 text-blue-700';
-      case 'en_route': return 'bg-purple-100 text-purple-700';
-      case 'at_scene': return 'bg-orange-100 text-orange-700';
+      case 'available': return 'bg-green-100 text-primary';
+      case 'dispatched': return 'bg-blue-100 text-primary';
+      case 'en_route': return 'bg-purple-100 text-primary';
+      case 'at_scene': return 'bg-orange-100 text-primary';
       case 'returning': return 'bg-yellow-100 text-yellow-700';
-      case 'maintenance': return 'bg-red-100 text-red-700';
+      case 'maintenance': return 'bg-red-100 text-destructive';
       case 'pending': return 'bg-yellow-100 text-yellow-700';
-      case 'completed': return 'bg-green-100 text-green-700';
-      case 'cancelled': return 'bg-gray-100 text-gray-700';
-      default: return 'bg-gray-100 text-gray-700';
+      case 'completed': return 'bg-green-100 text-primary';
+      case 'cancelled': return 'bg-muted text-foreground';
+      default: return 'bg-muted text-foreground';
     }
   };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'critical': return 'bg-red-100 text-red-700 border-red-200';
-      case 'high': return 'bg-orange-100 text-orange-700 border-orange-200';
+      case 'critical': return 'bg-red-100 text-destructive border-red-200';
+      case 'high': return 'bg-orange-100 text-primary border-orange-200';
       case 'medium': return 'bg-yellow-100 text-yellow-700 border-yellow-200';
-      case 'low': return 'bg-green-100 text-green-700 border-green-200';
-      default: return 'bg-gray-100 text-gray-700 border-gray-200';
+      case 'low': return 'bg-green-100 text-primary border-green-200';
+      default: return 'bg-muted text-foreground border-border';
     }
   };
 
@@ -237,10 +237,10 @@ export function AmbulanceDispatch({ session }: { session: any }) {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Ambulance Dispatch</h1>
-          <p className="text-gray-600">Manage emergency calls and ambulance dispatch</p>
+          <p className="text-muted-foreground">Manage emergency calls and ambulance dispatch</p>
         </div>
         <div className="flex gap-2">
-          <Button onClick={() => setShowNewCall(true)} className="bg-red-600 hover:bg-red-700">
+          <Button onClick={() => setShowNewCall(true)} className="bg-destructive hover:bg-red-700">
             <Plus className="size-4 mr-2" />
             Emergency Call
           </Button>
@@ -251,42 +251,42 @@ export function AmbulanceDispatch({ session }: { session: any }) {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card>
           <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-green-600">{availableAmbulances.length}</div>
-            <div className="text-sm text-gray-600">Available</div>
+            <div className="text-2xl font-bold text-primary">{availableAmbulances.length}</div>
+            <div className="text-sm text-muted-foreground">Available</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-blue-600">
+            <div className="text-2xl font-bold text-primary">
               {ambulances.filter(a => a.status === 'dispatched').length}
             </div>
-            <div className="text-sm text-gray-600">Dispatched</div>
+            <div className="text-sm text-muted-foreground">Dispatched</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-red-600">{pendingCalls.length}</div>
-            <div className="text-sm text-gray-600">Pending Calls</div>
+            <div className="text-2xl font-bold text-destructive">{pendingCalls.length}</div>
+            <div className="text-sm text-muted-foreground">Pending Calls</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-orange-600">
+            <div className="text-2xl font-bold text-primary">
               {emergencyCalls.filter(c => c.status === 'at_scene').length}
             </div>
-            <div className="text-sm text-gray-600">At Scene</div>
+            <div className="text-sm text-muted-foreground">At Scene</div>
           </CardContent>
         </Card>
       </div>
 
       {/* Tab Navigation */}
-      <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg w-fit">
+      <div className="flex space-x-1 bg-muted p-1 rounded-lg w-fit">
         <button
           onClick={() => setActiveTab('calls')}
           className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
             activeTab === 'calls'
-              ? 'bg-white text-primary shadow-sm'
-              : 'text-gray-600 hover:text-gray-900'
+              ? 'bg-card text-primary shadow-sm'
+              : 'text-muted-foreground hover:text-gray-900'
           }`}
         >
           <AlertTriangle className="size-4 mr-2 inline" />
@@ -296,8 +296,8 @@ export function AmbulanceDispatch({ session }: { session: any }) {
           onClick={() => setActiveTab('ambulances')}
           className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
             activeTab === 'ambulances'
-              ? 'bg-white text-primary shadow-sm'
-              : 'text-gray-600 hover:text-gray-900'
+              ? 'bg-card text-primary shadow-sm'
+              : 'text-muted-foreground hover:text-gray-900'
           }`}
         >
           <Car className="size-4 mr-2 inline" />
@@ -307,7 +307,7 @@ export function AmbulanceDispatch({ session }: { session: any }) {
 
       {/* Search */}
       <div className="relative max-w-md">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
         <Input
           placeholder={`Search ${activeTab}...`}
           value={searchTerm}
@@ -327,7 +327,7 @@ export function AmbulanceDispatch({ session }: { session: any }) {
               className={`border-2 rounded-lg p-4 hover:shadow-md transition-shadow ${
                 call.priority === 'critical' ? 'border-red-200 bg-red-50' :
                 call.priority === 'high' ? 'border-orange-200 bg-orange-50' :
-                'border-gray-200 bg-white'
+                'border-border bg-card'
               }`}
             >
               <div className="flex items-start justify-between mb-3">
@@ -338,9 +338,9 @@ export function AmbulanceDispatch({ session }: { session: any }) {
                     'bg-blue-100'
                   }`}>
                     <AlertTriangle className={`size-6 ${
-                      call.priority === 'critical' ? 'text-red-600' :
-                      call.priority === 'high' ? 'text-orange-600' :
-                      'text-blue-600'
+                      call.priority === 'critical' ? 'text-destructive' :
+                      call.priority === 'high' ? 'text-primary' :
+                      'text-primary'
                     }`} />
                   </div>
                   <div>
@@ -350,7 +350,7 @@ export function AmbulanceDispatch({ session }: { session: any }) {
                         {call.priority}
                       </Badge>
                     </div>
-                    <p className="text-sm text-gray-600">{call.caller_name}</p>
+                    <p className="text-sm text-muted-foreground">{call.caller_name}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
@@ -364,7 +364,7 @@ export function AmbulanceDispatch({ session }: { session: any }) {
                         setSelectedCall(call);
                         setShowDispatch(true);
                       }}
-                      className="bg-blue-600 hover:bg-blue-700"
+                      className="bg-primary hover:bg-blue-700"
                     >
                       Dispatch
                     </Button>
@@ -374,22 +374,22 @@ export function AmbulanceDispatch({ session }: { session: any }) {
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm mb-3">
                 <div className="flex items-center gap-2">
-                  <MapPin className="size-4 text-gray-500" />
+                  <MapPin className="size-4 text-muted-foreground" />
                   <span>{call.incident_location}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Clock className="size-4 text-gray-500" />
+                  <Clock className="size-4 text-muted-foreground" />
                   <span>{new Date(call.call_time).toLocaleString()}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Phone className="size-4 text-gray-500" />
+                  <Phone className="size-4 text-muted-foreground" />
                   <span>{call.caller_phone}</span>
                 </div>
               </div>
 
               <div className="mb-3">
                 <span className="font-medium">Description:</span>
-                <p className="text-gray-700">{call.description}</p>
+                <p className="text-foreground">{call.description}</p>
               </div>
 
               {call.assigned_ambulance && (
@@ -397,7 +397,7 @@ export function AmbulanceDispatch({ session }: { session: any }) {
                   <span className="font-medium text-blue-800">Assigned Ambulance:</span>
                   <span className="text-blue-900 ml-2">{call.assigned_ambulance}</span>
                   {call.dispatch_time && (
-                    <span className="text-blue-700 ml-2 text-sm">
+                    <span className="text-primary ml-2 text-sm">
                       (Dispatched: {new Date(call.dispatch_time).toLocaleTimeString()})
                     </span>
                   )}
@@ -426,7 +426,7 @@ export function AmbulanceDispatch({ session }: { session: any }) {
                     <Button
                       size="sm"
                       onClick={() => handleUpdateCallStatus(call.id, 'completed')}
-                      className="bg-green-600 hover:bg-green-700"
+                      className="bg-primary hover:bg-green-700"
                     >
                       Complete
                     </Button>
@@ -454,7 +454,7 @@ export function AmbulanceDispatch({ session }: { session: any }) {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900">{ambulance.vehicle_number}</h3>
-                    <p className="text-sm text-gray-600">{ambulance.location}</p>
+                    <p className="text-sm text-muted-foreground">{ambulance.location}</p>
                   </div>
                 </div>
                 <Badge className={getStatusColor(ambulance.status)}>
@@ -462,7 +462,7 @@ export function AmbulanceDispatch({ session }: { session: any }) {
                 </Badge>
               </div>
 
-              <div className="space-y-2 text-sm text-gray-600">
+              <div className="space-y-2 text-sm text-muted-foreground">
                 <div>
                   <span className="font-medium">Driver:</span> {ambulance.driver_name}
                 </div>
@@ -472,8 +472,8 @@ export function AmbulanceDispatch({ session }: { session: any }) {
                 <div>
                   <span className="font-medium">Equipment:</span>
                   <Badge variant="outline" className={
-                    ambulance.equipment_status === 'fully_equipped' ? 'text-green-700' :
-                    ambulance.equipment_status === 'partial' ? 'text-yellow-700' : 'text-red-700'
+                    ambulance.equipment_status === 'fully_equipped' ? 'text-primary' :
+                    ambulance.equipment_status === 'partial' ? 'text-yellow-700' : 'text-destructive'
                   }>
                     {ambulance.equipment_status.replace('_', ' ')}
                   </Badge>
@@ -578,7 +578,7 @@ export function AmbulanceDispatch({ session }: { session: any }) {
               />
             </div>
             <div className="flex gap-2 pt-4">
-              <Button type="submit" className="flex-1 bg-red-600 hover:bg-red-700">
+              <Button type="submit" className="flex-1 bg-destructive hover:bg-red-700">
                 Log Emergency Call
               </Button>
               <Button type="button" variant="outline" onClick={() => setShowNewCall(false)}>
@@ -597,9 +597,9 @@ export function AmbulanceDispatch({ session }: { session: any }) {
           </DialogHeader>
           {selectedCall && (
             <div className="space-y-4">
-              <div className="p-4 bg-gray-50 rounded-lg">
+              <div className="p-4 bg-muted/50 rounded-lg">
                 <h3 className="font-semibold">{selectedCall.incident_type}</h3>
-                <p className="text-sm text-gray-600">{selectedCall.incident_location}</p>
+                <p className="text-sm text-muted-foreground">{selectedCall.incident_location}</p>
                 <Badge className={getPriorityColor(selectedCall.priority)}>
                   {selectedCall.priority} priority
                 </Badge>
@@ -611,21 +611,21 @@ export function AmbulanceDispatch({ session }: { session: any }) {
                   {availableAmbulances.map((ambulance) => (
                     <div
                       key={ambulance.id}
-                      className="flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50 cursor-pointer"
+                      className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 cursor-pointer"
                       onClick={() => handleDispatchAmbulance(selectedCall.id, ambulance.id)}
                     >
                       <div>
                         <p className="font-medium">{ambulance.vehicle_number}</p>
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-muted-foreground">
                           {ambulance.driver_name} & {ambulance.paramedic_name}
                         </p>
                       </div>
-                      <Badge className="bg-green-100 text-green-700">Available</Badge>
+                      <Badge className="bg-green-100 text-primary">Available</Badge>
                     </div>
                   ))}
                 </div>
                 {availableAmbulances.length === 0 && (
-                  <p className="text-center py-4 text-gray-500">No ambulances available</p>
+                  <p className="text-center py-4 text-muted-foreground">No ambulances available</p>
                 )}
               </div>
             </div>

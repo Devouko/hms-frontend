@@ -134,7 +134,7 @@ export function BedManagement() {
         >
           <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
             <CardContent className="p-6">
-              <p className="text-sm text-blue-700">Total Beds</p>
+              <p className="text-sm text-primary">Total Beds</p>
               <h3 className="text-blue-900">{stats.total}</h3>
             </CardContent>
           </Card>
@@ -146,7 +146,7 @@ export function BedManagement() {
         >
           <Card className="bg-gradient-to-br from-red-50 to-red-100 border-red-200">
             <CardContent className="p-6">
-              <p className="text-sm text-red-700">Occupied</p>
+              <p className="text-sm text-destructive">Occupied</p>
               <h3 className="text-red-900">{stats.occupied}</h3>
             </CardContent>
           </Card>
@@ -158,7 +158,7 @@ export function BedManagement() {
         >
           <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200">
             <CardContent className="p-6">
-              <p className="text-sm text-green-700">Available</p>
+              <p className="text-sm text-primary">Available</p>
               <h3 className="text-green-900">{stats.available}</h3>
             </CardContent>
           </Card>
@@ -170,7 +170,7 @@ export function BedManagement() {
         >
           <Card className="bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200">
             <CardContent className="p-6">
-              <p className="text-sm text-orange-700">Maintenance</p>
+              <p className="text-sm text-primary">Maintenance</p>
               <h3 className="text-orange-900">{stats.maintenance}</h3>
             </CardContent>
           </Card>
@@ -237,7 +237,7 @@ export function BedManagement() {
                         id="status"
                         value={formData.status || 'Available'}
                         onChange={(e) => setFormData({ ...formData, status: e.target.value as Bed['status'] })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                        className="w-full px-3 py-2 border border-border rounded-md"
                       >
                         <option value="Available">Available</option>
                         <option value="Occupied">Occupied</option>
@@ -278,7 +278,7 @@ export function BedManagement() {
           <CardContent>
             <div className="mb-4">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
                 <Input
                   placeholder="Search by bed number, department, or patient..."
                   value={searchTerm}
@@ -309,38 +309,38 @@ export function BedManagement() {
                         bed.status === 'Available' ? 'bg-green-200' :
                         'bg-orange-200'
                       }`}>
-                        <BedIcon className="size-6 text-gray-700" />
+                        <BedIcon className="size-6 text-foreground" />
                       </div>
                       <div>
                         <h4 className="text-gray-900">Bed {bed.bedNumber}</h4>
-                        <p className="text-sm text-gray-600">{bed.ward}</p>
+                        <p className="text-sm text-muted-foreground">{bed.ward}</p>
                       </div>
                     </div>
                   </div>
 
                   <div className="space-y-2 mb-4">
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Department:</span>
+                      <span className="text-muted-foreground">Department:</span>
                       <span className="text-gray-900">{bed.department}</span>
                     </div>
                     {bed.patientName && (
                       <div className="flex justify-between text-sm">
-                        <span className="text-gray-600">Patient:</span>
+                        <span className="text-muted-foreground">Patient:</span>
                         <span className="text-gray-900">{bed.patientName}</span>
                       </div>
                     )}
                     {bed.admissionDate && (
                       <div className="flex justify-between text-sm">
-                        <span className="text-gray-600">Admitted:</span>
+                        <span className="text-muted-foreground">Admitted:</span>
                         <span className="text-gray-900">{bed.admissionDate}</span>
                       </div>
                     )}
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Status:</span>
+                      <span className="text-muted-foreground">Status:</span>
                       <span className={`px-2 py-1 rounded text-xs ${
-                        bed.status === 'Occupied' ? 'bg-red-100 text-red-700' :
-                        bed.status === 'Available' ? 'bg-green-100 text-green-700' :
-                        'bg-orange-100 text-orange-700'
+                        bed.status === 'Occupied' ? 'bg-red-100 text-destructive' :
+                        bed.status === 'Available' ? 'bg-green-100 text-primary' :
+                        'bg-orange-100 text-primary'
                       }`}>
                         {bed.status}
                       </span>
@@ -362,14 +362,14 @@ export function BedManagement() {
                       variant="outline"
                       onClick={() => handleDelete(bed.id)}
                     >
-                      <Trash2 className="size-4 text-red-600" />
+                      <Trash2 className="size-4 text-destructive" />
                     </Button>
                   </div>
                 </motion.div>
               ))}
 
               {filteredBeds.length === 0 && (
-                <div className="col-span-full text-center py-12 text-gray-500">
+                <div className="col-span-full text-center py-12 text-muted-foreground">
                   No beds found
                 </div>
               )}

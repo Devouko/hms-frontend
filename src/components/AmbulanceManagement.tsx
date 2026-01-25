@@ -139,7 +139,7 @@ export function AmbulanceManagement({ session }: AmbulanceManagementProps) {
                         value={formData.pickupAddress || ''}
                         onChange={(e) => setFormData({ ...formData, pickupAddress: e.target.value })}
                         placeholder="Enter pickup address"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                        className="w-full px-3 py-2 border border-border rounded-md"
                         rows={2}
                       />
                     </div>
@@ -184,7 +184,7 @@ export function AmbulanceManagement({ session }: AmbulanceManagementProps) {
           </CardHeader>
           <CardContent>
             <div className="flex items-center space-x-2 mb-4">
-              <Search className="size-4 text-gray-400" />
+              <Search className="size-4 text-muted-foreground" />
               <Input
                 placeholder="Search calls..."
                 value={searchTerm}
@@ -194,31 +194,31 @@ export function AmbulanceManagement({ session }: AmbulanceManagementProps) {
             </div>
 
             <div className="overflow-x-auto">
-              <table className="w-full border-collapse border border-gray-200">
+              <table className="w-full border-collapse border border-border">
                 <thead>
-                  <tr className="bg-gray-50">
-                    <th className="border border-gray-200 px-4 py-2 text-left">Patient</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Contact</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Pickup Address</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Vehicle</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Status</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Amount</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Actions</th>
+                  <tr className="bg-muted/50">
+                    <th className="border border-border px-4 py-2 text-left">Patient</th>
+                    <th className="border border-border px-4 py-2 text-left">Contact</th>
+                    <th className="border border-border px-4 py-2 text-left">Pickup Address</th>
+                    <th className="border border-border px-4 py-2 text-left">Vehicle</th>
+                    <th className="border border-border px-4 py-2 text-left">Status</th>
+                    <th className="border border-border px-4 py-2 text-left">Amount</th>
+                    <th className="border border-border px-4 py-2 text-left">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredCalls.map((call) => (
-                    <tr key={call.id} className="hover:bg-gray-50">
-                      <td className="border border-gray-200 px-4 py-2">{call.patientName}</td>
-                      <td className="border border-gray-200 px-4 py-2">
+                    <tr key={call.id} className="hover:bg-muted/50">
+                      <td className="border border-border px-4 py-2">{call.patientName}</td>
+                      <td className="border border-border px-4 py-2">
                         <div className="flex items-center">
                           <Phone className="h-4 w-4 mr-1" />
                           {call.contactNumber}
                         </div>
                       </td>
-                      <td className="border border-gray-200 px-4 py-2">{call.pickupAddress}</td>
-                      <td className="border border-gray-200 px-4 py-2">{call.vehicleNumber}</td>
-                      <td className="border border-gray-200 px-4 py-2">
+                      <td className="border border-border px-4 py-2">{call.pickupAddress}</td>
+                      <td className="border border-border px-4 py-2">{call.vehicleNumber}</td>
+                      <td className="border border-border px-4 py-2">
                         <select
                           value={call.status}
                           onChange={(e) => updateStatus(call.id, e.target.value as AmbulanceCall['status'])}
@@ -233,8 +233,8 @@ export function AmbulanceManagement({ session }: AmbulanceManagementProps) {
                           <option value="Completed">Completed</option>
                         </select>
                       </td>
-                      <td className="border border-gray-200 px-4 py-2">${call.amount}</td>
-                      <td className="border border-gray-200 px-4 py-2">
+                      <td className="border border-border px-4 py-2">${call.amount}</td>
+                      <td className="border border-border px-4 py-2">
                         <Button
                           size="sm"
                           variant="destructive"
@@ -250,7 +250,7 @@ export function AmbulanceManagement({ session }: AmbulanceManagementProps) {
             </div>
 
             {filteredCalls.length === 0 && (
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-muted-foreground">
                 No ambulance calls found.
               </div>
             )}

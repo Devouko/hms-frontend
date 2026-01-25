@@ -14,13 +14,19 @@ import {
   Shield,
   User,
   Calendar,
+  TrendingUp,
+  TestTube,
+  Microscope
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Badge } from './ui/badge';
 import { Label } from './ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+import { Progress } from './ui/progress';
 import { toast } from 'sonner';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from 'recharts';
 
 interface LabTest {
   id: string;
@@ -44,12 +50,14 @@ export function LaboratoryManagement() {
     { id: '1', patientName: 'John Smith', testType: 'CBC', priority: 'stat', status: 'pending', orderedDate: '2024-12-08', category: 'Hematology' },
     { id: '2', patientName: 'Emily Davis', testType: 'Lipid Panel', priority: 'routine', status: 'in-progress', orderedDate: '2024-12-08', category: 'Chemistry' },
     { id: '3', patientName: 'Michael Brown', testType: 'Cardiac Enzymes', priority: 'urgent', status: 'pending', orderedDate: '2024-12-08', category: 'Chemistry' },
+    { id: '4', patientName: 'Sarah Wilson', testType: 'Blood Culture', priority: 'routine', status: 'completed', orderedDate: '2024-12-07', category: 'Microbiology' },
   ]);
 
   const [equipment] = useState<Equipment[]>([
     { id: '1', name: 'Hematology Analyzer', status: 'online', lastMaintenance: '2024-12-01' },
     { id: '2', name: 'Chemistry Analyzer', status: 'online', lastMaintenance: '2024-11-28' },
     { id: '3', name: 'Microscope #1', status: 'maintenance', lastMaintenance: '2024-12-07' },
+    { id: '4', name: 'PCR Machine', status: 'online', lastMaintenance: '2024-11-25' },
   ]);
 
   const [resultForm, setResultForm] = useState({ testId: '', result: '', criticalFlag: false });
@@ -61,223 +69,431 @@ export function LaboratoryManagement() {
     urgent: tests.filter(t => t.priority === 'urgent' || t.priority === 'stat').length,
   };
 
+  const stats = [
+    { label: 'Total Tests', value: tests.length.toString(), icon: TestTube, color: 'bg-primary', change: '+8%' },
+    { label: 'Pending Tests', value: todayStats.pending.toString(), icon: Clock, color: 'bg-amber-500', change: '-5%' },
+    { label: 'Completed Today', value: todayStats.completed.toString(), icon: CheckCircle2, color: 'bg-primary', change: '+12%' },
+    { label: 'Equipment Online', value: equipment.filter(e => e.status === 'online').length.toString(), icon: Settings, color: 'bg-primary', change: '+2%' },
+  ];
+
+  const testsByCategory = [
+    { name: 'Hematology', value: tests.filter(t => t.category === 'Hematology').length, color: 'hsl(var(--primary))' },
+    { name: 'Chemistry', value: tests.filter(t => t.category === 'Chemistry').length, color: 'hsl(var(--primary))' },
+    { name: 'Microbiology', value: tests.filter(t => t.category === 'Microbiology').length, color: 'hsl(var(--primary))' },
+    { name: 'Pathology', value: 2, color: 'hsl(var(--primary))' },
+  ];
+
+  const weeklyTests = [
+    { day: 'Mon', tests: 45, completed: 42 },
+    { day: 'Tue', tests: 52, completed: 48 },
+    { day: 'Wed', tests: 48, completed: 45 },
+    { day: 'Thu', tests: 61, completed: 58 },
+    { day: 'Fri', tests: 55, completed: 52 },
+    { day: 'Sat', tests: 38, completed: 35 },
+    { day: 'Sun', tests: 25, completed: 23 },
+  ];
+
   const recentActivity = [
-    { id: '1', action: 'CBC completed for John Smith', time: '10:30 AM', status: 'completed' },
-    { id: '2', action: 'Lipid Panel started for Emily Davis', time: '10:15 AM', status: 'in-progress' },
-    { id: '3', action: 'Cardiac Enzymes pending approval', time: '09:45 AM', status: 'pending' },
+    { id: '1', action: 'CBC completed for John Smith', time: '10:30 AM', status: 'completed', icon: CheckCircle2 },
+    { id: '2', action: 'Lipid Panel started for Emily Davis', time: '10:15 AM', status: 'in-progress', icon: Activity },
+    { id: '3', action: 'Cardiac Enzymes pending approval', time: '09:45 AM', status: 'pending', icon: Clock },
+    { id: '4', action: 'Equipment maintenance completed', time: '09:30 AM', status: 'completed', icon: Settings },
   ];
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl text-gray-900">Laboratory Dashboard</h1>
-        <p className="text-gray-600">Lab technician workspace</p>
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
+          <FlaskConical className="size-8 text-primary" />
+          Laboratory Management
+        </h1>
+        <p className="text-sm text-muted-foreground mt-1">Lab operations and test management</p>
+      </motion.div>
+
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {stats.map((stat, index) => {
+          const Icon = stat.icon;
+          return (
+            <motion.div
+              key={stat.label}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: index * 0.1 }}
+            >
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-muted-foreground">{stat.label}</p>
+                      <p className="text-2xl font-bold mt-2">{stat.value}</p>
+                      <div className="flex items-center gap-1 mt-1">
+                        <TrendingUp className="size-4 text-primary" />
+                        <span className="text-sm text-primary">{stat.change}</span>
+                      </div>
+                    </div>
+                    <div className={`${stat.color} p-3 rounded-lg`}>
+                      <Icon className="size-6 text-card-foreground" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          );
+        })}
       </div>
 
-      <div className="grid grid-cols-5 gap-6">
-        {/* LEFT COLUMN (40%) */}
-        <div className="col-span-2 space-y-6">
-          {/* Today's Lab Overview */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg flex items-center gap-2">
-                <FlaskConical className="size-5 text-primary" />
-                Today's Lab Overview
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-3 gap-3">
-                <div className="text-center p-3 bg-yellow-50 rounded-lg">
-                  <div className="text-2xl text-yellow-600">{todayStats.pending}</div>
-                  <div className="text-xs text-gray-600">Pending</div>
-                </div>
-                <div className="text-center p-3 bg-blue-50 rounded-lg">
-                  <div className="text-2xl text-blue-600">{todayStats.inProgress}</div>
-                  <div className="text-xs text-gray-600">In Progress</div>
-                </div>
-                <div className="text-center p-3 bg-green-50 rounded-lg">
-                  <div className="text-2xl text-green-600">{todayStats.completed}</div>
-                  <div className="text-xs text-gray-600">Completed</div>
-                </div>
-              </div>
-              {todayStats.urgent > 0 && (
-                <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+      <Tabs defaultValue="dashboard" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-4">
+          <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
+          <TabsTrigger value="tests">Test Queue</TabsTrigger>
+          <TabsTrigger value="equipment">Equipment</TabsTrigger>
+          <TabsTrigger value="analytics">Analytics</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="dashboard" className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Main Dashboard */}
+            <div className="lg:col-span-2 space-y-6">
+              {/* Today's Overview */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Activity className="size-5 text-primary" />
+                    Today's Lab Overview
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="text-center p-4 bg-amber-50 rounded-lg">
+                      <div className="text-3xl font-bold text-amber-600">{todayStats.pending}</div>
+                      <div className="text-sm text-muted-foreground">Pending</div>
+                      <Progress value={30} className="mt-2" />
+                    </div>
+                    <div className="text-center p-4 bg-blue-50 rounded-lg">
+                      <div className="text-3xl font-bold text-primary">{todayStats.inProgress}</div>
+                      <div className="text-sm text-muted-foreground">In Progress</div>
+                      <Progress value={60} className="mt-2" />
+                    </div>
+                    <div className="text-center p-4 bg-green-50 rounded-lg">
+                      <div className="text-3xl font-bold text-primary">{todayStats.completed}</div>
+                      <div className="text-sm text-muted-foreground">Completed</div>
+                      <Progress value={85} className="mt-2" />
+                    </div>
+                  </div>
+                  {todayStats.urgent > 0 && (
+                    <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                      <div className="flex items-center gap-2">
+                        <AlertCircle className="size-4 text-destructive" />
+                        <span className="text-sm text-destructive">{todayStats.urgent} Urgent Tests Require Attention</span>
+                      </div>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
+              {/* Test Results Entry */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <FileText className="size-5 text-primary" />
+                    Test Results Entry
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label>Test ID</Label>
+                      <Input
+                        value={resultForm.testId}
+                        onChange={(e) => setResultForm({ ...resultForm, testId: e.target.value })}
+                        placeholder="Enter test ID"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Result Value</Label>
+                      <Input
+                        value={resultForm.result}
+                        onChange={(e) => setResultForm({ ...resultForm, result: e.target.value })}
+                        placeholder="Enter result"
+                      />
+                    </div>
+                  </div>
                   <div className="flex items-center gap-2">
-                    <AlertCircle className="size-4 text-red-600" />
-                    <span className="text-sm text-red-700">{todayStats.urgent} Urgent Tests</span>
+                    <input
+                      type="checkbox"
+                      checked={resultForm.criticalFlag}
+                      onChange={(e) => setResultForm({ ...resultForm, criticalFlag: e.target.checked })}
+                    />
+                    <Label className="text-sm">Critical Value Flag</Label>
                   </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+                  <Button onClick={() => {
+                    toast.success('Test result submitted successfully!');
+                    setResultForm({ testId: '', result: '', criticalFlag: false });
+                  }}>
+                    Submit Result
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
 
-          {/* Equipment Status */}
+            {/* Sidebar */}
+            <div className="space-y-6">
+              {/* Quick Actions */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Activity className="size-5 text-primary" />
+                    Quick Actions
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                  <Button onClick={() => toast.success('Result entry opened!')} className="w-full justify-start">
+                    <Beaker className="size-4 mr-2" />
+                    Result Entry
+                  </Button>
+                  <Button onClick={() => toast.success('Inventory check initiated!')} variant="outline" className="w-full justify-start">
+                    <Package className="size-4 mr-2" />
+                    Inventory Check
+                  </Button>
+                  <Button onClick={() => toast.success('QC procedures started!')} variant="outline" className="w-full justify-start">
+                    <Shield className="size-4 mr-2" />
+                    QC Procedures
+                  </Button>
+                  <Button onClick={() => toast.success('Equipment check started!')} variant="outline" className="w-full justify-start">
+                    <Settings className="size-4 mr-2" />
+                    Equipment Check
+                  </Button>
+                </CardContent>
+              </Card>
+
+              {/* Recent Activity */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Clock className="size-5 text-primary" />
+                    Recent Activity
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {recentActivity.map((activity) => {
+                    const Icon = activity.icon;
+                    return (
+                      <div key={activity.id} className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
+                        <div className="bg-primary p-2 rounded-lg">
+                          <Icon className="size-4 text-card-foreground" />
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm text-gray-900">{activity.action}</p>
+                          <p className="text-xs text-muted-foreground">{activity.time}</p>
+                        </div>
+                        <Badge
+                          variant="outline"
+                          className={
+                            activity.status === 'completed' ? 'border-primary text-primary bg-green-50' :
+                            activity.status === 'in-progress' ? 'border-primary text-primary bg-blue-50' :
+                            'border-amber-500 text-amber-700 bg-amber-50'
+                          }
+                        >
+                          {activity.status}
+                        </Badge>
+                      </div>
+                    );
+                  })}
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="tests" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg flex items-center gap-2">
-                <Settings className="size-5 text-primary" />
-                Equipment Status
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {equipment.map((item) => (
-                <div key={item.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                  <div>
-                    <p className="text-sm text-gray-900">{item.name}</p>
-                    <p className="text-xs text-gray-600">Last: {item.lastMaintenance}</p>
-                  </div>
-                  <Badge className={`${
-                    item.status === 'online' ? 'bg-green-100 text-green-700' :
-                    item.status === 'offline' ? 'bg-red-100 text-red-700' :
-                    'bg-yellow-100 text-yellow-700'
-                  }`}>
-                    {item.status}
-                  </Badge>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-
-          {/* Quick Actions */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg flex items-center gap-2">
-                <Activity className="size-5 text-primary" />
-                Quick Actions
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <Button onClick={() => toast.success('Result entry opened!')} className="w-full justify-start">
-                <Beaker className="size-4 mr-2" />
-                Result Entry
-              </Button>
-              <Button onClick={() => toast.success('Inventory check initiated!')} variant="outline" className="w-full justify-start">
-                <Package className="size-4 mr-2" />
-                Inventory Check
-              </Button>
-              <Button onClick={() => toast.success('QC procedures started!')} variant="outline" className="w-full justify-start">
-                <Shield className="size-4 mr-2" />
-                QC Procedures
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* RIGHT COLUMN (60%) */}
-        <div className="col-span-3 space-y-6">
-          {/* Lab Test Queue */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg flex items-center gap-2">
+              <CardTitle className="flex items-center gap-2">
                 <ClipboardList className="size-5 text-primary" />
                 Lab Test Queue
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              {tests.map((test) => (
-                <div key={test.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <p className="text-sm text-gray-900">{test.patientName}</p>
-                      <Badge className={`text-xs ${
-                        test.priority === 'stat' ? 'bg-red-100 text-red-700' :
-                        test.priority === 'urgent' ? 'bg-orange-100 text-orange-700' :
-                        'bg-gray-100 text-gray-700'
-                      }`}>
-                        {test.priority.toUpperCase()}
-                      </Badge>
+              {tests.map((test, index) => (
+                <motion.div
+                  key={test.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="flex items-center justify-between p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="bg-primary p-3 rounded-lg text-card-foreground">
+                      <TestTube className="size-5" />
                     </div>
-                    <p className="text-xs text-gray-600">{test.testType} • {test.category}</p>
+                    <div>
+                      <div className="flex items-center gap-2 mb-1">
+                        <p className="font-medium text-gray-900">{test.patientName}</p>
+                        <Badge
+                          variant="outline"
+                          className={
+                            test.priority === 'stat' ? 'border-destructive text-destructive bg-red-50' :
+                            test.priority === 'urgent' ? 'border-primary text-primary bg-orange-50' :
+                            'border-gray-500 text-foreground bg-muted/50'
+                          }
+                        >
+                          {test.priority.toUpperCase()}
+                        </Badge>
+                      </div>
+                      <p className="text-sm text-muted-foreground">{test.testType} • {test.category}</p>
+                      <p className="text-xs text-muted-foreground">Ordered: {test.orderedDate}</p>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Badge className={`text-xs ${
-                      test.status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
-                      test.status === 'in-progress' ? 'bg-blue-100 text-blue-700' :
-                      'bg-green-100 text-green-700'
-                    }`}>
+                  <div className="flex items-center gap-3">
+                    <Badge
+                      variant="outline"
+                      className={
+                        test.status === 'pending' ? 'border-amber-500 text-amber-700 bg-amber-50' :
+                        test.status === 'in-progress' ? 'border-primary text-primary bg-blue-50' :
+                        'border-primary text-primary bg-green-50'
+                      }
+                    >
                       {test.status}
                     </Badge>
                     <Button size="sm" onClick={() => toast.success(`Assigned ${test.testType} to technician!`)}>
                       Assign
                     </Button>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </CardContent>
           </Card>
+        </TabsContent>
 
-          {/* Test Results Entry */}
+        <TabsContent value="equipment" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg flex items-center gap-2">
-                <FileText className="size-5 text-primary" />
-                Test Results Entry
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Test ID</Label>
-                  <Input
-                    value={resultForm.testId}
-                    onChange={(e) => setResultForm({ ...resultForm, testId: e.target.value })}
-                    placeholder="Enter test ID"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Result Value</Label>
-                  <Input
-                    value={resultForm.result}
-                    onChange={(e) => setResultForm({ ...resultForm, result: e.target.value })}
-                    placeholder="Enter result"
-                  />
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={resultForm.criticalFlag}
-                  onChange={(e) => setResultForm({ ...resultForm, criticalFlag: e.target.checked })}
-                />
-                <Label className="text-sm">Critical Value Flag</Label>
-              </div>
-              <Button onClick={() => {
-                toast.success('Test result submitted successfully!');
-                setResultForm({ testId: '', result: '', criticalFlag: false });
-              }}>
-                Submit Result
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* Recent Activity */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg flex items-center gap-2">
-                <Clock className="size-5 text-primary" />
-                Recent Activity
+              <CardTitle className="flex items-center gap-2">
+                <Settings className="size-5 text-primary" />
+                Equipment Status
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              {recentActivity.map((activity) => (
-                <div key={activity.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                  <div>
-                    <p className="text-sm text-gray-900">{activity.action}</p>
-                    <p className="text-xs text-gray-600">{activity.time}</p>
+              {equipment.map((item, index) => (
+                <motion.div
+                  key={item.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="flex items-center justify-between p-4 bg-muted/50 rounded-lg"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className={`p-3 rounded-lg ${
+                      item.status === 'online' ? 'bg-primary' :
+                      item.status === 'offline' ? 'bg-destructive' : 'bg-amber-500'
+                    }`}>
+                      <Microscope className="size-5 text-card-foreground" />
+                    </div>
+                    <div>
+                      <p className="font-medium text-gray-900">{item.name}</p>
+                      <p className="text-sm text-muted-foreground">Last Maintenance: {item.lastMaintenance}</p>
+                    </div>
                   </div>
-                  <Badge className={`text-xs ${
-                    activity.status === 'completed' ? 'bg-green-100 text-green-700' :
-                    activity.status === 'in-progress' ? 'bg-blue-100 text-blue-700' :
-                    'bg-yellow-100 text-yellow-700'
-                  }`}>
-                    {activity.status}
-                  </Badge>
-                </div>
+                  <div className="flex items-center gap-3">
+                    <Badge
+                      variant="outline"
+                      className={
+                        item.status === 'online' ? 'border-primary text-primary bg-green-50' :
+                        item.status === 'offline' ? 'border-destructive text-destructive bg-red-50' :
+                        'border-amber-500 text-amber-700 bg-amber-50'
+                      }
+                    >
+                      {item.status}
+                    </Badge>
+                    <Button size="sm" variant="outline">
+                      Maintain
+                    </Button>
+                  </div>
+                </motion.div>
               ))}
             </CardContent>
           </Card>
-        </div>
-      </div>
+        </TabsContent>
+
+        <TabsContent value="analytics" className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Tests by Category */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Tests by Category</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <PieChart>
+                    <Pie
+                      data={testsByCategory}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                      outerRadius={100}
+                      fill="hsl(var(--primary))"
+                      dataKey="value"
+                    >
+                      {testsByCategory.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            {/* Weekly Test Volume */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Weekly Test Volume</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={weeklyTests}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                    <XAxis dataKey="day" />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="tests" fill="hsl(var(--primary))" name="Total Tests" />
+                    <Bar dataKey="completed" fill="hsl(var(--primary))" name="Completed" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Completion Rate Trend */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Test Completion Rate</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ResponsiveContainer width="100%" height={300}>
+                <LineChart data={weeklyTests}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                  <XAxis dataKey="day" />
+                  <YAxis />
+                  <Tooltip />
+                  <Line 
+                    type="monotone" 
+                    dataKey="completed" 
+                    stroke="hsl(var(--primary))" 
+                    strokeWidth={3}
+                    dot={{ fill: 'hsl(var(--primary))', r: 4 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

@@ -102,7 +102,7 @@ export function BloodBankManagement({ session }: BloodBankManagementProps) {
       'O+': 'bg-green-100 text-green-800',
       'O-': 'bg-green-200 text-green-900'
     };
-    return colors[bloodGroup as keyof typeof colors] || 'bg-gray-100 text-gray-800';
+    return colors[bloodGroup as keyof typeof colors] || 'bg-muted text-gray-800';
   };
 
   const filteredDonors = donors.filter(donor =>
@@ -123,7 +123,7 @@ export function BloodBankManagement({ session }: BloodBankManagementProps) {
           </div>
           <div>
             <h3 className="font-semibold text-gray-900">{donor.donor_name}</h3>
-            <p className="text-sm text-gray-600">{donor.age} years, {donor.gender}</p>
+            <p className="text-sm text-muted-foreground">{donor.age} years, {donor.gender}</p>
           </div>
         </div>
         <Badge className={getBloodGroupColor(donor.blood_group)}>
@@ -131,7 +131,7 @@ export function BloodBankManagement({ session }: BloodBankManagementProps) {
         </Badge>
       </div>
 
-      <div className="space-y-2 text-sm text-gray-600">
+      <div className="space-y-2 text-sm text-muted-foreground">
         <div className="flex items-center gap-2">
           <User className="size-4" />
           <span>Father: {donor.father_name}</span>
@@ -163,7 +163,7 @@ export function BloodBankManagement({ session }: BloodBankManagementProps) {
           <Button variant="outline" size="sm">
             <Eye className="size-4" />
           </Button>
-          <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
+          <Button variant="outline" size="sm" className="text-destructive hover:text-destructive">
             <Trash2 className="size-4" />
           </Button>
         </div>
@@ -179,13 +179,13 @@ export function BloodBankManagement({ session }: BloodBankManagementProps) {
           <Card key={group} className="text-center">
             <CardContent className="p-4">
               <div className="flex items-center justify-center mb-2">
-                <Droplets className="size-8 text-red-500" />
+                <Droplets className="size-8 text-destructive" />
               </div>
               <Badge className={`${getBloodGroupColor(group)} mb-2`}>
                 {group}
               </Badge>
               <p className="text-2xl font-bold text-gray-900">{available}</p>
-              <p className="text-sm text-gray-600">Units Available</p>
+              <p className="text-sm text-muted-foreground">Units Available</p>
             </CardContent>
           </Card>
         );
@@ -198,7 +198,7 @@ export function BloodBankManagement({ session }: BloodBankManagementProps) {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Blood Bank Management</h1>
-          <p className="text-gray-600">Manage blood donors, inventory, and blood issues</p>
+          <p className="text-muted-foreground">Manage blood donors, inventory, and blood issues</p>
         </div>
         <div className="flex gap-2">
           <Button onClick={() => setShowAddDonor(true)} className="glass-button smooth-transition glow-hover">
@@ -227,7 +227,7 @@ export function BloodBankManagement({ session }: BloodBankManagementProps) {
               className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium smooth-transition ${
                 activeTab === tab.id
                   ? 'glass-card text-primary shadow-sm'
-                  : 'text-gray-600 hover:text-gray-900 hover:glass'
+                  : 'text-muted-foreground hover:text-gray-900 hover:glass'
               }`}
             >
               <Icon className="size-4" />
@@ -240,7 +240,7 @@ export function BloodBankManagement({ session }: BloodBankManagementProps) {
       {/* Search Bar */}
       {activeTab !== 'inventory' && (
         <div className="relative max-w-md">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
           <Input
             placeholder={`Search ${activeTab}...`}
             value={searchTerm}

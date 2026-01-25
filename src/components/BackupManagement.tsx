@@ -113,7 +113,7 @@ export function BackupManagement({ session }: BackupManagementProps) {
               <Card>
                 <CardContent className="p-6">
                   <h3 className="font-semibold mb-2">Automatic Backups</h3>
-                  <p className="text-sm text-gray-600 mb-4">Schedule automatic database backups</p>
+                  <p className="text-sm text-muted-foreground mb-4">Schedule automatic database backups</p>
                   <Button variant="outline" className="w-full">
                     Configure Schedule
                   </Button>
@@ -123,7 +123,7 @@ export function BackupManagement({ session }: BackupManagementProps) {
               <Card>
                 <CardContent className="p-6">
                   <h3 className="font-semibold mb-2">Upload Backup</h3>
-                  <p className="text-sm text-gray-600 mb-4">Restore from uploaded backup file</p>
+                  <p className="text-sm text-muted-foreground mb-4">Restore from uploaded backup file</p>
                   <input
                     type="file"
                     accept=".sql"
@@ -148,22 +148,22 @@ export function BackupManagement({ session }: BackupManagementProps) {
             </div>
 
             <div className="overflow-x-auto">
-              <table className="w-full border-collapse border border-gray-200">
+              <table className="w-full border-collapse border border-border">
                 <thead>
-                  <tr className="bg-gray-50">
-                    <th className="border border-gray-200 px-4 py-2 text-left">Filename</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Size</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Created Date</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Actions</th>
+                  <tr className="bg-muted/50">
+                    <th className="border border-border px-4 py-2 text-left">Filename</th>
+                    <th className="border border-border px-4 py-2 text-left">Size</th>
+                    <th className="border border-border px-4 py-2 text-left">Created Date</th>
+                    <th className="border border-border px-4 py-2 text-left">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {backupFiles.map((backup) => (
-                    <tr key={backup.name} className="hover:bg-gray-50">
-                      <td className="border border-gray-200 px-4 py-2">{backup.name}</td>
-                      <td className="border border-gray-200 px-4 py-2">{backup.size}</td>
-                      <td className="border border-gray-200 px-4 py-2">{backup.date}</td>
-                      <td className="border border-gray-200 px-4 py-2">
+                    <tr key={backup.name} className="hover:bg-muted/50">
+                      <td className="border border-border px-4 py-2">{backup.name}</td>
+                      <td className="border border-border px-4 py-2">{backup.size}</td>
+                      <td className="border border-border px-4 py-2">{backup.date}</td>
+                      <td className="border border-border px-4 py-2">
                         <div className="flex space-x-2">
                           <Button
                             size="sm"
@@ -195,7 +195,7 @@ export function BackupManagement({ session }: BackupManagementProps) {
             </div>
 
             {backupFiles.length === 0 && (
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-muted-foreground">
                 No backup files found. Create your first backup to get started.
               </div>
             )}

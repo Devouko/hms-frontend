@@ -114,17 +114,17 @@ export function SuperAdminDashboard({ session }: SuperAdminDashboardProps) {
   };
 
   const getColorClass = (value: number, type: 'cpu' | 'memory' | 'disk') => {
-    if (value < 70) return 'text-green-600';
+    if (value < 70) return 'text-primary';
     if (value < 90) return 'text-yellow-600';
-    return 'text-red-600';
+    return 'text-destructive';
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'success': return 'text-green-600 bg-green-50';
+      case 'success': return 'text-primary bg-green-50';
       case 'warning': return 'text-yellow-600 bg-yellow-50';
-      case 'error': return 'text-red-600 bg-red-50';
-      default: return 'text-gray-600 bg-gray-50';
+      case 'error': return 'text-destructive bg-red-50';
+      default: return 'text-muted-foreground bg-muted/50';
     }
   };
 
@@ -161,7 +161,7 @@ export function SuperAdminDashboard({ session }: SuperAdminDashboardProps) {
             <p className="text-sm text-muted-foreground mt-1">System health monitoring and administration</p>
           </div>
           <div className="flex items-center gap-2">
-            <span className="px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-semibold">
+            <span className="px-3 py-1 bg-red-100 text-destructive rounded-full text-xs font-semibold">
               SUPER ADMIN ACCESS
             </span>
           </div>
@@ -182,8 +182,8 @@ export function SuperAdminDashboard({ session }: SuperAdminDashboardProps) {
             <CardContent className="space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Cpu className="size-4 text-gray-500" />
-                  <span className="text-xs text-gray-600">CPU</span>
+                  <Cpu className="size-4 text-muted-foreground" />
+                  <span className="text-xs text-muted-foreground">CPU</span>
                 </div>
                 <span className={`text-sm font-bold ${getColorClass(mockData.serverStatus.cpu, 'cpu')}`}>
                   {mockData.serverStatus.cpu}%
@@ -191,8 +191,8 @@ export function SuperAdminDashboard({ session }: SuperAdminDashboardProps) {
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Activity className="size-4 text-gray-500" />
-                  <span className="text-xs text-gray-600">Memory</span>
+                  <Activity className="size-4 text-muted-foreground" />
+                  <span className="text-xs text-muted-foreground">Memory</span>
                 </div>
                 <span className={`text-sm font-bold ${getColorClass(mockData.serverStatus.memory, 'memory')}`}>
                   {mockData.serverStatus.memory}%
@@ -200,8 +200,8 @@ export function SuperAdminDashboard({ session }: SuperAdminDashboardProps) {
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <HardDrive className="size-4 text-gray-500" />
-                  <span className="text-xs text-gray-600">Disk</span>
+                  <HardDrive className="size-4 text-muted-foreground" />
+                  <span className="text-xs text-muted-foreground">Disk</span>
                 </div>
                 <span className={`text-sm font-bold ${getColorClass(mockData.serverStatus.disk, 'disk')}`}>
                   {mockData.serverStatus.disk}%
@@ -209,9 +209,9 @@ export function SuperAdminDashboard({ session }: SuperAdminDashboardProps) {
               </div>
               <div className="pt-2 border-t">
                 <div className="flex items-center gap-2">
-                  <Clock className="size-4 text-green-600" />
-                  <span className="text-xs text-gray-600">Uptime:</span>
-                  <span className="text-xs font-semibold text-green-600">{mockData.serverStatus.uptime}</span>
+                  <Clock className="size-4 text-primary" />
+                  <span className="text-xs text-muted-foreground">Uptime:</span>
+                  <span className="text-xs font-semibold text-primary">{mockData.serverStatus.uptime}</span>
                 </div>
               </div>
             </CardContent>
@@ -229,22 +229,22 @@ export function SuperAdminDashboard({ session }: SuperAdminDashboardProps) {
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-xs text-gray-600">Connection</span>
+                <span className="text-xs text-muted-foreground">Connection</span>
                 <div className="flex items-center gap-1">
-                  <CheckCircle className="size-4 text-green-600" />
-                  <span className="text-xs font-semibold text-green-600">Active</span>
+                  <CheckCircle className="size-4 text-primary" />
+                  <span className="text-xs font-semibold text-primary">Active</span>
                 </div>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-xs text-gray-600">Avg Response</span>
+                <span className="text-xs text-muted-foreground">Avg Response</span>
                 <span className="text-sm font-bold text-foreground">{mockData.database.avgResponseTime}ms</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-xs text-gray-600">Connections</span>
+                <span className="text-xs text-muted-foreground">Connections</span>
                 <span className="text-sm font-bold text-foreground">{mockData.database.activeConnections}</span>
               </div>
               <div className="pt-2 border-t">
-                <div className="text-xs text-gray-600">Last Backup</div>
+                <div className="text-xs text-muted-foreground">Last Backup</div>
                 <div className="text-xs font-semibold text-foreground mt-1">{mockData.database.lastBackup}</div>
               </div>
             </CardContent>
@@ -263,29 +263,29 @@ export function SuperAdminDashboard({ session }: SuperAdminDashboardProps) {
             <CardContent className="space-y-3">
               <div className="text-center pb-2 border-b">
                 <div className="text-3xl font-bold text-primary">{mockData.activeUsers.total}</div>
-                <div className="text-xs text-gray-600">Users Online</div>
+                <div className="text-xs text-muted-foreground">Users Online</div>
               </div>
               <div className="grid grid-cols-2 gap-2 text-xs">
                 <div>
-                  <span className="text-gray-600">Doctors:</span>
+                  <span className="text-muted-foreground">Doctors:</span>
                   <span className="font-bold text-foreground ml-1">{mockData.activeUsers.doctors}</span>
                 </div>
                 <div>
-                  <span className="text-gray-600">Nurses:</span>
+                  <span className="text-muted-foreground">Nurses:</span>
                   <span className="font-bold text-foreground ml-1">{mockData.activeUsers.nurses}</span>
                 </div>
                 <div>
-                  <span className="text-gray-600">Admin:</span>
+                  <span className="text-muted-foreground">Admin:</span>
                   <span className="font-bold text-foreground ml-1">{mockData.activeUsers.admin}</span>
                 </div>
                 <div>
-                  <span className="text-gray-600">Patients:</span>
+                  <span className="text-muted-foreground">Patients:</span>
                   <span className="font-bold text-foreground ml-1">{mockData.activeUsers.patients}</span>
                 </div>
               </div>
               <div className="pt-2 border-t text-xs">
-                <div className="text-gray-600">Peak: {mockData.activeUsers.peakHour}</div>
-                <div className="text-gray-600">Avg Session: {mockData.activeUsers.avgSession}</div>
+                <div className="text-muted-foreground">Peak: {mockData.activeUsers.peakHour}</div>
+                <div className="text-muted-foreground">Avg Session: {mockData.activeUsers.avgSession}</div>
               </div>
             </CardContent>
           </Card>
@@ -302,20 +302,20 @@ export function SuperAdminDashboard({ session }: SuperAdminDashboardProps) {
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-xs text-gray-600">API Response</span>
+                <span className="text-xs text-muted-foreground">API Response</span>
                 <span className="text-sm font-bold text-foreground">{mockData.performance.apiResponseTime}ms</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-xs text-gray-600">Error Rate (24h)</span>
-                <span className="text-sm font-bold text-green-600">{mockData.performance.errorRate}%</span>
+                <span className="text-xs text-muted-foreground">Error Rate (24h)</span>
+                <span className="text-sm font-bold text-primary">{mockData.performance.errorRate}%</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-xs text-gray-600">Successful</span>
-                <span className="text-sm font-bold text-green-600">{mockData.performance.successfulTransactions.toLocaleString()}</span>
+                <span className="text-xs text-muted-foreground">Successful</span>
+                <span className="text-sm font-bold text-primary">{mockData.performance.successfulTransactions.toLocaleString()}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-xs text-gray-600">Failed</span>
-                <span className="text-sm font-bold text-red-600">{mockData.performance.failedOperations}</span>
+                <span className="text-xs text-muted-foreground">Failed</span>
+                <span className="text-sm font-bold text-destructive">{mockData.performance.failedOperations}</span>
               </div>
             </CardContent>
           </Card>
@@ -332,7 +332,7 @@ export function SuperAdminDashboard({ session }: SuperAdminDashboardProps) {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
               <Button
                 onClick={() => setShowBackupModal(true)}
-                className="bg-blue-600 hover:bg-blue-700 flex items-center gap-2"
+                className="bg-primary hover:bg-blue-700 flex items-center gap-2"
               >
                 <Download className="size-4" />
                 Run System Backup
@@ -371,8 +371,8 @@ export function SuperAdminDashboard({ session }: SuperAdminDashboardProps) {
       </motion.div>
 
       {/* Real-time Indicator */}
-      <div className="flex items-center justify-end gap-2 text-sm text-gray-600">
-        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+      <div className="flex items-center justify-end gap-2 text-sm text-muted-foreground">
+        <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
         <span>Live Updates Active</span>
       </div>
 
@@ -384,7 +384,7 @@ export function SuperAdminDashboard({ session }: SuperAdminDashboardProps) {
               <CardTitle className="text-lg flex items-center gap-2">
                 <Users className="size-5 text-primary" />
                 Active Users in System
-                <span className="ml-2 px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">
+                <span className="ml-2 px-2 py-1 bg-green-100 text-primary rounded-full text-xs font-semibold">
                   {activeUsers.length} Online
                 </span>
               </CardTitle>
@@ -407,7 +407,7 @@ export function SuperAdminDashboard({ session }: SuperAdminDashboardProps) {
                   className="p-4 border rounded-lg hover:shadow-md transition-shadow bg-card"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-semibold">
+                    <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-card-foreground font-semibold">
                       {user.name?.charAt(0)?.toUpperCase() || 'U'}
                     </div>
                     <div className="flex-1 min-w-0">
@@ -417,14 +417,14 @@ export function SuperAdminDashboard({ session }: SuperAdminDashboardProps) {
                   </div>
                   <div className="mt-3 flex items-center justify-between">
                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      user.role === 'super_admin' ? 'bg-red-100 text-red-700' :
-                      user.role === 'admin' ? 'bg-orange-100 text-orange-700' :
-                      user.role === 'doctor' ? 'bg-blue-100 text-blue-700' :
-                      user.role === 'nurse' ? 'bg-green-100 text-green-700' :
-                      user.role === 'pharmacist' ? 'bg-purple-100 text-purple-700' :
+                      user.role === 'super_admin' ? 'bg-red-100 text-destructive' :
+                      user.role === 'admin' ? 'bg-orange-100 text-primary' :
+                      user.role === 'doctor' ? 'bg-blue-100 text-primary' :
+                      user.role === 'nurse' ? 'bg-green-100 text-primary' :
+                      user.role === 'pharmacist' ? 'bg-purple-100 text-primary' :
                       user.role === 'lab_technician' ? 'bg-yellow-100 text-yellow-700' :
                       user.role === 'receptionist' ? 'bg-pink-100 text-pink-700' :
-                      'bg-gray-100 text-gray-700'
+                      'bg-muted text-foreground'
                     }`}>
                       {user.role === 'super_admin' ? 'Super Admin' :
                        user.role === 'admin' ? 'Admin' :
@@ -434,13 +434,13 @@ export function SuperAdminDashboard({ session }: SuperAdminDashboardProps) {
                        user.role === 'lab_technician' ? 'Lab Tech' :
                        user.role === 'receptionist' ? 'Receptionist' : 'User'}
                     </span>
-                    <div className="flex items-center gap-1 text-xs text-green-600">
-                      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <div className="flex items-center gap-1 text-xs text-primary">
+                      <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
                       Online
                     </div>
                   </div>
                   {user.last_sign_in_at && (
-                    <p className="text-xs text-gray-500 mt-2">
+                    <p className="text-xs text-muted-foreground mt-2">
                       Last login: {new Date(user.last_sign_in_at).toLocaleString()}
                     </p>
                   )}
@@ -472,11 +472,11 @@ export function SuperAdminDashboard({ session }: SuperAdminDashboardProps) {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b">
-                    <th className="text-left py-3 px-2 text-gray-600 font-medium">Timestamp</th>
-                    <th className="text-left py-3 px-2 text-gray-600 font-medium">User</th>
-                    <th className="text-left py-3 px-2 text-gray-600 font-medium">Action</th>
-                    <th className="text-left py-3 px-2 text-gray-600 font-medium">Status</th>
-                    <th className="text-left py-3 px-2 text-gray-600 font-medium">IP Address</th>
+                    <th className="text-left py-3 px-2 text-muted-foreground font-medium">Timestamp</th>
+                    <th className="text-left py-3 px-2 text-muted-foreground font-medium">User</th>
+                    <th className="text-left py-3 px-2 text-muted-foreground font-medium">Action</th>
+                    <th className="text-left py-3 px-2 text-muted-foreground font-medium">Status</th>
+                    <th className="text-left py-3 px-2 text-muted-foreground font-medium">IP Address</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -525,7 +525,7 @@ export function SuperAdminDashboard({ session }: SuperAdminDashboardProps) {
               <Button
                 onClick={handleBackup}
                 disabled={loading}
-                className="flex-1 bg-blue-600 hover:bg-blue-700"
+                className="flex-1 bg-primary hover:bg-blue-700"
               >
                 {loading ? 'Running Backup...' : 'Confirm Backup'}
               </Button>

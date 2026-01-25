@@ -181,7 +181,7 @@ export function DepartmentManagement({ session }: { session: any }) {
                         value={formData.description || ''}
                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                         placeholder="Department description"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                        className="w-full px-3 py-2 border border-border rounded-md"
                         rows={3}
                       />
                     </div>
@@ -198,7 +198,7 @@ export function DepartmentManagement({ session }: { session: any }) {
           </CardHeader>
           <CardContent>
             <div className="flex items-center space-x-2 mb-4">
-              <Search className="size-4 text-gray-400" />
+              <Search className="size-4 text-muted-foreground" />
               <Input
                 placeholder="Search departments..."
                 value={searchTerm}
@@ -221,7 +221,7 @@ export function DepartmentManagement({ session }: { session: any }) {
                       <h3 className="font-semibold">{department.name}</h3>
                     </div>
                     <span className={`px-2 py-1 rounded text-xs ${
-                      department.status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                      department.status === 'Active' ? 'bg-green-100 text-primary' : 'bg-red-100 text-destructive'
                     }`}>
                       {department.status}
                     </span>
@@ -252,7 +252,7 @@ export function DepartmentManagement({ session }: { session: any }) {
             </div>
 
             {filteredDepartments.length === 0 && (
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-muted-foreground">
                 No departments found.
               </div>
             )}
@@ -399,7 +399,7 @@ export function ChangePassword({ session }: { session: any }) {
               </Button>
             </div>
 
-            <div className="text-xs text-gray-500 space-y-1">
+            <div className="text-xs text-muted-foreground space-y-1">
               <p>Password requirements:</p>
               <ul className="list-disc list-inside space-y-1">
                 <li>At least 8 characters long</li>

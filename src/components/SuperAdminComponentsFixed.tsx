@@ -7,7 +7,7 @@ export function DepartmentManagement({ session }: { session: any }) {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Department Management</h1>
-        <p className="text-gray-600">Manage hospital departments and their operations</p>
+        <p className="text-muted-foreground">Manage hospital departments and their operations</p>
       </div>
       <Card className="glass-card">
         <CardHeader>
@@ -30,7 +30,7 @@ export function PayrollManagement({ session }: { session: any }) {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Payroll Management</h1>
-        <p className="text-gray-600">Manage staff salaries and payroll processing</p>
+        <p className="text-muted-foreground">Manage staff salaries and payroll processing</p>
       </div>
       <Card className="glass-card">
         <CardHeader>
@@ -53,7 +53,7 @@ export function AttendanceManagement({ session }: { session: any }) {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Attendance Management</h1>
-        <p className="text-gray-600">Track staff attendance and working hours</p>
+        <p className="text-muted-foreground">Track staff attendance and working hours</p>
       </div>
       <Card className="glass-card">
         <CardHeader>
@@ -76,7 +76,7 @@ export function RadiologyManagement({ session }: { session: any }) {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Radiology Management</h1>
-        <p className="text-gray-600">Manage radiology services and imaging</p>
+        <p className="text-muted-foreground">Manage radiology services and imaging</p>
       </div>
       <Card className="glass-card">
         <CardContent className="p-6">
@@ -93,7 +93,7 @@ export function OperationTheatreManagement({ session }: { session: any }) {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Operation Theatre Management</h1>
-        <p className="text-gray-600">Manage operation theatre scheduling and resources</p>
+        <p className="text-muted-foreground">Manage operation theatre scheduling and resources</p>
       </div>
       <Card className="glass-card">
         <CardContent className="p-6">
@@ -110,7 +110,7 @@ export function BackupManagement({ session }: { session: any }) {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Backup Management</h1>
-        <p className="text-gray-600">Manage system backups and data recovery</p>
+        <p className="text-muted-foreground">Manage system backups and data recovery</p>
       </div>
       <Card className="glass-card">
         <CardHeader>
@@ -133,7 +133,7 @@ export function ChangePassword({ session }: { session: any }) {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Change Password</h1>
-        <p className="text-gray-600">Update your account password</p>
+        <p className="text-muted-foreground">Update your account password</p>
       </div>
       <Card className="glass-card">
         <CardHeader>

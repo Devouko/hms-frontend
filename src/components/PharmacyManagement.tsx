@@ -36,6 +36,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from './ui/select';
+import { TodoListWidget } from './TodoListWidget';
 
 interface Medication {
   id: string;
@@ -142,13 +143,13 @@ export function PharmacyManagement() {
       label: 'Total Medications',
       value: medications.length.toString(),
       icon: Pill,
-      color: 'bg-blue-500',
+      color: 'bg-primary',
     },
     {
       label: 'Low Stock Items',
       value: medications.filter((m) => m.stock < m.minStock).length.toString(),
       icon: AlertTriangle,
-      color: 'bg-red-500',
+      color: 'bg-destructive',
     },
     {
       label: 'Pending Prescriptions',
@@ -160,7 +161,7 @@ export function PharmacyManagement() {
       label: 'Today\'s Revenue',
       value: '$2,450',
       icon: DollarSign,
-      color: 'bg-green-500',
+      color: 'bg-primary',
     },
   ];
 
@@ -204,7 +205,7 @@ export function PharmacyManagement() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl text-gray-900">Pharmacy Management</h1>
-          <p className="text-gray-600">Manage medications, prescriptions, and inventory</p>
+          <p className="text-muted-foreground">Manage medications, prescriptions, and inventory</p>
         </div>
       </div>
 
@@ -223,11 +224,11 @@ export function PharmacyManagement() {
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600">{stat.label}</p>
+                      <p className="text-sm text-muted-foreground">{stat.label}</p>
                       <p className="text-2xl mt-2">{stat.value}</p>
                     </div>
                     <div className={`${stat.color} p-3 rounded-lg`}>
-                      <Icon className="size-6 text-white" />
+                      <Icon className="size-6 text-card-foreground" />
                     </div>
                   </div>
                 </CardContent>
@@ -237,12 +238,14 @@ export function PharmacyManagement() {
         })}
       </div>
 
-      <Tabs defaultValue="inventory" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="inventory">Medication Inventory</TabsTrigger>
-          <TabsTrigger value="prescriptions">Prescriptions</TabsTrigger>
-          <TabsTrigger value="low-stock">Low Stock Alerts</TabsTrigger>
-        </TabsList>
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <div className="lg:col-span-3">
+          <Tabs defaultValue="inventory" className="space-y-4">
+            <TabsList>
+              <TabsTrigger value="inventory">Medication Inventory</TabsTrigger>
+              <TabsTrigger value="prescriptions">Prescriptions</TabsTrigger>
+              <TabsTrigger value="low-stock">Low Stock Alerts</TabsTrigger>
+            </TabsList>
 
         {/* Inventory Tab */}
         <TabsContent value="inventory" className="space-y-4">
@@ -379,7 +382,7 @@ export function PharmacyManagement() {
             </CardHeader>
             <CardContent>
               <div className="mb-4 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
                 <Input
                   placeholder="Search medications..."
                   value={searchTerm}
@@ -392,13 +395,13 @@ export function PharmacyManagement() {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b">
-                      <th className="text-left p-3 text-sm text-gray-600">Medication</th>
-                      <th className="text-left p-3 text-sm text-gray-600">Category</th>
-                      <th className="text-left p-3 text-sm text-gray-600">Stock</th>
-                      <th className="text-left p-3 text-sm text-gray-600">Price</th>
-                      <th className="text-left p-3 text-sm text-gray-600">Expiry Date</th>
-                      <th className="text-left p-3 text-sm text-gray-600">Batch</th>
-                      <th className="text-right p-3 text-sm text-gray-600">Actions</th>
+                      <th className="text-left p-3 text-sm text-muted-foreground">Medication</th>
+                      <th className="text-left p-3 text-sm text-muted-foreground">Category</th>
+                      <th className="text-left p-3 text-sm text-muted-foreground">Stock</th>
+                      <th className="text-left p-3 text-sm text-muted-foreground">Price</th>
+                      <th className="text-left p-3 text-sm text-muted-foreground">Expiry Date</th>
+                      <th className="text-left p-3 text-sm text-muted-foreground">Batch</th>
+                      <th className="text-right p-3 text-sm text-muted-foreground">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -411,7 +414,7 @@ export function PharmacyManagement() {
                         <td className="p-3">
                           <div>
                             <p className="text-gray-900">{med.name}</p>
-                            <p className="text-xs text-gray-500">{med.manufacturer}</p>
+                            <p className="text-xs text-muted-foreground">{med.manufacturer}</p>
                           </div>
                         </td>
                         <td className="p-3">
@@ -421,24 +424,24 @@ export function PharmacyManagement() {
                           <span
                             className={
                               med.stock < med.minStock
-                                ? 'text-red-600'
+                                ? 'text-destructive'
                                 : 'text-gray-900'
                             }
                           >
                             {med.stock}
                           </span>
-                          <span className="text-xs text-gray-500"> / {med.minStock}</span>
+                          <span className="text-xs text-muted-foreground"> / {med.minStock}</span>
                         </td>
                         <td className="p-3">${med.price.toFixed(2)}</td>
-                        <td className="p-3 text-sm text-gray-600">{med.expiryDate}</td>
-                        <td className="p-3 text-sm text-gray-600">{med.batchNumber}</td>
+                        <td className="p-3 text-sm text-muted-foreground">{med.expiryDate}</td>
+                        <td className="p-3 text-sm text-muted-foreground">{med.batchNumber}</td>
                         <td className="p-3">
                           <div className="flex justify-end gap-2">
                             <Button size="sm" variant="outline">
                               <Edit className="size-4" />
                             </Button>
                             <Button size="sm" variant="outline">
-                              <Trash2 className="size-4 text-red-600" />
+                              <Trash2 className="size-4 text-destructive" />
                             </Button>
                           </div>
                         </td>
@@ -463,16 +466,16 @@ export function PharmacyManagement() {
                   <motion.div
                     key={prescription.id}
                     whileHover={{ scale: 1.01 }}
-                    className="p-4 bg-gray-50 rounded-lg"
+                    className="p-4 bg-muted/50 rounded-lg"
                   >
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white">
+                        <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-card-foreground">
                           <User className="size-5" />
                         </div>
                         <div>
                           <p className="text-gray-900">{prescription.patientName}</p>
-                          <p className="text-sm text-gray-600">{prescription.doctorName}</p>
+                          <p className="text-sm text-muted-foreground">{prescription.doctorName}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
@@ -488,8 +491,8 @@ export function PharmacyManagement() {
                             prescription.status === 'pending'
                               ? 'bg-amber-100 text-amber-700'
                               : prescription.status === 'dispensed'
-                              ? 'bg-blue-100 text-blue-700'
-                              : 'bg-green-100 text-green-700'
+                              ? 'bg-blue-100 text-primary'
+                              : 'bg-green-100 text-primary'
                           }
                         >
                           {prescription.status}
@@ -505,7 +508,7 @@ export function PharmacyManagement() {
                       </div>
                     </div>
                     <div className="space-y-1">
-                      <p className="text-sm text-gray-600">Medications:</p>
+                      <p className="text-sm text-muted-foreground">Medications:</p>
                       {prescription.medications.map((med, idx) => (
                         <div
                           key={idx}
@@ -516,7 +519,7 @@ export function PharmacyManagement() {
                         </div>
                       ))}
                     </div>
-                    <p className="text-xs text-gray-500 mt-2 flex items-center gap-1">
+                    <p className="text-xs text-muted-foreground mt-2 flex items-center gap-1">
                       <Calendar className="size-3" />
                       {prescription.date}
                     </p>
@@ -532,7 +535,7 @@ export function PharmacyManagement() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <AlertTriangle className="size-5 text-red-500" />
+                <AlertTriangle className="size-5 text-destructive" />
                 Low Stock Alerts
               </CardTitle>
             </CardHeader>
@@ -547,8 +550,8 @@ export function PharmacyManagement() {
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-gray-900">{med.name}</p>
-                        <p className="text-sm text-gray-600">{med.category}</p>
-                        <p className="text-sm text-red-600 mt-1">
+                        <p className="text-sm text-muted-foreground">{med.category}</p>
+                        <p className="text-sm text-destructive mt-1">
                           Current Stock: {med.stock} / Min: {med.minStock}
                         </p>
                       </div>
@@ -560,7 +563,7 @@ export function PharmacyManagement() {
                   </motion.div>
                 ))}
                 {lowStockMeds.length === 0 && (
-                  <div className="text-center py-8 text-gray-500">
+                  <div className="text-center py-8 text-muted-foreground">
                     All medications are adequately stocked
                   </div>
                 )}
@@ -568,7 +571,40 @@ export function PharmacyManagement() {
             </CardContent>
           </Card>
         </TabsContent>
-      </Tabs>
+          </Tabs>
+        </div>
+
+        {/* Sidebar */}
+        <div className="space-y-6">
+          {/* Todo List Widget */}
+          <TodoListWidget maxItems={4} />
+
+          {/* Quick Stats */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Quick Stats</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="flex justify-between">
+                <span className="text-sm text-muted-foreground">Total Value</span>
+                <span className="text-sm text-gray-900">$45,230</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-sm text-muted-foreground">Expired Items</span>
+                <span className="text-sm text-destructive">3</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-sm text-muted-foreground">Categories</span>
+                <span className="text-sm text-gray-900">12</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-sm text-muted-foreground">Suppliers</span>
+                <span className="text-sm text-gray-900">8</span>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 }

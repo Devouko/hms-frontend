@@ -160,10 +160,10 @@ export function AIAssistant({ currentPage = 'dashboard', userRole = 'admin', isO
       exit={{ opacity: 0, scale: 0.9, y: 20 }}
       className="fixed bottom-20 right-4 z-50 max-w-[calc(100vw-2rem)]"
     >
-      <Card className={`bg-white shadow-2xl border-2 border-[#38bdf8] transition-all duration-300 ${
+      <Card className={`bg-card shadow-2xl border-2 border-[#38bdf8] transition-all duration-300 ${
         isMinimized ? 'w-80 h-16' : 'w-96'
       }`} style={{ height: isMinimized ? '64px' : '500px', maxHeight: '80vh' }}>
-        <CardHeader className="p-4 bg-gradient-to-r from-[#38bdf8] to-[#0ea5e9] text-white">
+        <CardHeader className="p-4 bg-gradient-to-r from-[#38bdf8] to-[#0ea5e9] text-card-foreground">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="relative">
@@ -180,7 +180,7 @@ export function AIAssistant({ currentPage = 'dashboard', userRole = 'admin', isO
                 size="sm"
                 variant="ghost"
                 onClick={() => setIsMinimized(!isMinimized)}
-                className="text-white hover:bg-white/20 p-1"
+                className="text-card-foreground hover:bg-card/20 p-1"
               >
                 {isMinimized ? <Maximize2 className="size-4" /> : <Minimize2 className="size-4" />}
               </Button>
@@ -188,7 +188,7 @@ export function AIAssistant({ currentPage = 'dashboard', userRole = 'admin', isO
                 size="sm"
                 variant="ghost"
                 onClick={onToggle}
-                className="text-white hover:bg-white/20 p-1"
+                className="text-card-foreground hover:bg-card/20 p-1"
               >
                 <X className="size-4" />
               </Button>
@@ -209,8 +209,8 @@ export function AIAssistant({ currentPage = 'dashboard', userRole = 'admin', isO
                   >
                     <div className={`max-w-[80%] p-3 rounded-lg ${
                       message.role === 'user' 
-                        ? 'bg-[#38bdf8] text-white' 
-                        : 'bg-gray-100 text-gray-900'
+                        ? 'bg-[#38bdf8] text-card-foreground' 
+                        : 'bg-muted text-gray-900'
                     }`}>
                       {message.role === 'assistant' && (
                         <div className="flex items-center gap-2 mb-2">
@@ -225,7 +225,7 @@ export function AIAssistant({ currentPage = 'dashboard', userRole = 'admin', isO
                             <Badge
                               key={index}
                               variant="outline"
-                              className="cursor-pointer hover:bg-[#38bdf8] hover:text-white text-xs"
+                              className="cursor-pointer hover:bg-[#38bdf8] hover:text-card-foreground text-xs"
                               onClick={() => handleSuggestionClick(suggestion)}
                             >
                               {suggestion}
@@ -244,7 +244,7 @@ export function AIAssistant({ currentPage = 'dashboard', userRole = 'admin', isO
                   animate={{ opacity: 1 }}
                   className="flex justify-start"
                 >
-                  <div className="bg-gray-100 p-3 rounded-lg">
+                  <div className="bg-muted p-3 rounded-lg">
                     <div className="flex items-center gap-2">
                       <Stethoscope className="size-4 text-[#38bdf8] animate-pulse" />
                       <div className="flex gap-1">

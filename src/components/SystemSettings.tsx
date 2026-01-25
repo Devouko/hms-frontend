@@ -6,7 +6,7 @@ import { Input } from './ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Label } from './ui/label';
 import { toast } from 'sonner';
-import { themeService, themeColors } from '../utils/themeService';
+import { colorThemes, getCurrentTheme, setCurrentTheme, applyTheme } from '../utils/themeColors';
 
 interface HospitalSettings {
   hospitalName: string;
@@ -69,10 +69,28 @@ export function SystemSettings({ session }: SystemSettingsProps) {
     }
   });
   const [loading, setLoading] = useState(false);
-  const [selectedTheme, setSelectedTheme] = useState(themeService.getCurrentTheme());
+  const [selectedTheme, setSelectedTheme] = useState(() => {
+    const current = getCurrentTheme();
+    return colorThemes[current] || colorThemes.blue;
+  });
 
   useEffect(() => {
     loadSettings();
+    
+    // Listen for theme changes from other components
+    const handleThemeChangeEvent = (event: CustomEvent) => {
+      const themeKey = event.detail.theme;
+      const theme = colorThemes[themeKey];
+      if (theme) {
+        setSelectedTheme(theme);
+      }
+    };
+    
+    window.addEventListener('themeChanged', handleThemeChangeEvent as EventListener);
+    
+    return () => {
+      window.removeEventListener('themeChanged', handleThemeChangeEvent as EventListener);
+    };
   }, []);
 
   const loadSettings = () => {
@@ -99,15 +117,19 @@ export function SystemSettings({ session }: SystemSettingsProps) {
     }
   };
 
-  const handleThemeChange = (themeName: string) => {
-    const theme = themeColors.find(t => t.name === themeName);
+  const handleThemeChange = (themeKey: string) => {
+    const theme = colorThemes[themeKey];
     if (theme) {
       setSelectedTheme(theme);
-      themeService.setTheme(theme);
+      setCurrentTheme(themeKey);
+      applyTheme(theme);
       
-      // Force immediate DOM update
+      // Force immediate visual update
       requestAnimationFrame(() => {
-        document.documentElement.style.setProperty('--force-update', Date.now().toString());
+        // Trigger a reflow to ensure styles are applied
+        document.body.offsetHeight;
+        // Dispatch custom event to notify other components
+        window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme: themeKey, themeData: theme } }));
       });
       
       toast.success(`Theme changed to ${theme.name}`);
@@ -149,41 +171,42 @@ export function SystemSettings({ session }: SystemSettingsProps) {
               <div className="space-y-4">
                 <div className="space-y-2">
                   <Label>Select System Theme</Label>
-                  <p className="text-sm text-gray-600">Choose a color theme that will be applied across the entire hospital management system.</p>
+                  <p className="text-sm text-muted-foreground">Choose a color theme that will be applied across the entire hospital management system.</p>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  {themeColors.map((theme) => (
+                  {Object.entries(colorThemes).map(([key, theme]) => (
                     <motion.div
-                      key={theme.name}
+                      key={key}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       className={`relative cursor-pointer rounded-lg p-4 border-2 transition-all ${
                         selectedTheme.name === theme.name
-                          ? 'border-current shadow-lg'
-                          : 'border-gray-200 hover:border-gray-300'
+                          ? 'border-2 shadow-lg'
+                          : 'border-border hover:border-muted-foreground'
                       }`}
                       style={{
-                        background: theme.gradient,
-                        borderColor: selectedTheme.name === theme.name ? theme.primary : undefined
+                        borderColor: selectedTheme.name === theme.name ? theme.primary : undefined,
+                        backgroundColor: selectedTheme.name === theme.name ? `${theme.primary}10` : 'hsl(var(--card))'
                       }}
-                      onClick={() => handleThemeChange(theme.name)}
+                      onClick={() => handleThemeChange(key)}
                     >
                       <div className="text-center">
                         <div className="w-8 h-8 rounded-full mx-auto mb-2" style={{ backgroundColor: theme.primary }} />
-                        <h4 className="text-sm font-medium text-white mb-1">{theme.name}</h4>
+                        <h4 className="text-sm font-medium text-card-foreground mb-1">{theme.name}</h4>
                         <div className="flex justify-center gap-1">
                           <div className="w-3 h-3 rounded-full" style={{ backgroundColor: theme.primary }} />
-                          <div className="w-3 h-3 rounded-full" style={{ backgroundColor: theme.accent }} />
                           <div className="w-3 h-3 rounded-full" style={{ backgroundColor: theme.secondary }} />
+                          <div className="w-3 h-3 rounded-full" style={{ backgroundColor: theme.accent }} />
                         </div>
                       </div>
                       {selectedTheme.name === theme.name && (
                         <motion.div
                           initial={{ scale: 0 }}
                           animate={{ scale: 1 }}
-                          className="absolute top-2 right-2 w-6 h-6 bg-white rounded-full flex items-center justify-center"
+                          className="absolute top-2 right-2 w-6 h-6 rounded-full flex items-center justify-center"
+                          style={{ backgroundColor: 'hsl(var(--card))' }}
                         >
-                          <div className="w-3 h-3 bg-green-500 rounded-full" />
+                          <div className="w-3 h-3 rounded-full" style={{ backgroundColor: theme.primary }} />
                         </motion.div>
                       )}
                     </motion.div>
@@ -193,7 +216,7 @@ export function SystemSettings({ session }: SystemSettingsProps) {
                   <p className="text-sm text-blue-800">
                     <strong>Current Theme:</strong> {selectedTheme.name}
                   </p>
-                  <p className="text-xs text-blue-600 mt-1">
+                  <p className="text-xs text-primary mt-1">
                     Theme changes are applied immediately and saved automatically. The selected theme will affect all components including buttons, cards, charts, and navigation elements.
                   </p>
                 </div>
@@ -225,7 +248,7 @@ export function SystemSettings({ session }: SystemSettingsProps) {
                   value={settings.hospitalAddress}
                   onChange={(e) => setSettings({ ...settings, hospitalAddress: e.target.value })}
                   placeholder="Enter hospital address"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  className="w-full px-3 py-2 border border-border rounded-md"
                   rows={3}
                 />
               </div>
@@ -298,7 +321,7 @@ export function SystemSettings({ session }: SystemSettingsProps) {
                     id="currency"
                     value={settings.currency}
                     onChange={(e) => setSettings({ ...settings, currency: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    className="w-full px-3 py-2 border border-border rounded-md"
                   >
                     {currencies.map(currency => (
                       <option key={currency} value={currency}>{currency}</option>
@@ -311,7 +334,7 @@ export function SystemSettings({ session }: SystemSettingsProps) {
                     id="timezone"
                     value={settings.timezone}
                     onChange={(e) => setSettings({ ...settings, timezone: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    className="w-full px-3 py-2 border border-border rounded-md"
                   >
                     {timezones.map(timezone => (
                       <option key={timezone} value={timezone}>{timezone}</option>
@@ -326,7 +349,7 @@ export function SystemSettings({ session }: SystemSettingsProps) {
                     id="dateFormat"
                     value={settings.dateFormat}
                     onChange={(e) => setSettings({ ...settings, dateFormat: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    className="w-full px-3 py-2 border border-border rounded-md"
                   >
                     <option value="DD/MM/YYYY">DD/MM/YYYY</option>
                     <option value="MM/DD/YYYY">MM/DD/YYYY</option>
@@ -339,7 +362,7 @@ export function SystemSettings({ session }: SystemSettingsProps) {
                     id="timeFormat"
                     value={settings.timeFormat}
                     onChange={(e) => setSettings({ ...settings, timeFormat: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    className="w-full px-3 py-2 border border-border rounded-md"
                   >
                     <option value="12">12 Hour</option>
                     <option value="24">24 Hour</option>
@@ -352,7 +375,7 @@ export function SystemSettings({ session }: SystemSettingsProps) {
                   id="language"
                   value={settings.language}
                   onChange={(e) => setSettings({ ...settings, language: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  className="w-full px-3 py-2 border border-border rounded-md"
                 >
                   {languages.map(language => (
                     <option key={language} value={language}>{language}</option>
@@ -366,7 +389,7 @@ export function SystemSettings({ session }: SystemSettingsProps) {
                     id="fiscalYearStart"
                     value={settings.fiscalYearStart}
                     onChange={(e) => setSettings({ ...settings, fiscalYearStart: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    className="w-full px-3 py-2 border border-border rounded-md"
                   >
                     {months.map(month => (
                       <option key={month} value={month}>{month}</option>

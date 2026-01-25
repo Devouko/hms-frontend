@@ -316,10 +316,10 @@ export function VehicleManagement({ session }: VehicleManagementProps) {
                       <h3 className="font-semibold">{vehicle.vehicleNo}</h3>
                     </div>
                     <span className={`px-2 py-1 rounded text-xs ${
-                      vehicle.status === 'Available' ? 'bg-green-100 text-green-700' :
-                      vehicle.status === 'In Use' ? 'bg-blue-100 text-blue-700' :
+                      vehicle.status === 'Available' ? 'bg-green-100 text-primary' :
+                      vehicle.status === 'In Use' ? 'bg-blue-100 text-primary' :
                       vehicle.status === 'Maintenance' ? 'bg-yellow-100 text-yellow-700' :
-                      'bg-red-100 text-red-700'
+                      'bg-red-100 text-destructive'
                     }`}>
                       {vehicle.status}
                     </span>

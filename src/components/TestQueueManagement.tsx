@@ -94,19 +94,19 @@ export function TestQueueManagement() {
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'stat': return 'bg-red-100 text-red-700';
-      case 'urgent': return 'bg-orange-100 text-orange-700';
-      case 'routine': return 'bg-gray-100 text-gray-700';
-      default: return 'bg-gray-100 text-gray-700';
+      case 'stat': return 'bg-red-100 text-destructive';
+      case 'urgent': return 'bg-orange-100 text-primary';
+      case 'routine': return 'bg-muted text-foreground';
+      default: return 'bg-muted text-foreground';
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'waiting': return 'bg-yellow-100 text-yellow-700';
-      case 'in-progress': return 'bg-blue-100 text-blue-700';
-      case 'completed': return 'bg-green-100 text-green-700';
-      default: return 'bg-gray-100 text-gray-700';
+      case 'in-progress': return 'bg-blue-100 text-primary';
+      case 'completed': return 'bg-green-100 text-primary';
+      default: return 'bg-muted text-foreground';
     }
   };
 
@@ -126,7 +126,7 @@ export function TestQueueManagement() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl text-gray-900">Test Queue Management</h1>
-        <p className="text-gray-600">Manage test queue and assign to technicians</p>
+        <p className="text-muted-foreground">Manage test queue and assign to technicians</p>
       </div>
 
       {/* Queue Statistics */}
@@ -134,25 +134,25 @@ export function TestQueueManagement() {
         <Card>
           <CardContent className="p-4 text-center">
             <div className="text-2xl font-bold text-yellow-600">{queueStats.waiting}</div>
-            <div className="text-sm text-gray-600">Waiting</div>
+            <div className="text-sm text-muted-foreground">Waiting</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-blue-600">{queueStats.inProgress}</div>
-            <div className="text-sm text-gray-600">In Progress</div>
+            <div className="text-2xl font-bold text-primary">{queueStats.inProgress}</div>
+            <div className="text-sm text-muted-foreground">In Progress</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-green-600">{queueStats.completed}</div>
-            <div className="text-sm text-gray-600">Completed</div>
+            <div className="text-2xl font-bold text-primary">{queueStats.completed}</div>
+            <div className="text-sm text-muted-foreground">Completed</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-red-600">{queueStats.stat}</div>
-            <div className="text-sm text-gray-600">STAT Priority</div>
+            <div className="text-2xl font-bold text-destructive">{queueStats.stat}</div>
+            <div className="text-sm text-muted-foreground">STAT Priority</div>
           </CardContent>
         </Card>
       </div>
@@ -179,7 +179,7 @@ export function TestQueueManagement() {
                   <div className="flex items-center gap-4">
                     <div className="text-center">
                       <div className="text-lg font-bold text-primary">#{index + 1}</div>
-                      <div className="text-xs text-gray-500">Queue</div>
+                      <div className="text-xs text-muted-foreground">Queue</div>
                     </div>
                     <div>
                       <div className="flex items-center gap-2 mb-1">
@@ -191,8 +191,8 @@ export function TestQueueManagement() {
                           {test.status}
                         </Badge>
                       </div>
-                      <p className="text-xs text-gray-600">{test.testType} • {test.category}</p>
-                      <div className="flex items-center gap-4 mt-1 text-xs text-gray-500">
+                      <p className="text-xs text-muted-foreground">{test.testType} • {test.category}</p>
+                      <div className="flex items-center gap-4 mt-1 text-xs text-muted-foreground">
                         <span className="flex items-center gap-1">
                           <Clock className="size-3" />
                           Ordered: {test.orderTime}
@@ -254,7 +254,7 @@ export function TestQueueManagement() {
                     )}
 
                     {test.status === 'completed' && (
-                      <Badge className="bg-green-100 text-green-700">
+                      <Badge className="bg-green-100 text-primary">
                         ✓ Done
                       </Badge>
                     )}

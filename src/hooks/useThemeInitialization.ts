@@ -1,15 +1,26 @@
 import { useEffect } from 'react';
-import { themeService } from '../utils/themeService';
+import { getCurrentTheme, setCurrentTheme, applyTheme, colorThemes } from '../utils/themeColors';
 
 export function useThemeInitialization() {
   useEffect(() => {
     // Initialize theme on app startup
-    const currentTheme = themeService.getCurrentTheme();
-    themeService.setTheme(currentTheme);
+    const currentTheme = getCurrentTheme();
+    const theme = colorThemes[currentTheme];
     
-    // Listen for theme changes from other components
+    if (theme) {
+      applyTheme(theme);
+    }
+    
+    // Listen for theme changes and apply them
     const handleThemeChange = (event: CustomEvent) => {
-      console.log('Theme changed to:', event.detail.name);
+      const themeKey = event.detail.theme;
+      const themeData = event.detail.themeData;
+      
+      if (themeData) {
+        applyTheme(themeData);
+      } else if (themeKey && colorThemes[themeKey]) {
+        applyTheme(colorThemes[themeKey]);
+      }
     };
     
     window.addEventListener('themeChanged', handleThemeChange as EventListener);

@@ -313,22 +313,22 @@ export function QueueManagement({ session }: QueueManagementProps) {
   const getStatusColor = (status: string) => {
     const colors = {
       'waiting': 'bg-yellow-100 text-yellow-700',
-      'called': 'bg-blue-100 text-blue-700',
-      'in_service': 'bg-green-100 text-green-700',
-      'completed': 'bg-gray-100 text-gray-700',
-      'no_show': 'bg-red-100 text-red-700'
+      'called': 'bg-blue-100 text-primary',
+      'in_service': 'bg-green-100 text-primary',
+      'completed': 'bg-muted text-foreground',
+      'no_show': 'bg-red-100 text-destructive'
     };
-    return colors[status as keyof typeof colors] || 'bg-gray-100 text-gray-700';
+    return colors[status as keyof typeof colors] || 'bg-muted text-foreground';
   };
 
   const getPriorityColor = (priority: string) => {
     const colors = {
-      'low': 'bg-blue-100 text-blue-700',
-      'normal': 'bg-gray-100 text-gray-700',
-      'high': 'bg-orange-100 text-orange-700',
-      'urgent': 'bg-red-100 text-red-700'
+      'low': 'bg-blue-100 text-primary',
+      'normal': 'bg-muted text-foreground',
+      'high': 'bg-orange-100 text-primary',
+      'urgent': 'bg-red-100 text-destructive'
     };
-    return colors[priority as keyof typeof colors] || 'bg-gray-100 text-gray-700';
+    return colors[priority as keyof typeof colors] || 'bg-muted text-foreground';
   };
 
   const getWaitTime = (joinedTime: string) => {
@@ -343,7 +343,7 @@ export function QueueManagement({ session }: QueueManagementProps) {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Queue Management</h1>
-          <p className="text-gray-600">Manage patient queues across departments</p>
+          <p className="text-muted-foreground">Manage patient queues across departments</p>
         </div>
         <Button onClick={() => setIsAddModalOpen(true)} className="bg-[#38bdf8] hover:bg-[#0ea5e9]">
           <Plus className="size-4 mr-2" />
@@ -357,7 +357,7 @@ export function QueueManagement({ session }: QueueManagementProps) {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Waiting</p>
+                <p className="text-sm text-muted-foreground">Waiting</p>
                 <p className="text-2xl font-bold text-yellow-600">{stats.totalWaiting}</p>
               </div>
               <Clock className="size-8 text-yellow-600" />
@@ -368,10 +368,10 @@ export function QueueManagement({ session }: QueueManagementProps) {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Avg Wait</p>
-                <p className="text-2xl font-bold text-blue-600">{stats.averageWaitTime}m</p>
+                <p className="text-sm text-muted-foreground">Avg Wait</p>
+                <p className="text-2xl font-bold text-primary">{stats.averageWaitTime}m</p>
               </div>
-              <Users className="size-8 text-blue-600" />
+              <Users className="size-8 text-primary" />
             </div>
           </CardContent>
         </Card>
@@ -379,10 +379,10 @@ export function QueueManagement({ session }: QueueManagementProps) {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Longest Wait</p>
-                <p className="text-2xl font-bold text-orange-600">{stats.longestWaitTime}m</p>
+                <p className="text-sm text-muted-foreground">Longest Wait</p>
+                <p className="text-2xl font-bold text-primary">{stats.longestWaitTime}m</p>
               </div>
-              <AlertTriangle className="size-8 text-orange-600" />
+              <AlertTriangle className="size-8 text-primary" />
             </div>
           </CardContent>
         </Card>
@@ -390,10 +390,10 @@ export function QueueManagement({ session }: QueueManagementProps) {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">Completed</p>
-                <p className="text-2xl font-bold text-green-600">{stats.completedToday}</p>
+                <p className="text-sm text-muted-foreground">Completed</p>
+                <p className="text-2xl font-bold text-primary">{stats.completedToday}</p>
               </div>
-              <CheckCircle className="size-8 text-green-600" />
+              <CheckCircle className="size-8 text-primary" />
             </div>
           </CardContent>
         </Card>
@@ -401,10 +401,10 @@ export function QueueManagement({ session }: QueueManagementProps) {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">No Shows</p>
-                <p className="text-2xl font-bold text-red-600">{stats.noShowsToday}</p>
+                <p className="text-sm text-muted-foreground">No Shows</p>
+                <p className="text-2xl font-bold text-destructive">{stats.noShowsToday}</p>
               </div>
-              <Users className="size-8 text-red-600" />
+              <Users className="size-8 text-destructive" />
             </div>
           </CardContent>
         </Card>
@@ -426,7 +426,7 @@ export function QueueManagement({ session }: QueueManagementProps) {
                   <select
                     value={selectedDepartment}
                     onChange={(e) => setSelectedDepartment(e.target.value)}
-                    className="px-3 py-2 border border-gray-300 rounded-md"
+                    className="px-3 py-2 border border-border rounded-md"
                   >
                     <option value="all">All Departments</option>
                     {departments.map(dept => (
@@ -436,7 +436,7 @@ export function QueueManagement({ session }: QueueManagementProps) {
                   <select
                     value={selectedService}
                     onChange={(e) => setSelectedService(e.target.value)}
-                    className="px-3 py-2 border border-gray-300 rounded-md"
+                    className="px-3 py-2 border border-border rounded-md"
                   >
                     <option value="all">All Services</option>
                     {services.map(service => (
@@ -444,7 +444,7 @@ export function QueueManagement({ session }: QueueManagementProps) {
                     ))}
                   </select>
                   <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
                     <Input
                       placeholder="Search patients..."
                       value={searchTerm}
@@ -480,33 +480,33 @@ export function QueueManagement({ session }: QueueManagementProps) {
                       <div className="flex items-center justify-between">
                         <div className="flex-1 grid grid-cols-6 gap-4">
                           <div>
-                            <p className="text-xs text-gray-600">Queue #</p>
+                            <p className="text-xs text-muted-foreground">Queue #</p>
                             <p className="text-lg font-bold text-[#38bdf8]">{queue.queueNumber}</p>
                           </div>
                           <div>
-                            <p className="text-xs text-gray-600">Patient</p>
+                            <p className="text-xs text-muted-foreground">Patient</p>
                             <p className="text-sm font-medium text-gray-900">{queue.patientName}</p>
-                            <p className="text-xs text-gray-500">{queue.patientId}</p>
+                            <p className="text-xs text-muted-foreground">{queue.patientId}</p>
                           </div>
                           <div>
-                            <p className="text-xs text-gray-600">Department</p>
+                            <p className="text-xs text-muted-foreground">Department</p>
                             <p className="text-sm text-gray-900">{queue.department}</p>
-                            <p className="text-xs text-gray-500">{queue.service}</p>
+                            <p className="text-xs text-muted-foreground">{queue.service}</p>
                           </div>
                           <div>
-                            <p className="text-xs text-gray-600">Priority</p>
+                            <p className="text-xs text-muted-foreground">Priority</p>
                             <Badge className={getPriorityColor(queue.priority)}>
                               {queue.priority}
                             </Badge>
                           </div>
                           <div>
-                            <p className="text-xs text-gray-600">Status</p>
+                            <p className="text-xs text-muted-foreground">Status</p>
                             <Badge className={getStatusColor(queue.status)}>
                               {queue.status.replace('_', ' ')}
                             </Badge>
                           </div>
                           <div>
-                            <p className="text-xs text-gray-600">Wait Time</p>
+                            <p className="text-xs text-muted-foreground">Wait Time</p>
                             <p className="text-sm font-medium text-gray-900">
                               {getWaitTime(queue.joinedTime)}m
                             </p>
@@ -525,7 +525,7 @@ export function QueueManagement({ session }: QueueManagementProps) {
                               <select
                                 value={queue.priority}
                                 onChange={(e) => handleChangePriority(queue.id, e.target.value as QueueItem['priority'])}
-                                className="px-2 py-1 text-xs border border-gray-300 rounded"
+                                className="px-2 py-1 text-xs border border-border rounded"
                               >
                                 <option value="low">Low</option>
                                 <option value="normal">Normal</option>
@@ -538,7 +538,7 @@ export function QueueManagement({ session }: QueueManagementProps) {
                             <Button
                               size="sm"
                               onClick={() => handleStartService(queue.id)}
-                              className="bg-green-600 hover:bg-green-700"
+                              className="bg-primary hover:bg-green-700"
                             >
                               <Play className="size-4 mr-1" />
                               Start
@@ -548,7 +548,7 @@ export function QueueManagement({ session }: QueueManagementProps) {
                             <Button
                               size="sm"
                               onClick={() => handleCompleteService(queue.id)}
-                              className="bg-purple-600 hover:bg-purple-700"
+                              className="bg-primary hover:bg-purple-700"
                             >
                               <CheckCircle className="size-4 mr-1" />
                               Complete
@@ -565,14 +565,14 @@ export function QueueManagement({ session }: QueueManagementProps) {
                       </div>
                       {queue.notes && (
                         <div className="mt-2 pt-2 border-t">
-                          <p className="text-xs text-gray-600">Notes:</p>
+                          <p className="text-xs text-muted-foreground">Notes:</p>
                           <p className="text-sm text-gray-900">{queue.notes}</p>
                         </div>
                       )}
                     </motion.div>
                   ))}
                 {filteredQueues.length === 0 && (
-                  <div className="text-center py-8 text-gray-500">
+                  <div className="text-center py-8 text-muted-foreground">
                     No patients in queue
                   </div>
                 )}
@@ -604,7 +604,7 @@ export function QueueManagement({ session }: QueueManagementProps) {
                         if (serviceQueues.length === 0) return null;
                         
                         return (
-                          <div key={service} className="flex items-center justify-between p-2 bg-gray-50 rounded">
+                          <div key={service} className="flex items-center justify-between p-2 bg-muted/50 rounded">
                             <span className="text-sm">{service}</span>
                             <div className="flex items-center gap-2">
                               <Badge variant="outline">{serviceQueues.length}</Badge>
@@ -620,7 +620,7 @@ export function QueueManagement({ session }: QueueManagementProps) {
                         );
                       })}
                       {deptQueues.length === 0 && (
-                        <p className="text-sm text-gray-500 text-center py-4">No patients waiting</p>
+                        <p className="text-sm text-muted-foreground text-center py-4">No patients waiting</p>
                       )}
                     </div>
                   </CardContent>
@@ -641,15 +641,15 @@ export function QueueManagement({ session }: QueueManagementProps) {
                   .filter(q => q.status === 'completed' || q.status === 'no_show')
                   .slice(0, 20)
                   .map((queue) => (
-                    <div key={queue.id} className="flex items-center justify-between p-3 bg-gray-50 rounded">
+                    <div key={queue.id} className="flex items-center justify-between p-3 bg-muted/50 rounded">
                       <div className="flex-1 grid grid-cols-5 gap-4">
                         <div>
                           <p className="text-sm font-medium">{queue.patientName}</p>
-                          <p className="text-xs text-gray-500">{queue.patientId}</p>
+                          <p className="text-xs text-muted-foreground">{queue.patientId}</p>
                         </div>
                         <div>
                           <p className="text-sm">{queue.department}</p>
-                          <p className="text-xs text-gray-500">{queue.service}</p>
+                          <p className="text-xs text-muted-foreground">{queue.service}</p>
                         </div>
                         <div>
                           <Badge className={getStatusColor(queue.status)}>
@@ -660,7 +660,7 @@ export function QueueManagement({ session }: QueueManagementProps) {
                           <p className="text-sm">{queue.actualWaitTime || 0}m wait</p>
                         </div>
                         <div>
-                          <p className="text-xs text-gray-500">
+                          <p className="text-xs text-muted-foreground">
                             {queue.completedTime ? new Date(queue.completedTime).toLocaleTimeString() : '-'}
                           </p>
                         </div>
@@ -702,7 +702,7 @@ export function QueueManagement({ session }: QueueManagementProps) {
                 <select
                   value={queueForm.department || ''}
                   onChange={(e) => setQueueForm({ ...queueForm, department: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  className="w-full px-3 py-2 border border-border rounded-md"
                 >
                   <option value="">Select Department</option>
                   {departments.map(dept => (
@@ -715,7 +715,7 @@ export function QueueManagement({ session }: QueueManagementProps) {
                 <select
                   value={queueForm.service || ''}
                   onChange={(e) => setQueueForm({ ...queueForm, service: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  className="w-full px-3 py-2 border border-border rounded-md"
                 >
                   <option value="">Select Service</option>
                   {services.map(service => (
@@ -728,7 +728,7 @@ export function QueueManagement({ session }: QueueManagementProps) {
                 <select
                   value={queueForm.priority || 'normal'}
                   onChange={(e) => setQueueForm({ ...queueForm, priority: e.target.value as QueueItem['priority'] })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  className="w-full px-3 py-2 border border-border rounded-md"
                 >
                   <option value="low">Low</option>
                   <option value="normal">Normal</option>
@@ -750,7 +750,7 @@ export function QueueManagement({ session }: QueueManagementProps) {
               <textarea
                 value={queueForm.notes || ''}
                 onChange={(e) => setQueueForm({ ...queueForm, notes: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md h-20 resize-none"
+                className="w-full px-3 py-2 border border-border rounded-md h-20 resize-none"
                 placeholder="Additional notes..."
               />
             </div>

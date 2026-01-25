@@ -108,35 +108,35 @@ export function SearchPatients({ session }: SearchPatientsProps) {
                       <CardContent className="p-4">
                         <div className="flex items-start justify-between">
                           <div className="flex items-start space-x-4">
-                            <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-semibold">
+                            <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-card-foreground font-semibold">
                               <User className="h-6 w-6" />
                             </div>
                             <div className="flex-1">
                               <h4 className="font-semibold text-lg">{patient.name}</h4>
-                              <p className="text-sm text-gray-600 mb-2">ID: {patient.id}</p>
+                              <p className="text-sm text-muted-foreground mb-2">ID: {patient.id}</p>
                               
                               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                                 <div className="flex items-center">
-                                  <Phone className="h-4 w-4 mr-2 text-gray-400" />
+                                  <Phone className="h-4 w-4 mr-2 text-muted-foreground" />
                                   {patient.phone}
                                 </div>
                                 <div className="flex items-center">
-                                  <Calendar className="h-4 w-4 mr-2 text-gray-400" />
+                                  <Calendar className="h-4 w-4 mr-2 text-muted-foreground" />
                                   {patient.dateOfBirth}
                                 </div>
                                 <div className="flex items-center">
-                                  <span className="w-4 h-4 mr-2 text-gray-400">♂♀</span>
+                                  <span className="w-4 h-4 mr-2 text-muted-foreground">♂♀</span>
                                   {patient.gender}
                                 </div>
                                 <div className="flex items-center">
-                                  <span className="w-4 h-4 mr-2 text-red-500">🩸</span>
+                                  <span className="w-4 h-4 mr-2 text-destructive">🩸</span>
                                   {patient.bloodGroup}
                                 </div>
                               </div>
                               
                               {patient.address && (
                                 <div className="flex items-center mt-2 text-sm">
-                                  <MapPin className="h-4 w-4 mr-2 text-gray-400" />
+                                  <MapPin className="h-4 w-4 mr-2 text-muted-foreground" />
                                   {patient.address}
                                 </div>
                               )}
@@ -160,7 +160,7 @@ export function SearchPatients({ session }: SearchPatientsProps) {
             )}
 
             {searchTerm && searchResults.length === 0 && !loading && (
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-muted-foreground">
                 <Search className="h-12 w-12 mx-auto mb-4 text-gray-300" />
                 <p>No patients found matching "{searchTerm}"</p>
                 <p className="text-sm mt-2">Try searching with different keywords</p>
@@ -168,7 +168,7 @@ export function SearchPatients({ session }: SearchPatientsProps) {
             )}
 
             {!searchTerm && (
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-muted-foreground">
                 <Search className="h-12 w-12 mx-auto mb-4 text-gray-300" />
                 <p>Enter search terms to find patients</p>
                 <p className="text-sm mt-2">Search by name, phone, email, or patient ID</p>

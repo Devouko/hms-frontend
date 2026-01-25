@@ -180,7 +180,7 @@ export function AppointmentManagement() {
                         id="status"
                         value={formData.status || 'Scheduled'}
                         onChange={(e) => setFormData({ ...formData, status: e.target.value as Appointment['status'] })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                        className="w-full px-3 py-2 border border-border rounded-md"
                       >
                         <option value="Scheduled">Scheduled</option>
                         <option value="Completed">Completed</option>
@@ -212,7 +212,7 @@ export function AppointmentManagement() {
           <CardContent>
             <div className="mb-4">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
                 <Input
                   placeholder="Search appointments by patient, doctor, or department..."
                   value={searchTerm}
@@ -233,32 +233,32 @@ export function AppointmentManagement() {
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4 flex-1">
-                      <div className="bg-gradient-to-br from-purple-500 to-pink-600 p-3 rounded-xl text-white">
+                      <div className="bg-gradient-to-br from-purple-500 to-pink-600 p-3 rounded-xl text-card-foreground">
                         <CalendarIcon className="size-6" />
                       </div>
                       <div className="grid grid-cols-5 gap-4 flex-1">
                         <div>
-                          <p className="text-xs text-gray-600">Patient</p>
+                          <p className="text-xs text-muted-foreground">Patient</p>
                           <p className="text-sm text-gray-900">{appointment.patientName}</p>
                         </div>
                         <div>
-                          <p className="text-xs text-gray-600">Doctor</p>
+                          <p className="text-xs text-muted-foreground">Doctor</p>
                           <p className="text-sm text-gray-900">{appointment.doctorName}</p>
                         </div>
                         <div>
-                          <p className="text-xs text-gray-600">Department</p>
+                          <p className="text-xs text-muted-foreground">Department</p>
                           <p className="text-sm text-gray-900">{appointment.department}</p>
                         </div>
                         <div>
-                          <p className="text-xs text-gray-600">Date & Time</p>
+                          <p className="text-xs text-muted-foreground">Date & Time</p>
                           <p className="text-sm text-gray-900">{appointment.date} {appointment.time}</p>
                         </div>
                         <div>
-                          <p className="text-xs text-gray-600">Status</p>
+                          <p className="text-xs text-muted-foreground">Status</p>
                           <span className={`inline-block px-2 py-1 rounded text-xs ${
-                            appointment.status === 'Scheduled' ? 'bg-blue-100 text-blue-700' :
-                            appointment.status === 'Completed' ? 'bg-green-100 text-green-700' :
-                            'bg-red-100 text-red-700'
+                            appointment.status === 'Scheduled' ? 'bg-blue-100 text-primary' :
+                            appointment.status === 'Completed' ? 'bg-green-100 text-primary' :
+                            'bg-red-100 text-destructive'
                           }`}>
                             {appointment.status}
                           </span>
@@ -278,19 +278,19 @@ export function AppointmentManagement() {
                         variant="outline"
                         onClick={() => handleDelete(appointment.id)}
                       >
-                        <Trash2 className="size-4 text-red-600" />
+                        <Trash2 className="size-4 text-destructive" />
                       </Button>
                     </div>
                   </div>
                   <div className="mt-3 ml-16">
-                    <p className="text-xs text-gray-600">Reason:</p>
+                    <p className="text-xs text-muted-foreground">Reason:</p>
                     <p className="text-sm text-gray-900">{appointment.reason}</p>
                   </div>
                 </motion.div>
               ))}
 
               {filteredAppointments.length === 0 && (
-                <div className="text-center py-12 text-gray-500">
+                <div className="text-center py-12 text-muted-foreground">
                   No appointments found
                 </div>
               )}

@@ -115,32 +115,32 @@ export function InpatientManagement({ session }: InpatientManagementProps) {
   const wards = ['All', 'ICU', 'General Ward', 'Private Ward', 'Emergency', 'Pediatric'];
   
   const stats = [
-    { label: 'Total Beds', value: beds.length, icon: Bed, color: 'bg-blue-500' },
-    { label: 'Occupied Beds', value: beds.filter(b => b.status === 'occupied').length, icon: Users, color: 'bg-green-500' },
-    { label: 'Available Beds', value: beds.filter(b => b.status === 'available').length, icon: CheckCircle, color: 'bg-purple-500' },
-    { label: 'Critical Patients', value: beds.filter(b => b.condition === 'Critical').length, icon: AlertTriangle, color: 'bg-red-500' }
+    { label: 'Total Beds', value: beds.length, icon: Bed, color: 'bg-primary' },
+    { label: 'Occupied Beds', value: beds.filter(b => b.status === 'occupied').length, icon: Users, color: 'bg-primary' },
+    { label: 'Available Beds', value: beds.filter(b => b.status === 'available').length, icon: CheckCircle, color: 'bg-primary' },
+    { label: 'Critical Patients', value: beds.filter(b => b.condition === 'Critical').length, icon: AlertTriangle, color: 'bg-destructive' }
   ];
 
   const filteredBeds = selectedWard === 'All' ? beds : beds.filter(bed => bed.ward === selectedWard);
 
   const getBedStatusColor = (status: string) => {
     const colors = {
-      'available': 'bg-green-100 text-green-700 border-green-200',
-      'occupied': 'bg-red-100 text-red-700 border-red-200',
+      'available': 'bg-green-100 text-primary border-green-200',
+      'occupied': 'bg-red-100 text-destructive border-red-200',
       'maintenance': 'bg-yellow-100 text-yellow-700 border-yellow-200',
-      'reserved': 'bg-blue-100 text-blue-700 border-blue-200'
+      'reserved': 'bg-blue-100 text-primary border-blue-200'
     };
-    return colors[status as keyof typeof colors] || 'bg-gray-100 text-gray-700 border-gray-200';
+    return colors[status as keyof typeof colors] || 'bg-muted text-foreground border-border';
   };
 
   const getConditionColor = (condition: string) => {
     const colors = {
-      'Critical': 'bg-red-100 text-red-700',
-      'Serious': 'bg-orange-100 text-orange-700',
-      'Stable': 'bg-green-100 text-green-700',
+      'Critical': 'bg-red-100 text-destructive',
+      'Serious': 'bg-orange-100 text-primary',
+      'Stable': 'bg-green-100 text-primary',
       'Fair': 'bg-yellow-100 text-yellow-700'
     };
-    return colors[condition as keyof typeof colors] || 'bg-gray-100 text-gray-700';
+    return colors[condition as keyof typeof colors] || 'bg-muted text-foreground';
   };
 
   const handleAdmitPatient = async () => {
@@ -222,7 +222,7 @@ export function InpatientManagement({ session }: InpatientManagementProps) {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl text-gray-900">Inpatient Management</h1>
-          <p className="text-gray-600">Manage hospital admissions, beds, and inpatient care</p>
+          <p className="text-muted-foreground">Manage hospital admissions, beds, and inpatient care</p>
         </div>
         <Button onClick={() => setIsAdmissionModalOpen(true)} className="bg-primary hover:bg-primary/90">
           <Plus className="size-4 mr-2" />
@@ -245,11 +245,11 @@ export function InpatientManagement({ session }: InpatientManagementProps) {
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600">{stat.label}</p>
+                      <p className="text-sm text-muted-foreground">{stat.label}</p>
                       <p className="text-2xl mt-2">{stat.value}</p>
                     </div>
                     <div className={`${stat.color} p-3 rounded-lg`}>
-                      <Icon className="size-6 text-white" />
+                      <Icon className="size-6 text-card-foreground" />
                     </div>
                   </div>
                 </CardContent>
@@ -276,7 +276,7 @@ export function InpatientManagement({ session }: InpatientManagementProps) {
                 <select
                   value={selectedWard}
                   onChange={(e) => setSelectedWard(e.target.value)}
-                  className="px-3 py-2 border border-gray-300 rounded-md"
+                  className="px-3 py-2 border border-border rounded-md"
                 >
                   {wards.map(ward => (
                     <option key={ward} value={ward}>{ward}</option>
@@ -301,11 +301,11 @@ export function InpatientManagement({ session }: InpatientManagementProps) {
                         {bed.status}
                       </Badge>
                     </div>
-                    <p className="text-sm text-gray-600 mb-1">{bed.ward}</p>
+                    <p className="text-sm text-muted-foreground mb-1">{bed.ward}</p>
                     {bed.patientName && (
                       <div className="mt-2 pt-2 border-t">
                         <p className="text-sm font-medium">{bed.patientName}</p>
-                        <p className="text-xs text-gray-600">Admitted: {bed.admissionDate}</p>
+                        <p className="text-xs text-muted-foreground">Admitted: {bed.admissionDate}</p>
                         {bed.condition && (
                           <Badge className={`text-xs mt-1 ${getConditionColor(bed.condition)}`}>
                             {bed.condition}
@@ -328,26 +328,26 @@ export function InpatientManagement({ session }: InpatientManagementProps) {
             <CardContent>
               <div className="space-y-3">
                 {admissions.filter(a => a.status === 'admitted').map((admission) => (
-                  <div key={admission.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                  <div key={admission.id} className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
                     <div className="flex-1 grid grid-cols-5 gap-4">
                       <div>
-                        <p className="text-xs text-gray-600">Patient</p>
+                        <p className="text-xs text-muted-foreground">Patient</p>
                         <p className="text-sm text-gray-900">{admission.patientName}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-gray-600">Ward/Bed</p>
+                        <p className="text-xs text-muted-foreground">Ward/Bed</p>
                         <p className="text-sm text-gray-900">{admission.ward}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-gray-600">Admission Date</p>
+                        <p className="text-xs text-muted-foreground">Admission Date</p>
                         <p className="text-sm text-gray-900">{admission.admissionDate}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-gray-600">Doctor</p>
+                        <p className="text-xs text-muted-foreground">Doctor</p>
                         <p className="text-sm text-gray-900">{admission.attendingDoctor}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-gray-600">Condition</p>
+                        <p className="text-xs text-muted-foreground">Condition</p>
                         <Badge className={getConditionColor(admission.condition)}>
                           {admission.condition}
                         </Badge>
@@ -390,30 +390,30 @@ export function InpatientManagement({ session }: InpatientManagementProps) {
                 {vitals.slice(-10).map((vital) => {
                   const patient = admissions.find(a => a.patientId === vital.patientId);
                   return (
-                    <div key={vital.id} className="p-4 bg-gray-50 rounded-lg">
+                    <div key={vital.id} className="p-4 bg-muted/50 rounded-lg">
                       <div className="flex items-center justify-between mb-2">
                         <h4 className="text-gray-900">{patient?.patientName}</h4>
-                        <span className="text-sm text-gray-600">{vital.date} {vital.time}</span>
+                        <span className="text-sm text-muted-foreground">{vital.date} {vital.time}</span>
                       </div>
                       <div className="grid grid-cols-5 gap-4 text-sm">
                         <div>
-                          <p className="text-gray-600">Temp</p>
+                          <p className="text-muted-foreground">Temp</p>
                           <p className="text-gray-900">{vital.temperature}°C</p>
                         </div>
                         <div>
-                          <p className="text-gray-600">BP</p>
+                          <p className="text-muted-foreground">BP</p>
                           <p className="text-gray-900">{vital.bloodPressure}</p>
                         </div>
                         <div>
-                          <p className="text-gray-600">HR</p>
+                          <p className="text-muted-foreground">HR</p>
                           <p className="text-gray-900">{vital.heartRate} bpm</p>
                         </div>
                         <div>
-                          <p className="text-gray-600">RR</p>
+                          <p className="text-muted-foreground">RR</p>
                           <p className="text-gray-900">{vital.respiratoryRate}/min</p>
                         </div>
                         <div>
-                          <p className="text-gray-600">SpO2</p>
+                          <p className="text-muted-foreground">SpO2</p>
                           <p className="text-gray-900">{vital.oxygenSaturation}%</p>
                         </div>
                       </div>
@@ -421,7 +421,7 @@ export function InpatientManagement({ session }: InpatientManagementProps) {
                   );
                 })}
                 {vitals.length === 0 && (
-                  <div className="text-center py-8 text-gray-500">
+                  <div className="text-center py-8 text-muted-foreground">
                     No vital signs recorded yet
                   </div>
                 )}
@@ -436,7 +436,7 @@ export function InpatientManagement({ session }: InpatientManagementProps) {
               <CardTitle>Medication Administration Record (MAR)</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-muted-foreground">
                 Medication schedules and administration tracking
               </div>
             </CardContent>
@@ -451,10 +451,10 @@ export function InpatientManagement({ session }: InpatientManagementProps) {
             <CardContent>
               <div className="space-y-3">
                 {admissions.filter(a => a.status === 'admitted').map((admission) => (
-                  <div key={admission.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                  <div key={admission.id} className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
                     <div>
                       <p className="text-gray-900">{admission.patientName}</p>
-                      <p className="text-sm text-gray-600">Est. Discharge: {admission.estimatedDischarge}</p>
+                      <p className="text-sm text-muted-foreground">Est. Discharge: {admission.estimatedDischarge}</p>
                     </div>
                     <Button onClick={() => handleDischarge(admission.id)}>
                       <CheckCircle className="size-4 mr-2" />
@@ -497,7 +497,7 @@ export function InpatientManagement({ session }: InpatientManagementProps) {
                 <select
                   value={admissionForm.ward || ''}
                   onChange={(e) => setAdmissionForm({ ...admissionForm, ward: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  className="w-full px-3 py-2 border border-border rounded-md"
                 >
                   <option value="">Select Ward</option>
                   <option value="ICU">ICU</option>
@@ -511,7 +511,7 @@ export function InpatientManagement({ session }: InpatientManagementProps) {
                 <select
                   value={admissionForm.admissionType || ''}
                   onChange={(e) => setAdmissionForm({ ...admissionForm, admissionType: e.target.value as any })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  className="w-full px-3 py-2 border border-border rounded-md"
                 >
                   <option value="">Select Type</option>
                   <option value="emergency">Emergency</option>
@@ -532,7 +532,7 @@ export function InpatientManagement({ session }: InpatientManagementProps) {
                 <select
                   value={admissionForm.condition || ''}
                   onChange={(e) => setAdmissionForm({ ...admissionForm, condition: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  className="w-full px-3 py-2 border border-border rounded-md"
                 >
                   <option value="">Select Condition</option>
                   <option value="Critical">Critical</option>

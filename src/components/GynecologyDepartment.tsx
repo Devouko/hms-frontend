@@ -82,7 +82,7 @@ export function GynecologyDepartment({ session }: GynecologyProps) {
       case 'treatment': return 'bg-green-100 text-green-800';
       case 'follow-up': return 'bg-purple-100 text-purple-800';
       case 'delivery': return 'bg-pink-100 text-pink-800';
-      default: return 'bg-gray-100 text-gray-800';
+      default: return 'bg-muted text-gray-800';
     }
   };
 

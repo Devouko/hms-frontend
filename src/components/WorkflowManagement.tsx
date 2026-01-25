@@ -348,18 +348,18 @@ export function WorkflowManagement({ session }: WorkflowManagementProps) {
 
   const getStatusColor = (status: string) => {
     const colors: Record<string, string> = {
-      'registered': 'bg-blue-100 text-blue-700',
-      'scheduled': 'bg-purple-100 text-purple-700',
-      'checked-in': 'bg-green-100 text-green-700',
+      'registered': 'bg-blue-100 text-primary',
+      'scheduled': 'bg-purple-100 text-primary',
+      'checked-in': 'bg-green-100 text-primary',
       'in-consultation': 'bg-yellow-100 text-yellow-700',
-      'lab-ordered': 'bg-orange-100 text-orange-700',
-      'lab-completed': 'bg-teal-100 text-teal-700',
-      'prescription-created': 'bg-indigo-100 text-indigo-700',
+      'lab-ordered': 'bg-orange-100 text-primary',
+      'lab-completed': 'bg-teal-100 text-primary',
+      'prescription-created': 'bg-indigo-100 text-primary',
       'medication-dispensed': 'bg-pink-100 text-pink-700',
-      'billed': 'bg-red-100 text-red-700',
-      'completed': 'bg-green-100 text-green-700'
+      'billed': 'bg-red-100 text-destructive',
+      'completed': 'bg-green-100 text-primary'
     };
-    return colors[status] || 'bg-gray-100 text-gray-700';
+    return colors[status] || 'bg-muted text-foreground';
   };
 
   return (
@@ -367,7 +367,7 @@ export function WorkflowManagement({ session }: WorkflowManagementProps) {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl text-gray-900">Hospital Workflow Management</h1>
-          <p className="text-gray-600">Complete patient journey from registration to billing</p>
+          <p className="text-muted-foreground">Complete patient journey from registration to billing</p>
         </div>
         {canPerformAction('receptionist') && (
           <Button onClick={() => openModal('register')} className="bg-primary hover:bg-primary/90">
@@ -395,16 +395,16 @@ export function WorkflowManagement({ session }: WorkflowManagementProps) {
                   key={patient.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="bg-white border rounded-lg p-6"
+                  className="bg-card border rounded-lg p-6"
                 >
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white">
+                      <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-card-foreground">
                         <User className="size-6" />
                       </div>
                       <div>
                         <h3 className="text-lg text-gray-900">{patient.name}</h3>
-                        <p className="text-sm text-gray-600">Age: {patient.age} | Phone: {patient.phone}</p>
+                        <p className="text-sm text-muted-foreground">Age: {patient.age} | Phone: {patient.phone}</p>
                       </div>
                     </div>
                     <Badge className={getStatusColor(patient.status)}>
@@ -421,14 +421,14 @@ export function WorkflowManagement({ session }: WorkflowManagementProps) {
                       return (
                         <div key={step.id} className="flex items-center gap-2 flex-shrink-0">
                           <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                            isCompleted ? 'bg-green-500 text-white' : 
-                            isCurrent ? 'bg-blue-500 text-white' : 
-                            'bg-gray-200 text-gray-500'
+                            isCompleted ? 'bg-primary text-card-foreground' : 
+                            isCurrent ? 'bg-primary text-card-foreground' : 
+                            'bg-muted text-muted-foreground'
                           }`}>
                             <Icon className="size-4" />
                           </div>
                           {index < getWorkflowSteps().length - 1 && (
-                            <ArrowRight className="size-4 text-gray-400" />
+                            <ArrowRight className="size-4 text-muted-foreground" />
                           )}
                         </div>
                       );
@@ -483,11 +483,11 @@ export function WorkflowManagement({ session }: WorkflowManagementProps) {
             <CardContent>
               <div className="space-y-3">
                 {appointments.filter(apt => apt.status !== 'completed').map((appointment) => (
-                  <div key={appointment.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                  <div key={appointment.id} className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
                     <div>
                       <p className="text-gray-900">{appointment.patientName}</p>
-                      <p className="text-sm text-gray-600">{appointment.doctorName} - {appointment.department}</p>
-                      <p className="text-xs text-gray-500">{appointment.date} at {appointment.time}</p>
+                      <p className="text-sm text-muted-foreground">{appointment.doctorName} - {appointment.department}</p>
+                      <p className="text-xs text-muted-foreground">{appointment.date} at {appointment.time}</p>
                     </div>
                     <Badge className={getStatusColor(appointment.status)}>
                       {appointment.status}
@@ -507,11 +507,11 @@ export function WorkflowManagement({ session }: WorkflowManagementProps) {
             <CardContent>
               <div className="space-y-3">
                 {labTests.map((test) => (
-                  <div key={test.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                  <div key={test.id} className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
                     <div>
                       <p className="text-gray-900">{test.patientName}</p>
-                      <p className="text-sm text-gray-600">{test.testType}</p>
-                      <p className="text-xs text-gray-500">Ordered by: {test.orderedBy}</p>
+                      <p className="text-sm text-muted-foreground">{test.testType}</p>
+                      <p className="text-xs text-muted-foreground">Ordered by: {test.orderedBy}</p>
                     </div>
                     <div className="flex items-center gap-2">
                       <Badge className={getStatusColor(test.status)}>
@@ -538,11 +538,11 @@ export function WorkflowManagement({ session }: WorkflowManagementProps) {
             <CardContent>
               <div className="space-y-3">
                 {prescriptions.map((prescription) => (
-                  <div key={prescription.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                  <div key={prescription.id} className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
                     <div>
                       <p className="text-gray-900">{prescription.patientName}</p>
-                      <p className="text-sm text-gray-600">Dr. {prescription.doctorName}</p>
-                      <p className="text-xs text-gray-500">Medications: {prescription.medications.join(', ')}</p>
+                      <p className="text-sm text-muted-foreground">Dr. {prescription.doctorName}</p>
+                      <p className="text-xs text-muted-foreground">Medications: {prescription.medications.join(', ')}</p>
                     </div>
                     <div className="flex items-center gap-2">
                       <Badge className={getStatusColor(prescription.status)}>
@@ -569,10 +569,10 @@ export function WorkflowManagement({ session }: WorkflowManagementProps) {
             <CardContent>
               <div className="space-y-3">
                 {bills.map((bill) => (
-                  <div key={bill.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                  <div key={bill.id} className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
                     <div>
                       <p className="text-gray-900">{bill.patientName}</p>
-                      <p className="text-sm text-gray-600">Services: {bill.services.join(', ')}</p>
+                      <p className="text-sm text-muted-foreground">Services: {bill.services.join(', ')}</p>
                       <p className="text-sm text-gray-900">Amount: ${bill.amount}</p>
                     </div>
                     <div className="flex items-center gap-2">
@@ -668,7 +668,7 @@ export function WorkflowManagement({ session }: WorkflowManagementProps) {
                     <select
                       value={formData.department || ''}
                       onChange={(e) => setFormData({ ...formData, department: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                      className="w-full px-3 py-2 border border-border rounded-md"
                     >
                       <option value="">Select Department</option>
                       <option value="Cardiology">Cardiology</option>

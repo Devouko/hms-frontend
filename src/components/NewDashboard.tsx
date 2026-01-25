@@ -23,9 +23,11 @@ import {
   ArrowRight,
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { GlassCard } from './ui/glass-card';
 import { Button } from './ui/button';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
 import { projectId, publicAnonKey } from '../utils/supabase/info';
+import { TodoListWidget } from './TodoListWidget';
 
 interface NewDashboardProps {
   session: any;
@@ -155,28 +157,28 @@ export function NewDashboard({ session }: NewDashboardProps) {
       title: 'Patient Registration',
       description: 'Register new patients',
       icon: UserPlus,
-      color: 'bg-blue-500',
+      color: 'bg-primary',
       action: 'register',
     },
     {
       title: 'New Appointment',
       description: 'Schedule appointments',
       icon: CalendarPlus,
-      color: 'bg-green-500',
+      color: 'bg-primary',
       action: 'appointment',
     },
     {
       title: 'Generate Invoice',
       description: 'Create billing invoice',
       icon: FileText,
-      color: 'bg-purple-500',
+      color: 'bg-primary',
       action: 'invoice',
     },
     {
       title: 'Admit Patient',
       description: 'Patient admission process',
       icon: UserCheck,
-      color: 'bg-orange-500',
+      color: 'bg-primary',
       action: 'admit',
     },
     {
@@ -190,7 +192,7 @@ export function NewDashboard({ session }: NewDashboardProps) {
       title: 'Billing Center',
       description: 'Payment & transactions',
       icon: DollarSign,
-      color: 'bg-teal-500',
+      color: 'bg-primary',
       action: 'billing',
     },
   ];
@@ -203,13 +205,13 @@ export function NewDashboard({ session }: NewDashboardProps) {
         animate={{ opacity: 1, y: 0 }}
       >
         <h1 className="text-gray-900">Hello, {userName} 👋</h1>
-        <p className="text-gray-600 text-sm mt-1">
+        <p className="text-muted-foreground text-sm mt-1">
           There is the latest update for the last 7 days. check now
         </p>
       </motion.div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
         {statsCards.map((stat, index) => {
           const Icon = stat.icon;
           return (
@@ -219,32 +221,30 @@ export function NewDashboard({ session }: NewDashboardProps) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
             >
-              <Card className="hover:shadow-lg transition-shadow">
-                <CardContent className="p-5">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className={`${stat.iconBg} p-3 rounded-xl`}>
-                      <Icon className={`size-6 ${stat.iconColor}`} />
+              <GlassCard className="p-6 hover:bg-card/75 transition-all">
+                <div className="flex items-start justify-between mb-4">
+                  <div className={`${stat.iconBg} p-3 rounded-xl`}>
+                    <Icon className={`size-6 ${stat.iconColor}`} />
+                  </div>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground mb-1">{stat.label}</p>
+                  <div className="flex items-end justify-between">
+                    <h3 className="text-3xl font-semibold text-foreground">{stat.value.toLocaleString()}</h3>
+                    <div className="flex items-center gap-1 text-sm">
+                      {stat.trend === 'up' ? (
+                        <TrendingUp className="size-4 text-primary" />
+                      ) : (
+                        <TrendingDown className="size-4 text-destructive" />
+                      )}
+                      <span className={stat.trend === 'up' ? 'text-primary' : 'text-destructive'}>
+                        {stat.change}
+                      </span>
+                      <span className="text-muted-foreground text-xs">from last week</span>
                     </div>
                   </div>
-                  <div>
-                    <p className="text-sm text-gray-600 mb-1">{stat.label}</p>
-                    <div className="flex items-end justify-between">
-                      <h3 className="text-gray-900">{stat.value.toLocaleString()}</h3>
-                      <div className="flex items-center gap-1 text-sm">
-                        {stat.trend === 'up' ? (
-                          <TrendingUp className="size-4 text-green-600" />
-                        ) : (
-                          <TrendingDown className="size-4 text-red-600" />
-                        )}
-                        <span className={stat.trend === 'up' ? 'text-green-600' : 'text-red-600'}>
-                          {stat.change}
-                        </span>
-                        <span className="text-gray-500 text-xs">from last week</span>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                </div>
+              </GlassCard>
             </motion.div>
           );
         })}
@@ -256,56 +256,52 @@ export function NewDashboard({ session }: NewDashboardProps) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
       >
-        <Card>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <div>
-                <CardTitle>Patient Workflow Status</CardTitle>
-                <p className="text-sm text-gray-600 mt-1">Real-time patient journey tracking across departments</p>
-              </div>
-              <Activity className="size-5 text-primary" />
+        <GlassCard className="p-6">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h3 className="text-lg font-semibold">Patient Workflow Status</h3>
+              <p className="text-sm text-muted-foreground mt-1">Real-time patient journey tracking across departments</p>
             </div>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-              <div className="text-center p-4 bg-blue-50 rounded-lg">
-                <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <UserPlus className="size-6 text-white" />
-                </div>
-                <p className="text-2xl text-blue-600 mb-1">12</p>
-                <p className="text-xs text-gray-600">Registered</p>
+            <Activity className="size-5 text-primary" />
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+            <div className="text-center p-4 bg-blue-50/50 rounded-lg">
+              <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center mx-auto mb-2">
+                <UserPlus className="size-6 text-card-foreground" />
               </div>
-              <div className="text-center p-4 bg-green-50 rounded-lg">
-                <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <CalendarIcon className="size-6 text-white" />
-                </div>
-                <p className="text-2xl text-green-600 mb-1">8</p>
-                <p className="text-xs text-gray-600">In Queue</p>
-              </div>
-              <div className="text-center p-4 bg-yellow-50 rounded-lg">
-                <div className="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <Activity className="size-6 text-white" />
-                </div>
-                <p className="text-2xl text-yellow-600 mb-1">5</p>
-                <p className="text-xs text-gray-600">In Consultation</p>
-              </div>
-              <div className="text-center p-4 bg-purple-50 rounded-lg">
-                <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <FileText className="size-6 text-white" />
-                </div>
-                <p className="text-2xl text-purple-600 mb-1">3</p>
-                <p className="text-xs text-gray-600">Lab/Pharmacy</p>
-              </div>
-              <div className="text-center p-4 bg-teal-50 rounded-lg">
-                <div className="w-12 h-12 bg-teal-500 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <DollarSign className="size-6 text-white" />
-                </div>
-                <p className="text-2xl text-teal-600 mb-1">15</p>
-                <p className="text-xs text-gray-600">Completed</p>
-              </div>
+              <p className="text-2xl text-primary mb-1">12</p>
+              <p className="text-xs text-muted-foreground">Registered</p>
             </div>
-          </CardContent>
-        </Card>
+            <div className="text-center p-4 bg-green-50/50 rounded-lg">
+              <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center mx-auto mb-2">
+                <CalendarIcon className="size-6 text-card-foreground" />
+              </div>
+              <p className="text-2xl text-primary mb-1">8</p>
+              <p className="text-xs text-muted-foreground">In Queue</p>
+            </div>
+            <div className="text-center p-4 bg-yellow-50/50 rounded-lg">
+              <div className="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                <Activity className="size-6 text-card-foreground" />
+              </div>
+              <p className="text-2xl text-yellow-600 mb-1">5</p>
+              <p className="text-xs text-muted-foreground">In Consultation</p>
+            </div>
+            <div className="text-center p-4 bg-purple-50/50 rounded-lg">
+              <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center mx-auto mb-2">
+                <FileText className="size-6 text-card-foreground" />
+              </div>
+              <p className="text-2xl text-primary mb-1">3</p>
+              <p className="text-xs text-muted-foreground">Lab/Pharmacy</p>
+            </div>
+            <div className="text-center p-4 bg-teal-50/50 rounded-lg">
+              <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center mx-auto mb-2">
+                <DollarSign className="size-6 text-card-foreground" />
+              </div>
+              <p className="text-2xl text-primary mb-1">15</p>
+              <p className="text-xs text-muted-foreground">Completed</p>
+            </div>
+          </div>
+        </GlassCard>
       </motion.div>
 
       {/* Front Office Quick Actions */}
@@ -314,44 +310,40 @@ export function NewDashboard({ session }: NewDashboardProps) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
       >
-        <Card>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <div>
-                <CardTitle>Front Office - Quick Actions</CardTitle>
-                <p className="text-sm text-gray-600 mt-1">Common front office operations for faster workflow</p>
-              </div>
-              <Activity className="size-5 text-primary" />
+        <GlassCard className="p-6">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h3 className="text-lg font-semibold">Front Office - Quick Actions</h3>
+              <p className="text-sm text-muted-foreground mt-1">Common front office operations for faster workflow</p>
             </div>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {frontOfficeActions.map((item, index) => {
-                const Icon = item.icon;
-                return (
-                  <motion.button
-                    key={item.action}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4 + index * 0.05 }}
-                    className="flex items-start gap-4 p-4 bg-white border border-gray-200 rounded-xl hover:border-primary hover:shadow-md transition-all group"
-                  >
-                    <div className={`${item.color} p-3 rounded-lg text-white`}>
-                      <Icon className="size-6" />
-                    </div>
-                    <div className="flex-1 text-left">
-                      <h4 className="text-sm text-gray-900 mb-1 group-hover:text-primary transition-colors">{item.title}</h4>
-                      <p className="text-xs text-gray-600">{item.description}</p>
-                    </div>
-                    <ArrowRight className="size-4 text-gray-400 group-hover:text-primary group-hover:translate-x-1 transition-all" />
-                  </motion.button>
-                );
-              })}
-            </div>
-          </CardContent>
-        </Card>
+            <Activity className="size-5 text-primary" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {frontOfficeActions.map((item, index) => {
+              const Icon = item.icon;
+              return (
+                <motion.button
+                  key={item.action}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 + index * 0.05 }}
+                  className="flex items-start gap-4 p-4 bg-card/40 backdrop-blur-sm rounded-xl hover:bg-card/60 transition-all group"
+                >
+                  <div className={`${item.color} p-3 rounded-lg text-card-foreground`}>
+                    <Icon className="size-6" />
+                  </div>
+                  <div className="flex-1 text-left">
+                    <h4 className="text-sm text-foreground mb-1 group-hover:text-primary transition-colors">{item.title}</h4>
+                    <p className="text-xs text-muted-foreground">{item.description}</p>
+                  </div>
+                  <ArrowRight className="size-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
+                </motion.button>
+              );
+            })}
+          </div>
+        </GlassCard>
       </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -362,56 +354,52 @@ export function NewDashboard({ session }: NewDashboardProps) {
           transition={{ delay: 0.5 }}
           className="lg:col-span-2"
         >
-          <Card>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle>Patient statistics</CardTitle>
-                <div className="flex items-center gap-4">
-                  <div className="flex gap-4 text-sm">
-                    <button className="px-3 py-1 rounded hover:bg-gray-100">Week</button>
-                    <button className="px-3 py-1 rounded hover:bg-gray-100">Month</button>
-                    <button className="px-3 py-1 rounded bg-gray-100">Year-2022</button>
-                  </div>
+          <GlassCard className="p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-lg font-semibold">Patient statistics</h3>
+              <div className="flex items-center gap-4">
+                <div className="flex gap-4 text-sm">
+                  <button className="px-3 py-1 rounded hover:bg-card/40">Week</button>
+                  <button className="px-3 py-1 rounded hover:bg-card/40">Month</button>
+                  <button className="px-3 py-1 rounded bg-card/40">Year-2022</button>
                 </div>
               </div>
-            </CardHeader>
-            <CardContent>
-              <div className="w-full h-[300px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={chartData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                    <XAxis dataKey="month" stroke="#888" />
-                    <YAxis stroke="#888" />
-                    <Tooltip />
-                    <Line
-                      type="monotone"
-                      dataKey="total"
-                      stroke="#1e293b"
-                      strokeWidth={2}
-                      dot={false}
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="inpatient"
-                      stroke="#55c4ed"
-                      strokeWidth={2}
-                      dot={{ fill: '#55c4ed', r: 6 }}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
+            </div>
+            <div className="w-full h-[300px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={chartData}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                  <XAxis dataKey="month" stroke="#888" />
+                  <YAxis stroke="#888" />
+                  <Tooltip />
+                  <Line
+                    type="monotone"
+                    dataKey="total"
+                    stroke="hsl(var(--primary))"
+                    strokeWidth={2}
+                    dot={false}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="inpatient"
+                    stroke="hsl(var(--primary))"
+                    strokeWidth={2}
+                    dot={{ fill: '#55c4ed', r: 6 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="flex items-center justify-center gap-6 mt-4 text-sm">
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-gray-800"></div>
+                <span className="text-muted-foreground">Total patients</span>
               </div>
-              <div className="flex items-center justify-center gap-6 mt-4 text-sm">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-gray-800"></div>
-                  <span className="text-gray-600">Total patients</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-primary"></div>
-                  <span className="text-gray-600">Inpatients</span>
-                </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full bg-primary"></div>
+                <span className="text-muted-foreground">Inpatients</span>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </GlassCard>
         </motion.div>
 
         {/* Calendar & Today's Appointments */}
@@ -434,12 +422,12 @@ export function NewDashboard({ session }: NewDashboardProps) {
               <div className="grid grid-cols-7 gap-2 mb-6">
                 {weekDays.map((day, i) => (
                   <div key={day} className="text-center">
-                    <div className="text-xs text-gray-500 mb-2">{day}</div>
+                    <div className="text-xs text-muted-foreground mb-2">{day}</div>
                     <div
                       className={`w-8 h-8 flex items-center justify-center rounded-lg text-sm ${
                         i === 3
-                          ? 'bg-primary text-white'
-                          : 'text-gray-700 hover:bg-gray-100 cursor-pointer'
+                          ? 'bg-primary text-card-foreground'
+                          : 'text-foreground hover:bg-muted cursor-pointer'
                       }`}
                     >
                       {i + 3}
@@ -452,18 +440,18 @@ export function NewDashboard({ session }: NewDashboardProps) {
               <div className="space-y-3">
                 {todayAppointments.map((apt, i) => (
                   <div key={i} className="flex items-start gap-3">
-                    <span className="text-xs text-gray-500 w-12">{apt.time}</span>
+                    <span className="text-xs text-muted-foreground w-12">{apt.time}</span>
                     {apt.title ? (
                       <div className="flex-1 bg-gradient-to-r from-primary/10 to-primary/20 border-l-4 border-primary rounded-lg p-3">
                         <p className="text-sm text-gray-900">{apt.title}</p>
-                        <p className="text-xs text-gray-600 mt-1">{apt.duration}</p>
+                        <p className="text-xs text-muted-foreground mt-1">{apt.duration}</p>
                       </div>
                     ) : (
-                      <div className="flex-1 border-l-2 border-gray-200 pl-3 h-8"></div>
+                      <div className="flex-1 border-l-2 border-border pl-3 h-8"></div>
                     )}
                     {apt.title && (
-                      <button className="p-1 hover:bg-gray-100 rounded">
-                        <MoreVertical className="size-4 text-gray-400" />
+                      <button className="p-1 hover:bg-muted rounded">
+                        <MoreVertical className="size-4 text-muted-foreground" />
                       </button>
                     )}
                   </div>
@@ -475,7 +463,7 @@ export function NewDashboard({ session }: NewDashboardProps) {
       </div>
 
       {/* Bottom Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Balance */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -500,7 +488,7 @@ export function NewDashboard({ session }: NewDashboardProps) {
                       cx="64"
                       cy="64"
                       r="56"
-                      stroke="#e5e7eb"
+                      stroke="hsl(var(--border))"
                       strokeWidth="12"
                       fill="none"
                     />
@@ -508,7 +496,7 @@ export function NewDashboard({ session }: NewDashboardProps) {
                       cx="64"
                       cy="64"
                       r="56"
-                      stroke="#55c4ed"
+                      stroke="hsl(var(--primary))"
                       strokeWidth="12"
                       fill="none"
                       strokeDasharray={`${(Number(balance) / 100) * 352} 352`}
@@ -523,13 +511,13 @@ export function NewDashboard({ session }: NewDashboardProps) {
 
               <div className="space-y-4">
                 <div>
-                  <p className="text-xs text-gray-600 mb-1">Total Transaction Revenue</p>
+                  <p className="text-xs text-muted-foreground mb-1">Total Transaction Revenue</p>
                   <div className="flex items-center justify-between">
                     <h4 className="text-gray-900">${((statistics?.income || 8135450) / 1000000).toFixed(2)}M</h4>
                     <div className="w-20 h-8">
                       <ResponsiveContainer width="100%" height="100%">
                         <AreaChart data={incomeData}>
-                          <Area type="monotone" dataKey="value" stroke="#55c4ed" fill="#55c4ed" fillOpacity={0.3} />
+                          <Area type="monotone" dataKey="value" stroke="hsl(var(--primary))" fill="hsl(var(--primary))" fillOpacity={0.3} />
                         </AreaChart>
                       </ResponsiveContainer>
                     </div>
@@ -543,12 +531,12 @@ export function NewDashboard({ session }: NewDashboardProps) {
                     <div className="w-20 h-8">
                       <ResponsiveContainer width="100%" height="100%">
                         <AreaChart data={expenseData}>
-                          <Area type="monotone" dataKey="value" stroke="#55c4ed" fill="#55c4ed" fillOpacity={0.3} />
+                          <Area type="monotone" dataKey="value" stroke="hsl(var(--primary))" fill="hsl(var(--primary))" fillOpacity={0.3} />
                         </AreaChart>
                       </ResponsiveContainer>
                     </div>
                   </div>
-                  <p className="text-xs text-gray-600">Total expense</p>
+                  <p className="text-xs text-muted-foreground">Total expense</p>
                 </div>
               </div>
             </CardContent>
@@ -566,7 +554,7 @@ export function NewDashboard({ session }: NewDashboardProps) {
               <div className="flex items-center justify-between">
                 <CardTitle className="text-sm">Room occupancy</CardTitle>
                 <button>
-                  <MoreVertical className="size-4 text-gray-400" />
+                  <MoreVertical className="size-4 text-muted-foreground" />
                 </button>
               </div>
             </CardHeader>
@@ -580,19 +568,19 @@ export function NewDashboard({ session }: NewDashboardProps) {
                 <div className="flex items-center justify-between p-3 bg-primary/10 rounded-lg">
                   <div className="flex items-center gap-3">
                     <div className="bg-primary p-2 rounded-lg">
-                      <Building2 className="size-5 text-white" />
+                      <Building2 className="size-5 text-card-foreground" />
                     </div>
-                    <span className="text-sm text-gray-700">General room</span>
+                    <span className="text-sm text-foreground">General room</span>
                   </div>
                   <span className="text-gray-900">{roomOccupancy.general}</span>
                 </div>
 
-                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg">
                   <div className="flex items-center gap-3">
                     <div className="bg-gray-600 p-2 rounded-lg">
-                      <Bed className="size-5 text-white" />
+                      <Bed className="size-5 text-card-foreground" />
                     </div>
-                    <span className="text-sm text-gray-700">Private room</span>
+                    <span className="text-sm text-foreground">Private room</span>
                   </div>
                   <span className="text-gray-900">{roomOccupancy.private}</span>
                 </div>
@@ -612,20 +600,20 @@ export function NewDashboard({ session }: NewDashboardProps) {
               <div className="flex items-center justify-between">
                 <CardTitle className="text-sm">Reports</CardTitle>
                 <button>
-                  <MoreVertical className="size-4 text-gray-400" />
+                  <MoreVertical className="size-4 text-muted-foreground" />
                 </button>
               </div>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {reports.map((report, i) => (
-                  <div key={i} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer">
+                  <div key={i} className="flex items-start gap-3 p-3 bg-muted/50 rounded-lg hover:bg-muted transition-colors cursor-pointer">
                     <div className="bg-warning/20 p-2 rounded-lg">
                       <AlertCircle className="size-4 text-warning" />
                     </div>
                     <div className="flex-1">
                       <p className="text-sm text-gray-900 mb-1">{report.title}</p>
-                      <p className="text-xs text-gray-500">{report.time}</p>
+                      <p className="text-xs text-muted-foreground">{report.time}</p>
                     </div>
                     <button className="text-sm text-primary hover:text-primary/80">
                       View report →
@@ -635,6 +623,15 @@ export function NewDashboard({ session }: NewDashboardProps) {
               </div>
             </CardContent>
           </Card>
+        </motion.div>
+
+        {/* Todo List Widget */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.0 }}
+        >
+          <TodoListWidget session={session} maxItems={4} />
         </motion.div>
       </div>
     </div>

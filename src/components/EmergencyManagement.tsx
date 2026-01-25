@@ -111,7 +111,7 @@ export function EmergencyManagement({ session }: EmergencyManagementProps) {
       case 'urgent': return 'bg-orange-100 text-orange-800 border-orange-200';
       case 'less_urgent': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
       case 'non_urgent': return 'bg-green-100 text-green-800 border-green-200';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200';
+      default: return 'bg-muted text-gray-800 border-border';
     }
   };
 
@@ -121,7 +121,7 @@ export function EmergencyManagement({ session }: EmergencyManagementProps) {
       case 'in_treatment': return 'bg-blue-100 text-blue-800';
       case 'discharged': return 'bg-green-100 text-green-800';
       case 'admitted': return 'bg-purple-100 text-purple-800';
-      default: return 'bg-gray-100 text-gray-800';
+      default: return 'bg-muted text-gray-800';
     }
   };
 
@@ -142,7 +142,7 @@ export function EmergencyManagement({ session }: EmergencyManagementProps) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`bg-white rounded-lg border-2 p-4 hover:shadow-md transition-shadow ${
+      className={`bg-card rounded-lg border-2 p-4 hover:shadow-md transition-shadow ${
         case_.triage_level === 'critical' ? 'border-red-200' :
         case_.triage_level === 'urgent' ? 'border-orange-200' :
         case_.triage_level === 'less_urgent' ? 'border-yellow-200' : 'border-green-200'
@@ -156,14 +156,14 @@ export function EmergencyManagement({ session }: EmergencyManagementProps) {
             case_.triage_level === 'less_urgent' ? 'bg-yellow-100' : 'bg-green-100'
           }`}>
             <AlertTriangle className={`size-6 ${
-              case_.triage_level === 'critical' ? 'text-red-600' :
-              case_.triage_level === 'urgent' ? 'text-orange-600' :
-              case_.triage_level === 'less_urgent' ? 'text-yellow-600' : 'text-green-600'
+              case_.triage_level === 'critical' ? 'text-destructive' :
+              case_.triage_level === 'urgent' ? 'text-primary' :
+              case_.triage_level === 'less_urgent' ? 'text-yellow-600' : 'text-primary'
             }`} />
           </div>
           <div>
             <h3 className="font-semibold text-gray-900">{case_.patient_name}</h3>
-            <p className="text-sm text-gray-600">{case_.age} years, {case_.gender}</p>
+            <p className="text-sm text-muted-foreground">{case_.age} years, {case_.gender}</p>
           </div>
         </div>
         <div className="flex flex-col gap-1">
@@ -176,7 +176,7 @@ export function EmergencyManagement({ session }: EmergencyManagementProps) {
         </div>
       </div>
 
-      <div className="space-y-2 text-sm text-gray-600 mb-3">
+      <div className="space-y-2 text-sm text-muted-foreground mb-3">
         <div>
           <span className="font-medium">Chief Complaint:</span>
           <p className="text-gray-900">{case_.chief_complaint}</p>
@@ -201,7 +201,7 @@ export function EmergencyManagement({ session }: EmergencyManagementProps) {
         )}
 
         {case_.vital_signs && (
-          <div className="grid grid-cols-2 gap-2 text-xs bg-gray-50 p-2 rounded">
+          <div className="grid grid-cols-2 gap-2 text-xs bg-muted/50 p-2 rounded">
             <div>BP: {case_.vital_signs.blood_pressure}</div>
             <div>HR: {case_.vital_signs.heart_rate}</div>
             <div>Temp: {case_.vital_signs.temperature}°F</div>
@@ -236,7 +236,7 @@ export function EmergencyManagement({ session }: EmergencyManagementProps) {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Emergency Department</h1>
-          <p className="text-gray-600">Manage emergency cases and triage</p>
+          <p className="text-muted-foreground">Manage emergency cases and triage</p>
         </div>
         <Button onClick={() => setShowAddCase(true)}>
           <Plus className="size-4 mr-2" />
@@ -248,32 +248,32 @@ export function EmergencyManagement({ session }: EmergencyManagementProps) {
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         <Card className="border-red-200">
           <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-red-600">{triageStats.critical}</div>
-            <div className="text-sm text-gray-600">Critical</div>
+            <div className="text-2xl font-bold text-destructive">{triageStats.critical}</div>
+            <div className="text-sm text-muted-foreground">Critical</div>
           </CardContent>
         </Card>
         <Card className="border-orange-200">
           <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-orange-600">{triageStats.urgent}</div>
-            <div className="text-sm text-gray-600">Urgent</div>
+            <div className="text-2xl font-bold text-primary">{triageStats.urgent}</div>
+            <div className="text-sm text-muted-foreground">Urgent</div>
           </CardContent>
         </Card>
         <Card className="border-yellow-200">
           <CardContent className="p-4 text-center">
             <div className="text-2xl font-bold text-yellow-600">{triageStats.less_urgent}</div>
-            <div className="text-sm text-gray-600">Less Urgent</div>
+            <div className="text-sm text-muted-foreground">Less Urgent</div>
           </CardContent>
         </Card>
         <Card className="border-green-200">
           <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-green-600">{triageStats.non_urgent}</div>
-            <div className="text-sm text-gray-600">Non Urgent</div>
+            <div className="text-2xl font-bold text-primary">{triageStats.non_urgent}</div>
+            <div className="text-sm text-muted-foreground">Non Urgent</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
-            <div className="text-2xl font-bold text-blue-600">{triageStats.waiting}</div>
-            <div className="text-sm text-gray-600">Waiting</div>
+            <div className="text-2xl font-bold text-primary">{triageStats.waiting}</div>
+            <div className="text-sm text-muted-foreground">Waiting</div>
           </CardContent>
         </Card>
       </div>
@@ -281,7 +281,7 @@ export function EmergencyManagement({ session }: EmergencyManagementProps) {
       {/* Filters */}
       <div className="flex gap-4 items-center">
         <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
           <Input
             placeholder="Search cases..."
             value={searchTerm}
@@ -449,7 +449,7 @@ export function EmergencyManagement({ session }: EmergencyManagementProps) {
               {selectedCase.vital_signs && (
                 <div>
                   <Label>Vital Signs</Label>
-                  <div className="grid grid-cols-2 gap-4 mt-2 p-3 bg-gray-50 rounded">
+                  <div className="grid grid-cols-2 gap-4 mt-2 p-3 bg-muted/50 rounded">
                     <div>Blood Pressure: {selectedCase.vital_signs.blood_pressure}</div>
                     <div>Heart Rate: {selectedCase.vital_signs.heart_rate} bpm</div>
                     <div>Temperature: {selectedCase.vital_signs.temperature}°F</div>

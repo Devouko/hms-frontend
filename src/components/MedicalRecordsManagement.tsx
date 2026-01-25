@@ -80,7 +80,7 @@ export function MedicalRecordsManagement({ session }: MedicalRecordsManagementPr
       case 'active': return 'bg-green-100 text-green-800';
       case 'completed': return 'bg-blue-100 text-blue-800';
       case 'follow_up': return 'bg-yellow-100 text-yellow-800';
-      default: return 'bg-gray-100 text-gray-800';
+      default: return 'bg-muted text-gray-800';
     }
   };
 
@@ -88,7 +88,7 @@ export function MedicalRecordsManagement({ session }: MedicalRecordsManagementPr
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-lg border p-6 hover:shadow-md transition-shadow"
+      className="bg-card rounded-lg border p-6 hover:shadow-md transition-shadow"
     >
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-3">
@@ -97,7 +97,7 @@ export function MedicalRecordsManagement({ session }: MedicalRecordsManagementPr
           </div>
           <div>
             <h3 className="font-semibold text-gray-900">{record.patient_name}</h3>
-            <p className="text-sm text-gray-600">Patient ID: {record.patient_id}</p>
+            <p className="text-sm text-muted-foreground">Patient ID: {record.patient_id}</p>
           </div>
         </div>
         <Badge className={getStatusColor(record.status)}>
@@ -108,28 +108,28 @@ export function MedicalRecordsManagement({ session }: MedicalRecordsManagementPr
       <div className="space-y-3">
         <div className="grid grid-cols-2 gap-4 text-sm">
           <div>
-            <span className="text-gray-600">Date:</span>
+            <span className="text-muted-foreground">Date:</span>
             <p className="font-medium">{new Date(record.date).toLocaleDateString()}</p>
           </div>
           <div>
-            <span className="text-gray-600">Doctor:</span>
+            <span className="text-muted-foreground">Doctor:</span>
             <p className="font-medium">{record.doctor}</p>
           </div>
         </div>
 
         <div>
-          <span className="text-gray-600 text-sm">Diagnosis:</span>
+          <span className="text-muted-foreground text-sm">Diagnosis:</span>
           <p className="font-medium text-primary">{record.diagnosis}</p>
         </div>
 
         <div>
-          <span className="text-gray-600 text-sm">Symptoms:</span>
+          <span className="text-muted-foreground text-sm">Symptoms:</span>
           <p className="text-sm">{record.symptoms}</p>
         </div>
 
         {record.medications.length > 0 && (
           <div>
-            <span className="text-gray-600 text-sm">Medications:</span>
+            <span className="text-muted-foreground text-sm">Medications:</span>
             <div className="flex flex-wrap gap-1 mt-1">
               {record.medications.map((med, index) => (
                 <Badge key={index} variant="outline" className="text-xs">
@@ -160,7 +160,7 @@ export function MedicalRecordsManagement({ session }: MedicalRecordsManagementPr
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Medical Records</h1>
-          <p className="text-gray-600">Manage patient medical records and history</p>
+          <p className="text-muted-foreground">Manage patient medical records and history</p>
         </div>
         <Button onClick={() => setShowAddRecord(true)}>
           <Plus className="size-4 mr-2" />
@@ -169,7 +169,7 @@ export function MedicalRecordsManagement({ session }: MedicalRecordsManagementPr
       </div>
 
       <div className="relative max-w-md">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
         <Input
           placeholder="Search records..."
           value={searchTerm}

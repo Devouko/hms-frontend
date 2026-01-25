@@ -197,7 +197,7 @@ export function UserManagement({ session }: UserManagementProps) {
       >
         <div>
           <h1 className="text-gray-900">User Management</h1>
-          <p className="text-sm text-gray-600 mt-1">
+          <p className="text-sm text-muted-foreground mt-1">
             Manage users, roles, and permissions
           </p>
         </div>
@@ -217,7 +217,7 @@ export function UserManagement({ session }: UserManagementProps) {
                   <Users className="size-6 text-primary" />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Total Users</p>
+                  <p className="text-sm text-muted-foreground">Total Users</p>
                   <h3 className="text-gray-900">{users.length}</h3>
                 </div>
               </div>
@@ -237,7 +237,7 @@ export function UserManagement({ session }: UserManagementProps) {
                   <Shield className="size-6 text-warning" />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Admins</p>
+                  <p className="text-sm text-muted-foreground">Admins</p>
                   <h3 className="text-gray-900">
                     {users.filter((u) => u.role === 'admin').length}
                   </h3>
@@ -259,7 +259,7 @@ export function UserManagement({ session }: UserManagementProps) {
                   <ShieldAlert className="size-6 text-destructive" />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Super Admins</p>
+                  <p className="text-sm text-muted-foreground">Super Admins</p>
                   <h3 className="text-gray-900">
                     {users.filter((u) => u.role === 'super_admin').length}
                   </h3>
@@ -276,8 +276,8 @@ export function UserManagement({ session }: UserManagementProps) {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <CardTitle>All Users</CardTitle>
-              <div className="flex items-center gap-2 text-xs text-green-600">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              <div className="flex items-center gap-2 text-xs text-primary">
+                <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
                 Live
               </div>
             </div>
@@ -293,7 +293,7 @@ export function UserManagement({ session }: UserManagementProps) {
                 </Button>
               )}
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
                 <Input
                   type="search"
                   placeholder="Search users..."
@@ -313,15 +313,15 @@ export function UserManagement({ session }: UserManagementProps) {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.05 }}
-                className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                className="flex items-center justify-between p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white">
+                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-card-foreground">
                     {user.name?.charAt(0)?.toUpperCase() || 'U'}
                   </div>
                   <div>
                     <h4 className="text-gray-900">{user.name || 'Unknown'}</h4>
-                    <p className="text-sm text-gray-600">{user.email}</p>
+                    <p className="text-sm text-muted-foreground">{user.email}</p>
                   </div>
                 </div>
 
@@ -387,7 +387,7 @@ export function UserManagement({ session }: UserManagementProps) {
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-white rounded-lg p-6 max-w-md w-full mx-4"
+            className="bg-card rounded-lg p-6 max-w-md w-full mx-4"
           >
             <h3 className="text-gray-900 mb-4">Update User Role</h3>
             <div className="space-y-4">
@@ -400,7 +400,7 @@ export function UserManagement({ session }: UserManagementProps) {
                 <select
                   value={newRole}
                   onChange={(e) => setNewRole(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-200 rounded-lg bg-white"
+                  className="w-full px-3 py-2 border border-border rounded-lg bg-card"
                 >
                   <option value="user">User</option>
                   <option value="doctor">Doctor</option>
@@ -439,7 +439,7 @@ export function UserManagement({ session }: UserManagementProps) {
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-white rounded-lg p-6 max-w-md w-full mx-4"
+            className="bg-card rounded-lg p-6 max-w-md w-full mx-4"
           >
             <h3 className="text-gray-900 mb-4">Create New User</h3>
             <div className="space-y-4">
@@ -478,7 +478,7 @@ export function UserManagement({ session }: UserManagementProps) {
                 <select
                   value={newUserData.role}
                   onChange={(e) => setNewUserData({ ...newUserData, role: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-200 rounded-lg bg-white"
+                  className="w-full px-3 py-2 border border-border rounded-lg bg-card"
                 >
                   <option value="user">User</option>
                   <option value="doctor">Doctor</option>

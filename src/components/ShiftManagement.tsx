@@ -132,10 +132,10 @@ export function ShiftManagement({ session }: { session: any }) {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'Completed': return 'bg-green-100 text-green-700';
-      case 'Absent': return 'bg-red-100 text-red-700';
-      case 'Swap Requested': return 'bg-orange-100 text-orange-700';
-      default: return 'bg-blue-100 text-blue-700';
+      case 'Completed': return 'bg-green-100 text-primary';
+      case 'Absent': return 'bg-red-100 text-destructive';
+      case 'Swap Requested': return 'bg-orange-100 text-primary';
+      default: return 'bg-blue-100 text-primary';
     }
   };
 
@@ -145,7 +145,7 @@ export function ShiftManagement({ session }: { session: any }) {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-gray-900 mb-2">Shift Management</h2>
-            <p className="text-gray-600 text-sm">Manage staff shifts and scheduling</p>
+            <p className="text-muted-foreground text-sm">Manage staff shifts and scheduling</p>
           </div>
           <div className="flex items-center gap-4">
             <Input
@@ -197,7 +197,7 @@ export function ShiftManagement({ session }: { session: any }) {
                     <select
                       value={shiftFormData.department || ''}
                       onChange={(e) => setShiftFormData({ ...shiftFormData, department: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                      className="w-full px-3 py-2 border border-border rounded-md"
                     >
                       <option value="General">General</option>
                       <option value="Emergency">Emergency</option>
@@ -239,7 +239,7 @@ export function ShiftManagement({ session }: { session: any }) {
                     <select
                       value={assignFormData.staffId || ''}
                       onChange={(e) => setAssignFormData({ ...assignFormData, staffId: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                      className="w-full px-3 py-2 border border-border rounded-md"
                     >
                       <option value="">Select staff member</option>
                       {staff.map(member => (
@@ -252,7 +252,7 @@ export function ShiftManagement({ session }: { session: any }) {
                     <select
                       value={assignFormData.shiftId || ''}
                       onChange={(e) => setAssignFormData({ ...assignFormData, shiftId: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                      className="w-full px-3 py-2 border border-border rounded-md"
                     >
                       <option value="">Select shift</option>
                       {shifts.map(shift => (
@@ -286,9 +286,9 @@ export function ShiftManagement({ session }: { session: any }) {
                   <div key={shift.id} className="border rounded-lg p-4">
                     <div className="flex items-center justify-between mb-2">
                       <h3 className="font-semibold">{shift.name}</h3>
-                      <span className="text-sm text-gray-600">{shift.department}</span>
+                      <span className="text-sm text-muted-foreground">{shift.department}</span>
                     </div>
-                    <div className="text-sm text-gray-600 space-y-1">
+                    <div className="text-sm text-muted-foreground space-y-1">
                       <p>Time: {shift.startTime} - {shift.endTime}</p>
                       <p>Capacity: {shift.assignedStaff.length}/{shift.maxStaff} staff</p>
                     </div>
@@ -312,7 +312,7 @@ export function ShiftManagement({ session }: { session: any }) {
                     <div className="flex items-center justify-between mb-2">
                       <div>
                         <h3 className="font-semibold">{assignment.staffName}</h3>
-                        <p className="text-sm text-gray-600">{assignment.shiftName}</p>
+                        <p className="text-sm text-muted-foreground">{assignment.shiftName}</p>
                       </div>
                       <div className="flex items-center gap-2">
                         <span className={`px-2 py-1 rounded text-xs ${getStatusColor(assignment.status)}`}>
@@ -332,7 +332,7 @@ export function ShiftManagement({ session }: { session: any }) {
                   </div>
                 ))}
                 {todayAssignments.length === 0 && (
-                  <div className="text-center py-8 text-gray-500">
+                  <div className="text-center py-8 text-muted-foreground">
                     No shift assignments for {selectedDate}
                   </div>
                 )}

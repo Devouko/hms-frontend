@@ -147,11 +147,11 @@ export function StaffAttendanceManagement({ session }: StaffAttendanceManagement
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'Present': return 'bg-green-100 text-green-700';
-      case 'Absent': return 'bg-red-100 text-red-700';
+      case 'Present': return 'bg-green-100 text-primary';
+      case 'Absent': return 'bg-red-100 text-destructive';
       case 'Late': return 'bg-yellow-100 text-yellow-700';
-      case 'Half Day': return 'bg-blue-100 text-blue-700';
-      default: return 'bg-gray-100 text-gray-700';
+      case 'Half Day': return 'bg-blue-100 text-primary';
+      default: return 'bg-muted text-foreground';
     }
   };
 
@@ -231,45 +231,45 @@ export function StaffAttendanceManagement({ session }: StaffAttendanceManagement
           </CardHeader>
           <CardContent>
             <div className="overflow-x-auto">
-              <table className="w-full border-collapse border border-gray-200">
+              <table className="w-full border-collapse border border-border">
                 <thead>
-                  <tr className="bg-gray-50">
-                    <th className="border border-gray-200 px-4 py-2 text-left">Staff Name</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Role</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Check In</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Check Out</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Working Hours</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Status</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Actions</th>
+                  <tr className="bg-muted/50">
+                    <th className="border border-border px-4 py-2 text-left">Staff Name</th>
+                    <th className="border border-border px-4 py-2 text-left">Role</th>
+                    <th className="border border-border px-4 py-2 text-left">Check In</th>
+                    <th className="border border-border px-4 py-2 text-left">Check Out</th>
+                    <th className="border border-border px-4 py-2 text-left">Working Hours</th>
+                    <th className="border border-border px-4 py-2 text-left">Status</th>
+                    <th className="border border-border px-4 py-2 text-left">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {attendance.map((record) => (
-                    <tr key={record.id} className="hover:bg-gray-50">
-                      <td className="border border-gray-200 px-4 py-2">
+                    <tr key={record.id} className="hover:bg-muted/50">
+                      <td className="border border-border px-4 py-2">
                         <div className="flex items-center gap-2">
                           <User className="size-4" />
                           {record.staffName}
                         </div>
                       </td>
-                      <td className="border border-gray-200 px-4 py-2">{record.role}</td>
-                      <td className="border border-gray-200 px-4 py-2">
+                      <td className="border border-border px-4 py-2">{record.role}</td>
+                      <td className="border border-border px-4 py-2">
                         {record.checkIn ? (
-                          <span className="text-green-600">{record.checkIn}</span>
+                          <span className="text-primary">{record.checkIn}</span>
                         ) : (
                           <Button
                             size="sm"
                             onClick={() => handleCheckIn(record.id)}
-                            className="bg-green-600 hover:bg-green-700"
+                            className="bg-primary hover:bg-green-700"
                           >
                             <CheckCircle className="size-4 mr-1" />
                             Check In
                           </Button>
                         )}
                       </td>
-                      <td className="border border-gray-200 px-4 py-2">
+                      <td className="border border-border px-4 py-2">
                         {record.checkOut ? (
-                          <span className="text-red-600">{record.checkOut}</span>
+                          <span className="text-destructive">{record.checkOut}</span>
                         ) : record.checkIn ? (
                           <Button
                             size="sm"
@@ -280,22 +280,22 @@ export function StaffAttendanceManagement({ session }: StaffAttendanceManagement
                             Check Out
                           </Button>
                         ) : (
-                          <span className="text-gray-400">-</span>
+                          <span className="text-muted-foreground">-</span>
                         )}
                       </td>
-                      <td className="border border-gray-200 px-4 py-2">
+                      <td className="border border-border px-4 py-2">
                         {record.workingHours ? (
                           <div>
                             <span>{record.workingHours}h</span>
                             {record.overtime && record.overtime > 0 && (
-                              <span className="text-blue-600 ml-2">+{record.overtime}h OT</span>
+                              <span className="text-primary ml-2">+{record.overtime}h OT</span>
                             )}
                           </div>
                         ) : (
-                          <span className="text-gray-400">-</span>
+                          <span className="text-muted-foreground">-</span>
                         )}
                       </td>
-                      <td className="border border-gray-200 px-4 py-2">
+                      <td className="border border-border px-4 py-2">
                         <select
                           value={record.status}
                           onChange={(e) => handleStatusChange(record.id, e.target.value as AttendanceRecord['status'])}
@@ -307,13 +307,13 @@ export function StaffAttendanceManagement({ session }: StaffAttendanceManagement
                           <option value="Half Day">Half Day</option>
                         </select>
                       </td>
-                      <td className="border border-gray-200 px-4 py-2">
+                      <td className="border border-border px-4 py-2">
                         <div className="flex space-x-2">
                           {!record.checkIn && (
                             <Button
                               size="sm"
                               onClick={() => handleCheckIn(record.id)}
-                              className="bg-green-600 hover:bg-green-700"
+                              className="bg-primary hover:bg-green-700"
                             >
                               <CheckCircle className="size-4" />
                             </Button>
@@ -336,7 +336,7 @@ export function StaffAttendanceManagement({ session }: StaffAttendanceManagement
             </div>
 
             {attendance.length === 0 && (
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-muted-foreground">
                 No attendance records for {selectedDate}.
               </div>
             )}

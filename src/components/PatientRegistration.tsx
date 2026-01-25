@@ -134,7 +134,7 @@ export function PatientRegistration({ session, onUpdate }: PatientRegistrationPr
     <div className="space-y-4 mt-4">
       <div className="flex items-center justify-between">
         <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
           <Input
             placeholder="Search by name or phone..."
             value={searchTerm}
@@ -178,7 +178,7 @@ export function PatientRegistration({ session, onUpdate }: PatientRegistrationPr
                   id="gender"
                   value={formData.gender || ''}
                   onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  className="w-full px-3 py-2 border border-border rounded-md"
                 >
                   <option value="">Select</option>
                   <option value="Male">Male</option>
@@ -217,7 +217,7 @@ export function PatientRegistration({ session, onUpdate }: PatientRegistrationPr
                   id="visitType"
                   value={formData.visitType || ''}
                   onChange={(e) => setFormData({ ...formData, visitType: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  className="w-full px-3 py-2 border border-border rounded-md"
                 >
                   <option value="">Select</option>
                   <option value="OPD">OPD</option>
@@ -251,27 +251,27 @@ export function PatientRegistration({ session, onUpdate }: PatientRegistrationPr
             <div className="flex items-center justify-between">
               <div className="flex-1 grid grid-cols-5 gap-4">
                 <div>
-                  <p className="text-xs text-gray-600">Patient</p>
+                  <p className="text-xs text-muted-foreground">Patient</p>
                   <p className="text-sm text-gray-900">{reg.patientName}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-600">Age / Gender</p>
+                  <p className="text-xs text-muted-foreground">Age / Gender</p>
                   <p className="text-sm text-gray-900">{reg.age} / {reg.gender}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-600">Phone</p>
+                  <p className="text-xs text-muted-foreground">Phone</p>
                   <p className="text-sm text-gray-900">{reg.phone}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-600">Visit Type</p>
+                  <p className="text-xs text-muted-foreground">Visit Type</p>
                   <p className="text-sm text-gray-900">{reg.visitType}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-600">Status</p>
+                  <p className="text-xs text-muted-foreground">Status</p>
                   <span className={`inline-block px-2 py-1 rounded text-xs ${
                     reg.status === 'Pending' ? 'bg-yellow-100 text-yellow-700' :
-                    reg.status === 'Checked-In' ? 'bg-green-100 text-green-700' :
-                    'bg-gray-100 text-gray-700'
+                    reg.status === 'Checked-In' ? 'bg-green-100 text-primary' :
+                    'bg-muted text-foreground'
                   }`}>
                     {reg.status}
                   </span>
@@ -282,7 +282,7 @@ export function PatientRegistration({ session, onUpdate }: PatientRegistrationPr
                   <Button
                     size="sm"
                     onClick={() => handleCheckIn(reg.id)}
-                    className="bg-green-600 hover:bg-green-700"
+                    className="bg-primary hover:bg-green-700"
                   >
                     <UserCheck className="size-4 mr-1" />
                     Check-In
@@ -293,7 +293,7 @@ export function PatientRegistration({ session, onUpdate }: PatientRegistrationPr
                   variant="outline"
                   onClick={() => handleDelete(reg.id)}
                 >
-                  <Trash2 className="size-4 text-red-600" />
+                  <Trash2 className="size-4 text-destructive" />
                 </Button>
               </div>
             </div>
@@ -301,7 +301,7 @@ export function PatientRegistration({ session, onUpdate }: PatientRegistrationPr
         ))}
 
         {filteredRegistrations.length === 0 && (
-          <div className="text-center py-12 text-gray-500">
+          <div className="text-center py-12 text-muted-foreground">
             No registrations found. Click "New Registration" to add one.
           </div>
         )}

@@ -198,12 +198,12 @@ Summary:
                   <Card key={report.id} className="hover:shadow-lg transition-shadow">
                     <CardHeader>
                       <div className="flex items-center space-x-2">
-                        <Icon className="h-6 w-6 text-blue-600" />
+                        <Icon className="h-6 w-6 text-primary" />
                         <CardTitle className="text-lg">{report.name}</CardTitle>
                       </div>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-sm text-gray-600 mb-4">{report.description}</p>
+                      <p className="text-sm text-muted-foreground mb-4">{report.description}</p>
                       <Button 
                         onClick={() => generateReport(report.id)}
                         className="w-full"

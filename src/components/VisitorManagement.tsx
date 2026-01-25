@@ -116,7 +116,7 @@ export function VisitorManagement({ session, onUpdate }: VisitorManagementProps)
     <div className="space-y-4 mt-4">
       <div className="flex items-center justify-between">
         <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
           <Input
             placeholder="Search visitors..."
             value={searchTerm}
@@ -201,30 +201,30 @@ export function VisitorManagement({ session, onUpdate }: VisitorManagementProps)
             <div className="flex items-center justify-between">
               <div className="flex-1 grid grid-cols-5 gap-4">
                 <div>
-                  <p className="text-xs text-gray-600">Visitor</p>
+                  <p className="text-xs text-muted-foreground">Visitor</p>
                   <p className="text-sm text-gray-900">{visitor.visitorName}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-600">Phone</p>
+                  <p className="text-xs text-muted-foreground">Phone</p>
                   <p className="text-sm text-gray-900">{visitor.phone}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-600">Visiting</p>
+                  <p className="text-xs text-muted-foreground">Visiting</p>
                   <p className="text-sm text-gray-900">{visitor.patientName}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-600">Check-In Time</p>
+                  <p className="text-xs text-muted-foreground">Check-In Time</p>
                   <p className="text-sm text-gray-900 flex items-center gap-1">
                     <Clock className="size-3" />
                     {formatTime(visitor.checkInTime)}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-600">Status</p>
+                  <p className="text-xs text-muted-foreground">Status</p>
                   <span className={`inline-block px-2 py-1 rounded text-xs ${
                     visitor.status === 'Active' 
-                      ? 'bg-green-100 text-green-700' 
-                      : 'bg-gray-100 text-gray-700'
+                      ? 'bg-green-100 text-primary' 
+                      : 'bg-muted text-foreground'
                   }`}>
                     {visitor.status}
                   </span>
@@ -245,7 +245,7 @@ export function VisitorManagement({ session, onUpdate }: VisitorManagementProps)
             </div>
             {visitor.purpose && (
               <div className="mt-2">
-                <p className="text-xs text-gray-600">Purpose:</p>
+                <p className="text-xs text-muted-foreground">Purpose:</p>
                 <p className="text-sm text-gray-900">{visitor.purpose}</p>
               </div>
             )}
@@ -253,7 +253,7 @@ export function VisitorManagement({ session, onUpdate }: VisitorManagementProps)
         ))}
 
         {filteredVisitors.length === 0 && (
-          <div className="text-center py-12 text-gray-500">
+          <div className="text-center py-12 text-muted-foreground">
             No visitors found. Click "Check-In Visitor" to add one.
           </div>
         )}

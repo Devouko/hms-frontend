@@ -90,13 +90,13 @@ export function SpecimenTracking() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'collected': return 'bg-blue-100 text-blue-700';
+      case 'collected': return 'bg-blue-100 text-primary';
       case 'in-transit': return 'bg-yellow-100 text-yellow-700';
-      case 'received': return 'bg-purple-100 text-purple-700';
-      case 'processing': return 'bg-orange-100 text-orange-700';
-      case 'completed': return 'bg-green-100 text-green-700';
-      case 'rejected': return 'bg-red-100 text-red-700';
-      default: return 'bg-gray-100 text-gray-700';
+      case 'received': return 'bg-purple-100 text-primary';
+      case 'processing': return 'bg-orange-100 text-primary';
+      case 'completed': return 'bg-green-100 text-primary';
+      case 'rejected': return 'bg-red-100 text-destructive';
+      default: return 'bg-muted text-foreground';
     }
   };
 
@@ -135,45 +135,45 @@ export function SpecimenTracking() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl text-gray-900">Specimen Tracking</h1>
-        <p className="text-gray-600">Track specimen status and location</p>
+        <p className="text-muted-foreground">Track specimen status and location</p>
       </div>
 
       {/* Status Overview */}
       <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
         <Card>
           <CardContent className="p-3 text-center">
-            <div className="text-lg font-bold text-blue-600">{statusCounts.collected}</div>
-            <div className="text-xs text-gray-600">Collected</div>
+            <div className="text-lg font-bold text-primary">{statusCounts.collected}</div>
+            <div className="text-xs text-muted-foreground">Collected</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-3 text-center">
             <div className="text-lg font-bold text-yellow-600">{statusCounts.inTransit}</div>
-            <div className="text-xs text-gray-600">In Transit</div>
+            <div className="text-xs text-muted-foreground">In Transit</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-3 text-center">
-            <div className="text-lg font-bold text-purple-600">{statusCounts.received}</div>
-            <div className="text-xs text-gray-600">Received</div>
+            <div className="text-lg font-bold text-primary">{statusCounts.received}</div>
+            <div className="text-xs text-muted-foreground">Received</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-3 text-center">
-            <div className="text-lg font-bold text-orange-600">{statusCounts.processing}</div>
-            <div className="text-xs text-gray-600">Processing</div>
+            <div className="text-lg font-bold text-primary">{statusCounts.processing}</div>
+            <div className="text-xs text-muted-foreground">Processing</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-3 text-center">
-            <div className="text-lg font-bold text-green-600">{statusCounts.completed}</div>
-            <div className="text-xs text-gray-600">Completed</div>
+            <div className="text-lg font-bold text-primary">{statusCounts.completed}</div>
+            <div className="text-xs text-muted-foreground">Completed</div>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-3 text-center">
-            <div className="text-lg font-bold text-red-600">{statusCounts.rejected}</div>
-            <div className="text-xs text-gray-600">Rejected</div>
+            <div className="text-lg font-bold text-destructive">{statusCounts.rejected}</div>
+            <div className="text-xs text-muted-foreground">Rejected</div>
           </CardContent>
         </Card>
       </div>
@@ -207,17 +207,17 @@ export function SpecimenTracking() {
                       {selectedSpecimen.status}
                     </Badge>
                   </div>
-                  <p className="text-xs text-gray-600">{selectedSpecimen.patientName}</p>
-                  <p className="text-xs text-gray-600">{selectedSpecimen.testType} • {selectedSpecimen.sampleType}</p>
-                  <div className="flex items-center gap-1 text-xs text-gray-500">
+                  <p className="text-xs text-muted-foreground">{selectedSpecimen.patientName}</p>
+                  <p className="text-xs text-muted-foreground">{selectedSpecimen.testType} • {selectedSpecimen.sampleType}</p>
+                  <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     <MapPin className="size-3" />
                     {selectedSpecimen.location}
                   </div>
                   {selectedSpecimen.temperature && (
-                    <p className="text-xs text-gray-500">Temp: {selectedSpecimen.temperature}</p>
+                    <p className="text-xs text-muted-foreground">Temp: {selectedSpecimen.temperature}</p>
                   )}
                   {selectedSpecimen.expiryTime && (
-                    <p className={`text-xs ${isExpiringSoon(selectedSpecimen.expiryTime) ? 'text-red-600' : 'text-gray-500'}`}>
+                    <p className={`text-xs ${isExpiringSoon(selectedSpecimen.expiryTime) ? 'text-destructive' : 'text-muted-foreground'}`}>
                       Expires: {selectedSpecimen.expiryTime}
                     </p>
                   )}
@@ -255,15 +255,15 @@ export function SpecimenTracking() {
                             {specimen.status}
                           </Badge>
                           {isExpiringSoon(specimen.expiryTime) && (
-                            <Badge className="bg-red-100 text-red-700">
+                            <Badge className="bg-red-100 text-destructive">
                               <AlertTriangle className="size-3 mr-1" />
                               Expiring Soon
                             </Badge>
                           )}
                         </div>
-                        <p className="text-xs text-gray-600">{specimen.patientName}</p>
-                        <p className="text-xs text-gray-600">{specimen.testType} • {specimen.sampleType}</p>
-                        <div className="flex items-center gap-4 mt-1 text-xs text-gray-500">
+                        <p className="text-xs text-muted-foreground">{specimen.patientName}</p>
+                        <p className="text-xs text-muted-foreground">{specimen.testType} • {specimen.sampleType}</p>
+                        <div className="flex items-center gap-4 mt-1 text-xs text-muted-foreground">
                           <span className="flex items-center gap-1">
                             <Clock className="size-3" />
                             {specimen.collectionTime}

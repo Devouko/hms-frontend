@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import {
   LayoutDashboard,
@@ -37,6 +37,9 @@ import {
   GitBranch,
   Database,
   Key,
+  Menu,
+  ChevronLeft,
+  CheckSquare,
 } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -71,6 +74,7 @@ import { HelpCenter } from './HelpCenter';
 import { SettingsPage } from './SettingsPage';
 import { ReportsPage } from './ReportsPage';
 import { ThemeToggle } from './ThemeToggle';
+import { ThemeSelector } from './ThemeSelector';
 import { FloatingAIButton } from './FloatingAIButtonRobust';
 import { NavbarAIChat } from './NavbarAIChat';
 import { BloodBankManagement } from './BloodBankManagement';
@@ -80,6 +84,9 @@ import { IncomeManagement } from './IncomeManagement';
 import { VehicleManagement } from './VehicleManagement';
 import { ComplaintManagement } from './ComplaintManagement';
 import { SystemSettings } from './SystemSettings';
+import { SuperAdminSettings } from './SuperAdminSettings';
+import { OPDReport } from './OPDReport';
+import { TodoList } from './TodoList';
 import { BedManagement } from './BedManagementNew';
 import { EmergencyManagement } from './EmergencyManagement';
 import { PatientWorkflowManagement } from './PatientWorkflowManagement';
@@ -95,7 +102,7 @@ import {
 } from './SuperAdminComponentsNew';
 import { useThemeInitialization } from '../hooks/useThemeInitialization';
 
-type TabType = 'dashboard' | 'patients' | 'search-patients' | 'appointments' | 'payments' | 'employee' | 'activity' | 'statistics' | 'help' | 'settings' | 'reports' | 'users' | 'doctors' | 'doctor-portal' | 'pharmacy' | 'laboratory' | 'nursing' | 'inventory' | 'front-office' | 'workflow' | 'super-admin' | 'outpatient' | 'inpatient' | 'lab-invoice' | 'lab-results' | 'test-queue' | 'specimen-tracking' | 'ai-assistant' | 'blood-bank' | 'medical-records' | 'bed-management' | 'emergency' | 'expense-management' | 'income-management' | 'vehicle-management' | 'complaint-management' | 'system-settings' | 'gynecology' | 'departments' | 'payroll' | 'attendance' | 'visitors' | 'queue-management' | 'pathology' | 'radiology' | 'ambulance' | 'operation-theatre' | 'billing' | 'workflows' | 'backup' | 'change-password';
+type TabType = 'dashboard' | 'patients' | 'search-patients' | 'appointments' | 'payments' | 'employee' | 'activity' | 'statistics' | 'help' | 'settings' | 'reports' | 'users' | 'doctors' | 'doctor-portal' | 'pharmacy' | 'laboratory' | 'nursing' | 'inventory' | 'front-office' | 'workflow' | 'super-admin' | 'outpatient' | 'inpatient' | 'lab-invoice' | 'lab-results' | 'test-queue' | 'specimen-tracking' | 'ai-assistant' | 'blood-bank' | 'medical-records' | 'bed-management' | 'emergency' | 'expense-management' | 'income-management' | 'vehicle-management' | 'complaint-management' | 'system-settings' | 'super-admin-settings' | 'opd-report' | 'todo-list' | 'gynecology' | 'departments' | 'payroll' | 'attendance' | 'visitors' | 'queue-management' | 'pathology' | 'radiology' | 'ambulance' | 'operation-theatre' | 'billing' | 'workflows' | 'backup' | 'change-password';
 
 interface MainAppProps {
   session: any;
@@ -106,9 +113,20 @@ export function MainApp({ session, supabase }: MainAppProps) {
   const [activeTab, setActiveTab] = useState<TabType>('dashboard');
   const [profileEditOpen, setProfileEditOpen] = useState(false);
   const [aiChatOpen, setAiChatOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('sidebar-collapsed') === 'true';
+    }
+    return false;
+  });
 
   // Initialize theme system
   useThemeInitialization();
+
+  // Persist sidebar state
+  useEffect(() => {
+    localStorage.setItem('sidebar-collapsed', sidebarCollapsed.toString());
+  }, [sidebarCollapsed]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -170,7 +188,9 @@ export function MainApp({ session, supabase }: MainAppProps) {
       case 'income-management': return <IncomeManagement session={session} />;
       case 'vehicle-management': return <VehicleManagement session={session} />;
       case 'complaint-management': return <ComplaintManagement session={session} />;
-      case 'system-settings': return <SystemSettings session={session} />;
+      case 'system-settings': return isSuperAdmin ? <SuperAdminSettings /> : <SystemSettings session={session} />;
+      case 'opd-report': return <OPDReport />;
+      case 'todo-list': return <TodoList session={session} />;
       default: return <NewDashboard session={session} />;
     }
   };
@@ -210,6 +230,8 @@ export function MainApp({ session, supabase }: MainAppProps) {
     // System Administration (merged)
     { id: 'users', label: 'User Management', icon: Shield, category: 'admin' },
     { id: 'reports', label: 'Reports & Analytics', icon: FileText, category: 'admin' },
+    { id: 'opd-report', label: 'OPD Report', icon: FileText, category: 'admin' },
+    { id: 'todo-list', label: 'To Do List', icon: CheckSquare, category: 'admin' },
     { id: 'system-settings', label: 'System Settings', icon: Settings, category: 'admin' },
     { id: 'backup', label: 'Backup & Security', icon: Database, category: 'admin' },
   ];
@@ -270,22 +292,34 @@ export function MainApp({ session, supabase }: MainAppProps) {
   return (
     <div className="min-h-screen bg-background flex">
       {/* Sidebar */}
-      <aside className="w-52 glass-sidebar text-white flex flex-col h-screen overflow-y-auto smooth-transition bg-gradient-to-b from-[#38bdf8] to-[#0ea5e9] dark:from-slate-800 dark:to-slate-900">
+      <aside className={`${sidebarCollapsed ? 'w-16' : 'w-64'} bg-sidebar border-r border-sidebar-border text-sidebar-foreground flex flex-col h-screen overflow-hidden transition-all duration-300 ease-in-out`}>
         {/* Logo */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-white/20 glass">
-          <div className="flex items-center gap-2 text-white">
-            <Activity className="size-6 text-white glow" />
-            <span className="text-xl font-semibold text-white">SmartCare</span>
+        <div className="flex items-center justify-between px-4 py-4 border-b border-sidebar-border">
+          <div className="flex items-center gap-2">
+            <Activity className="size-6 text-primary flex-shrink-0" />
+            {!sidebarCollapsed && (
+              <span className="text-xl font-semibold text-sidebar-foreground">SmartCare</span>
+            )}
           </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+            className="h-8 w-8 text-sidebar-foreground hover:bg-sidebar-accent"
+          >
+            {sidebarCollapsed ? <Menu className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+          </Button>
         </div>
 
         {/* Main Menu */}
         <div className="flex-1 overflow-y-auto">
-          <div className="px-4 py-6">
+          <div className={`${sidebarCollapsed ? 'px-2' : 'px-4'} py-6`}>
             {isSuperAdmin ? (
               // Super Admin Single Menu
               <>
-                <p className="text-xs text-white/70 mb-3 px-2">HOSPITAL MANAGEMENT</p>
+                {!sidebarCollapsed && (
+                  <p className="text-xs text-sidebar-foreground/60 mb-3 px-2">HOSPITAL MANAGEMENT</p>
+                )}
                 <nav className="space-y-1">
                   {superAdminMenuItems.map((item) => {
                     const Icon = item.icon;
@@ -293,17 +327,20 @@ export function MainApp({ session, supabase }: MainAppProps) {
                     return (
                       <motion.button
                         key={item.id}
-                        whileHover={{ x: 4, scale: 1.02 }}
+                        whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                         onClick={() => setActiveTab(item.id as TabType)}
-                        className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg smooth-transition glow-hover ${
+                        className={`w-full flex items-center ${sidebarCollapsed ? 'justify-center px-2' : 'gap-3 px-3'} py-2.5 rounded-xl transition-all ${
                           isActive
-                            ? 'glass-card text-white shadow-lg bg-white/20 dark:bg-slate-700/50'
-                            : 'text-white/90 hover:glass hover:text-white hover:bg-white/10 dark:hover:bg-slate-700/30'
+                            ? 'bg-sidebar-accent text-primary shadow-sm'
+                            : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
                         }`}
+                        title={sidebarCollapsed ? item.label : undefined}
                       >
-                        <Icon className="size-5" />
-                        <span className="text-sm">{item.label}</span>
+                        <Icon className="size-5 flex-shrink-0" />
+                        {!sidebarCollapsed && (
+                          <span className="text-sm">{item.label}</span>
+                        )}
                       </motion.button>
                     );
                   })}
@@ -312,7 +349,9 @@ export function MainApp({ session, supabase }: MainAppProps) {
             ) : (
               // Regular User Menu
               <>
-                <p className="text-xs text-white/70 mb-3 px-2">HOSPITAL MANAGEMENT</p>
+                {!sidebarCollapsed && (
+                  <p className="text-xs text-sidebar-foreground/60 mb-3 px-2">HOSPITAL MANAGEMENT</p>
+                )}
                 <nav className="space-y-1">
                   {menuItems.map((item) => {
                     const Icon = item.icon;
@@ -320,17 +359,20 @@ export function MainApp({ session, supabase }: MainAppProps) {
                     return (
                       <motion.button
                         key={item.id}
-                        whileHover={{ x: 4, scale: 1.02 }}
+                        whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                         onClick={() => setActiveTab(item.id as TabType)}
-                        className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg smooth-transition glow-hover ${
+                        className={`w-full flex items-center ${sidebarCollapsed ? 'justify-center px-2' : 'gap-3 px-3'} py-2.5 rounded-xl transition-all ${
                           isActive
-                            ? 'glass-card text-white shadow-lg bg-white/20 dark:bg-slate-700/50'
-                            : 'text-white/90 hover:glass hover:text-white hover:bg-white/10 dark:hover:bg-slate-700/30'
+                            ? 'bg-sidebar-accent text-primary shadow-sm'
+                            : 'text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground'
                         }`}
+                        title={sidebarCollapsed ? item.label : undefined}
                       >
-                        <Icon className="size-5" />
-                        <span className="text-sm">{item.label}</span>
+                        <Icon className="size-5 flex-shrink-0" />
+                        {!sidebarCollapsed && (
+                          <span className="text-sm">{item.label}</span>
+                        )}
                       </motion.button>
                     );
                   })}
@@ -344,7 +386,7 @@ export function MainApp({ session, supabase }: MainAppProps) {
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <header className="glass-header px-8 py-4 smooth-transition">
+        <header className="bg-card border-b border-border px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex-1 max-w-xl">
               <div className="relative">
@@ -352,24 +394,25 @@ export function MainApp({ session, supabase }: MainAppProps) {
                 <Input
                   type="search"
                   placeholder="Search here..."
-                  className="pl-10 glass-input border-0 smooth-transition glow-hover"
+                  className="pl-10 bg-background border-border"
                 />
               </div>
             </div>
 
             <div className="flex items-center gap-4">
+              {isSuperAdmin && <ThemeSelector />}
               <ThemeToggle />
 
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => setAiChatOpen(!aiChatOpen)}
-                className="relative glass-button smooth-transition"
+                className="relative bg-card border border-border hover:bg-accent"
                 title="AI Assistant"
               >
                 <Bot className="size-5" />
                 {!aiChatOpen && (
-                  <div className="absolute -top-1 -right-1 w-2 h-2 bg-[#38bdf8] rounded-full animate-pulse glow" />
+                  <div className="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full animate-pulse" />
                 )}
               </Button>
 
@@ -378,12 +421,12 @@ export function MainApp({ session, supabase }: MainAppProps) {
               <div className="flex items-center gap-3">
                 <div className="text-right">
                   <p className="text-sm text-foreground">{userName}</p>
-                  <span className={`text-xs px-2 py-0.5 rounded-full glass smooth-transition ${
+                  <span className={`text-xs px-2 py-0.5 rounded-full glass-bg ${
                     userRole === 'super_admin' 
-                      ? 'bg-destructive/10 text-destructive' 
+                      ? 'text-destructive' 
                       : userRole === 'admin'
-                      ? 'bg-warning/10 text-warning'
-                      : 'bg-[#38bdf8]/10 text-[#38bdf8]'
+                      ? 'text-primary'
+                      : 'text-primary'
                   }`}>
                     {userRole === 'super_admin' ? 'Super Admin' 
                       : userRole === 'admin' ? 'Admin'
@@ -397,14 +440,14 @@ export function MainApp({ session, supabase }: MainAppProps) {
                 </div>
                 <button
                   onClick={() => setProfileEditOpen(true)}
-                  className="w-10 h-10 bg-[#38bdf8] rounded-full flex items-center justify-center text-white hover:bg-[#0ea5e9] smooth-transition cursor-pointer glow-hover float"
+                  className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-primary-foreground hover:bg-primary/90 transition-all cursor-pointer"
                   title="Edit Profile"
                 >
                   {userName.charAt(0).toUpperCase()}
                 </button>
                 <button
                   onClick={handleLogout}
-                  className="p-2 hover:bg-muted rounded-lg smooth-transition glass-button"
+                  className="p-2 hover:bg-accent rounded-xl transition-all"
                   title="Logout"
                 >
                   <LogOut className="size-4 text-muted-foreground" />
@@ -415,7 +458,7 @@ export function MainApp({ session, supabase }: MainAppProps) {
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-y-auto p-8 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-slate-900 dark:to-slate-800">
+        <main className="flex-1 overflow-y-auto p-8">
           {renderPage()}
         </main>
       </div>

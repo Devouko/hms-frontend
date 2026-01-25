@@ -207,7 +207,7 @@ export function MedicalRecords() {
           <CardContent>
             <div className="mb-4">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
                 <Input
                   placeholder="Search by patient name, ID, or diagnosis..."
                   value={searchTerm}
@@ -228,31 +228,31 @@ export function MedicalRecords() {
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex items-start gap-4 flex-1">
-                      <div className="bg-gradient-to-br from-indigo-500 to-purple-600 p-3 rounded-xl text-white">
+                      <div className="bg-gradient-to-br from-indigo-500 to-purple-600 p-3 rounded-xl text-card-foreground">
                         <FileText className="size-6" />
                       </div>
                       <div className="flex-1">
                         <div className="grid grid-cols-4 gap-4 mb-3">
                           <div>
-                            <p className="text-xs text-gray-600">Patient</p>
+                            <p className="text-xs text-muted-foreground">Patient</p>
                             <p className="text-sm text-gray-900">{record.patientName}</p>
-                            <p className="text-xs text-gray-500">{record.patientId}</p>
+                            <p className="text-xs text-muted-foreground">{record.patientId}</p>
                           </div>
                           <div>
-                            <p className="text-xs text-gray-600">Doctor</p>
+                            <p className="text-xs text-muted-foreground">Doctor</p>
                             <p className="text-sm text-gray-900">{record.doctorName}</p>
                           </div>
                           <div>
-                            <p className="text-xs text-gray-600">Date</p>
+                            <p className="text-xs text-muted-foreground">Date</p>
                             <p className="text-sm text-gray-900">{record.date}</p>
                           </div>
                           <div>
-                            <p className="text-xs text-gray-600">Diagnosis</p>
+                            <p className="text-xs text-muted-foreground">Diagnosis</p>
                             <p className="text-sm text-gray-900">{record.diagnosis}</p>
                           </div>
                         </div>
-                        <div className="bg-white/50 rounded-lg p-3">
-                          <p className="text-xs text-gray-600 mb-1">Symptoms:</p>
+                        <div className="bg-card/50 rounded-lg p-3">
+                          <p className="text-xs text-muted-foreground mb-1">Symptoms:</p>
                           <p className="text-sm text-gray-900">{record.symptoms}</p>
                         </div>
                       </div>
@@ -276,40 +276,40 @@ export function MedicalRecords() {
                             <div className="space-y-4 py-4">
                               <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                  <p className="text-sm text-gray-600">Patient Name</p>
+                                  <p className="text-sm text-muted-foreground">Patient Name</p>
                                   <p className="text-gray-900">{viewRecord.patientName}</p>
                                 </div>
                                 <div>
-                                  <p className="text-sm text-gray-600">Patient ID</p>
+                                  <p className="text-sm text-muted-foreground">Patient ID</p>
                                   <p className="text-gray-900">{viewRecord.patientId}</p>
                                 </div>
                                 <div>
-                                  <p className="text-sm text-gray-600">Doctor</p>
+                                  <p className="text-sm text-muted-foreground">Doctor</p>
                                   <p className="text-gray-900">{viewRecord.doctorName}</p>
                                 </div>
                                 <div>
-                                  <p className="text-sm text-gray-600">Date</p>
+                                  <p className="text-sm text-muted-foreground">Date</p>
                                   <p className="text-gray-900">{viewRecord.date}</p>
                                 </div>
                               </div>
                               <div>
-                                <p className="text-sm text-gray-600 mb-1">Diagnosis</p>
+                                <p className="text-sm text-muted-foreground mb-1">Diagnosis</p>
                                 <p className="text-gray-900">{viewRecord.diagnosis}</p>
                               </div>
                               <div>
-                                <p className="text-sm text-gray-600 mb-1">Symptoms</p>
+                                <p className="text-sm text-muted-foreground mb-1">Symptoms</p>
                                 <p className="text-gray-900">{viewRecord.symptoms}</p>
                               </div>
                               <div>
-                                <p className="text-sm text-gray-600 mb-1">Treatment Plan</p>
+                                <p className="text-sm text-muted-foreground mb-1">Treatment Plan</p>
                                 <p className="text-gray-900">{viewRecord.treatment}</p>
                               </div>
                               <div>
-                                <p className="text-sm text-gray-600 mb-1">Prescription</p>
+                                <p className="text-sm text-muted-foreground mb-1">Prescription</p>
                                 <p className="text-gray-900">{viewRecord.prescription}</p>
                               </div>
                               <div>
-                                <p className="text-sm text-gray-600 mb-1">Notes</p>
+                                <p className="text-sm text-muted-foreground mb-1">Notes</p>
                                 <p className="text-gray-900">{viewRecord.notes}</p>
                               </div>
                             </div>
@@ -328,7 +328,7 @@ export function MedicalRecords() {
               ))}
 
               {filteredRecords.length === 0 && (
-                <div className="text-center py-12 text-gray-500">
+                <div className="text-center py-12 text-muted-foreground">
                   No medical records found
                 </div>
               )}

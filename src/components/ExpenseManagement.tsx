@@ -118,7 +118,7 @@ export function ExpenseManagement({ session }: ExpenseManagementProps) {
                         id="category"
                         value={formData.category || ''}
                         onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                        className="w-full px-3 py-2 border border-border rounded-md"
                       >
                         <option value="">Select category</option>
                         <option value="Medical Supplies">Medical Supplies</option>
@@ -145,7 +145,7 @@ export function ExpenseManagement({ session }: ExpenseManagementProps) {
                         value={formData.description || ''}
                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                         placeholder="Enter description"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                        className="w-full px-3 py-2 border border-border rounded-md"
                         rows={3}
                       />
                     </div>
@@ -161,7 +161,7 @@ export function ExpenseManagement({ session }: ExpenseManagementProps) {
           <CardContent>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-2">
-                <Search className="size-4 text-gray-400" />
+                <Search className="size-4 text-muted-foreground" />
                 <Input
                   placeholder="Search expenses..."
                   value={searchTerm}
@@ -170,30 +170,30 @@ export function ExpenseManagement({ session }: ExpenseManagementProps) {
                 />
               </div>
               <div className="flex items-center space-x-2">
-                <DollarSign className="size-4 text-green-600" />
+                <DollarSign className="size-4 text-primary" />
                 <span className="font-semibold">Total: ${totalExpenses.toFixed(2)}</span>
               </div>
             </div>
 
             <div className="overflow-x-auto">
-              <table className="w-full border-collapse border border-gray-200">
+              <table className="w-full border-collapse border border-border">
                 <thead>
-                  <tr className="bg-gray-50">
-                    <th className="border border-gray-200 px-4 py-2 text-left">Name</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Category</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Amount</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Date</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Actions</th>
+                  <tr className="bg-muted/50">
+                    <th className="border border-border px-4 py-2 text-left">Name</th>
+                    <th className="border border-border px-4 py-2 text-left">Category</th>
+                    <th className="border border-border px-4 py-2 text-left">Amount</th>
+                    <th className="border border-border px-4 py-2 text-left">Date</th>
+                    <th className="border border-border px-4 py-2 text-left">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredExpenses.map((expense) => (
-                    <tr key={expense.id} className="hover:bg-gray-50">
-                      <td className="border border-gray-200 px-4 py-2">{expense.name}</td>
-                      <td className="border border-gray-200 px-4 py-2">{expense.category}</td>
-                      <td className="border border-gray-200 px-4 py-2">${expense.amount}</td>
-                      <td className="border border-gray-200 px-4 py-2">{expense.date}</td>
-                      <td className="border border-gray-200 px-4 py-2">
+                    <tr key={expense.id} className="hover:bg-muted/50">
+                      <td className="border border-border px-4 py-2">{expense.name}</td>
+                      <td className="border border-border px-4 py-2">{expense.category}</td>
+                      <td className="border border-border px-4 py-2">${expense.amount}</td>
+                      <td className="border border-border px-4 py-2">{expense.date}</td>
+                      <td className="border border-border px-4 py-2">
                         <Button
                           size="sm"
                           variant="destructive"
@@ -209,7 +209,7 @@ export function ExpenseManagement({ session }: ExpenseManagementProps) {
             </div>
 
             {filteredExpenses.length === 0 && (
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-muted-foreground">
                 No expenses found.
               </div>
             )}

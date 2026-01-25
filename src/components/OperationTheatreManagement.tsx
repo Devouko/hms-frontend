@@ -141,7 +141,7 @@ export function OperationTheatreManagement({ session }: OperationTheatreManageme
                         id="operationType"
                         value={formData.operationType || ''}
                         onChange={(e) => setFormData({ ...formData, operationType: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                        className="w-full px-3 py-2 border border-border rounded-md"
                       >
                         <option value="">Select operation type</option>
                         {operationTypes.map(type => (
@@ -155,7 +155,7 @@ export function OperationTheatreManagement({ session }: OperationTheatreManageme
                         id="otNumber"
                         value={formData.otNumber || 'OT-1'}
                         onChange={(e) => setFormData({ ...formData, otNumber: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                        className="w-full px-3 py-2 border border-border rounded-md"
                       >
                         <option value="OT-1">OT-1</option>
                         <option value="OT-2">OT-2</option>
@@ -207,7 +207,7 @@ export function OperationTheatreManagement({ session }: OperationTheatreManageme
                         value={formData.notes || ''}
                         onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                         placeholder="Enter any notes"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                        className="w-full px-3 py-2 border border-border rounded-md"
                         rows={3}
                       />
                     </div>
@@ -222,7 +222,7 @@ export function OperationTheatreManagement({ session }: OperationTheatreManageme
           </CardHeader>
           <CardContent>
             <div className="flex items-center space-x-2 mb-4">
-              <Search className="size-4 text-gray-400" />
+              <Search className="size-4 text-muted-foreground" />
               <Input
                 placeholder="Search surgeries..."
                 value={searchTerm}
@@ -232,26 +232,26 @@ export function OperationTheatreManagement({ session }: OperationTheatreManageme
             </div>
 
             <div className="overflow-x-auto">
-              <table className="w-full border-collapse border border-gray-200">
+              <table className="w-full border-collapse border border-border">
                 <thead>
-                  <tr className="bg-gray-50">
-                    <th className="border border-gray-200 px-4 py-2 text-left">Patient</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Surgeon</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Operation</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Date & Time</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">OT</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Status</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Amount</th>
-                    <th className="border border-gray-200 px-4 py-2 text-left">Actions</th>
+                  <tr className="bg-muted/50">
+                    <th className="border border-border px-4 py-2 text-left">Patient</th>
+                    <th className="border border-border px-4 py-2 text-left">Surgeon</th>
+                    <th className="border border-border px-4 py-2 text-left">Operation</th>
+                    <th className="border border-border px-4 py-2 text-left">Date & Time</th>
+                    <th className="border border-border px-4 py-2 text-left">OT</th>
+                    <th className="border border-border px-4 py-2 text-left">Status</th>
+                    <th className="border border-border px-4 py-2 text-left">Amount</th>
+                    <th className="border border-border px-4 py-2 text-left">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredSurgeries.map((surgery) => (
-                    <tr key={surgery.id} className="hover:bg-gray-50">
-                      <td className="border border-gray-200 px-4 py-2">{surgery.patientName}</td>
-                      <td className="border border-gray-200 px-4 py-2">{surgery.surgeonName}</td>
-                      <td className="border border-gray-200 px-4 py-2">{surgery.operationType}</td>
-                      <td className="border border-gray-200 px-4 py-2">
+                    <tr key={surgery.id} className="hover:bg-muted/50">
+                      <td className="border border-border px-4 py-2">{surgery.patientName}</td>
+                      <td className="border border-border px-4 py-2">{surgery.surgeonName}</td>
+                      <td className="border border-border px-4 py-2">{surgery.operationType}</td>
+                      <td className="border border-border px-4 py-2">
                         <div className="flex items-center space-x-2">
                           <Calendar className="h-4 w-4" />
                           <span>{surgery.operationDate}</span>
@@ -259,8 +259,8 @@ export function OperationTheatreManagement({ session }: OperationTheatreManageme
                           <span>{surgery.operationTime}</span>
                         </div>
                       </td>
-                      <td className="border border-gray-200 px-4 py-2">{surgery.otNumber}</td>
-                      <td className="border border-gray-200 px-4 py-2">
+                      <td className="border border-border px-4 py-2">{surgery.otNumber}</td>
+                      <td className="border border-border px-4 py-2">
                         <select
                           value={surgery.status}
                           onChange={(e) => updateStatus(surgery.id, e.target.value as Surgery['status'])}
@@ -277,8 +277,8 @@ export function OperationTheatreManagement({ session }: OperationTheatreManageme
                           <option value="Cancelled">Cancelled</option>
                         </select>
                       </td>
-                      <td className="border border-gray-200 px-4 py-2">${surgery.amount}</td>
-                      <td className="border border-gray-200 px-4 py-2">
+                      <td className="border border-border px-4 py-2">${surgery.amount}</td>
+                      <td className="border border-border px-4 py-2">
                         <Button
                           size="sm"
                           variant="destructive"
@@ -294,7 +294,7 @@ export function OperationTheatreManagement({ session }: OperationTheatreManageme
             </div>
 
             {filteredSurgeries.length === 0 && (
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-muted-foreground">
                 No surgeries scheduled.
               </div>
             )}

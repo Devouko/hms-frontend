@@ -13,103 +13,111 @@ interface ThemeColor {
 export const themeColors: ThemeColor[] = [
   {
     name: 'Sky Blue (Default)',
-    primary: '#38bdf8',
-    primaryForeground: '#ffffff',
-    secondary: '#f0f9ff',
-    accent: '#0ea5e9',
-    muted: '#f8fafc',
-    border: 'rgba(56, 189, 248, 0.2)',
-    ring: '#38bdf8',
-    gradient: 'linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%)'
+    primary: '199 89% 48%',
+    primaryForeground: '0 0% 100%',
+    secondary: '204 100% 97%',
+    accent: '199 89% 48%',
+    muted: '210 40% 98%',
+    border: '199 89% 48%',
+    ring: '199 89% 48%',
+    gradient: 'linear-gradient(135deg, hsl(199 89% 48%) 0%, hsl(200 98% 39%) 100%)'
   },
   {
     name: 'Emerald Green',
-    primary: '#10b981',
-    primaryForeground: '#ffffff',
-    secondary: '#ecfdf5',
-    accent: '#059669',
-    muted: '#f0fdf4',
-    border: 'rgba(16, 185, 129, 0.2)',
-    ring: '#10b981',
-    gradient: 'linear-gradient(135deg, #10b981 0%, #059669 100%)'
+    primary: '160 84% 39%',
+    primaryForeground: '0 0% 100%',
+    secondary: '151 81% 96%',
+    accent: '160 84% 39%',
+    muted: '138 76% 97%',
+    border: '160 84% 39%',
+    ring: '160 84% 39%',
+    gradient: 'linear-gradient(135deg, hsl(160 84% 39%) 0%, hsl(158 64% 52%) 100%)'
   },
   {
     name: 'Royal Purple',
-    primary: '#8b5cf6',
-    primaryForeground: '#ffffff',
-    secondary: '#f5f3ff',
-    accent: '#7c3aed',
-    muted: '#faf5ff',
-    border: 'rgba(139, 92, 246, 0.2)',
-    ring: '#8b5cf6',
-    gradient: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)'
+    primary: '262 83% 58%',
+    primaryForeground: '0 0% 100%',
+    secondary: '270 100% 98%',
+    accent: '262 83% 58%',
+    muted: '270 100% 98%',
+    border: '262 83% 58%',
+    ring: '262 83% 58%',
+    gradient: 'linear-gradient(135deg, hsl(262 83% 58%) 0%, hsl(263 70% 50%) 100%)'
   },
   {
     name: 'Rose Pink',
-    primary: '#f43f5e',
-    primaryForeground: '#ffffff',
-    secondary: '#fff1f2',
-    accent: '#e11d48',
-    muted: '#fef2f2',
-    border: 'rgba(244, 63, 94, 0.2)',
-    ring: '#f43f5e',
-    gradient: 'linear-gradient(135deg, #f43f5e 0%, #e11d48 100%)'
+    primary: '346 77% 60%',
+    primaryForeground: '0 0% 100%',
+    secondary: '355 100% 97%',
+    accent: '346 77% 60%',
+    muted: '355 100% 97%',
+    border: '346 77% 60%',
+    ring: '346 77% 60%',
+    gradient: 'linear-gradient(135deg, hsl(346 77% 60%) 0%, hsl(347 77% 50%) 100%)'
   },
   {
     name: 'Orange Sunset',
-    primary: '#f97316',
-    primaryForeground: '#ffffff',
-    secondary: '#fff7ed',
-    accent: '#ea580c',
-    muted: '#fffbeb',
-    border: 'rgba(249, 115, 22, 0.2)',
-    ring: '#f97316',
-    gradient: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)'
+    primary: '24 95% 53%',
+    primaryForeground: '0 0% 100%',
+    secondary: '33 100% 96%',
+    accent: '24 95% 53%',
+    muted: '48 100% 96%',
+    border: '24 95% 53%',
+    ring: '24 95% 53%',
+    gradient: 'linear-gradient(135deg, hsl(24 95% 53%) 0%, hsl(20 91% 48%) 100%)'
   },
   {
     name: 'Teal Ocean',
-    primary: '#14b8a6',
-    primaryForeground: '#ffffff',
-    secondary: '#f0fdfa',
-    accent: '#0d9488',
-    muted: '#f0fdf4',
-    border: 'rgba(20, 184, 166, 0.2)',
-    ring: '#14b8a6',
-    gradient: 'linear-gradient(135deg, #14b8a6 0%, #0d9488 100%)'
+    primary: '173 80% 40%',
+    primaryForeground: '0 0% 100%',
+    secondary: '166 76% 97%',
+    accent: '173 80% 40%',
+    muted: '152 81% 96%',
+    border: '173 80% 40%',
+    ring: '173 80% 40%',
+    gradient: 'linear-gradient(135deg, hsl(173 80% 40%) 0%, hsl(172 66% 50%) 100%)'
   },
   {
     name: 'Indigo Night',
-    primary: '#6366f1',
-    primaryForeground: '#ffffff',
-    secondary: '#f0f9ff',
-    accent: '#4f46e5',
-    muted: '#f8fafc',
-    border: 'rgba(99, 102, 241, 0.2)',
-    ring: '#6366f1',
-    gradient: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)'
+    primary: '238 75% 65%',
+    primaryForeground: '0 0% 100%',
+    secondary: '204 100% 97%',
+    accent: '238 75% 65%',
+    muted: '210 40% 98%',
+    border: '238 75% 65%',
+    ring: '238 75% 65%',
+    gradient: 'linear-gradient(135deg, hsl(238 75% 65%) 0%, hsl(243 75% 59%) 100%)'
   },
   {
     name: 'Crimson Red',
-    primary: '#dc2626',
-    primaryForeground: '#ffffff',
-    secondary: '#fef2f2',
-    accent: '#b91c1c',
-    muted: '#fef2f2',
-    border: 'rgba(220, 38, 38, 0.2)',
-    ring: '#dc2626',
-    gradient: 'linear-gradient(135deg, #dc2626 0%, #b91c1c 100%)'
+    primary: '0 84% 60%',
+    primaryForeground: '0 0% 100%',
+    secondary: '0 86% 97%',
+    accent: '0 84% 60%',
+    muted: '0 86% 97%',
+    border: '0 84% 60%',
+    ring: '0 84% 60%',
+    gradient: 'linear-gradient(135deg, hsl(0 84% 60%) 0%, hsl(0 84% 55%) 100%)'
   }
 ];
 
 class ThemeService {
   private currentTheme: ThemeColor;
+  private isClient: boolean;
 
   constructor() {
+    this.isClient = typeof window !== 'undefined';
     this.currentTheme = this.loadTheme();
-    this.applyTheme(this.currentTheme);
+    if (this.isClient) {
+      this.applyTheme(this.currentTheme);
+    }
   }
 
   private loadTheme(): ThemeColor {
+    if (!this.isClient) {
+      return themeColors[0];
+    }
+    
     try {
       const savedTheme = localStorage.getItem('hospital_theme');
       if (savedTheme) {
@@ -123,78 +131,79 @@ class ThemeService {
     return themeColors[0];
   }
 
+  public initializeTheme(): void {
+    if (!this.isClient) return;
+    
+    // Apply the current theme on initialization
+    this.applyTheme(this.currentTheme);
+  }
+
   public setTheme(theme: ThemeColor): void {
     this.currentTheme = theme;
-    this.applyTheme(theme);
-    this.saveTheme(theme);
+    if (this.isClient) {
+      this.applyTheme(theme);
+      this.saveTheme(theme);
+      
+      // Dispatch theme change event for components to react
+      window.dispatchEvent(new CustomEvent('themeChanged', { 
+        detail: { theme, timestamp: Date.now() } 
+      }));
+    }
   }
 
   private applyTheme(theme: ThemeColor): void {
+    if (!this.isClient) return;
+    
     const root = document.documentElement;
     const isDark = root.classList.contains('dark');
     
     // Core theme variables
     root.style.setProperty('--primary', theme.primary);
     root.style.setProperty('--primary-foreground', theme.primaryForeground);
-    root.style.setProperty('--secondary', theme.secondary);
-    root.style.setProperty('--accent', theme.accent);
-    root.style.setProperty('--muted', theme.muted);
-    root.style.setProperty('--border', theme.border);
     root.style.setProperty('--ring', theme.primary);
+    root.style.setProperty('--chart-1', theme.primary);
+    root.style.setProperty('--chart-2', theme.accent);
+    root.style.setProperty('--chart-3', theme.primary);
+    root.style.setProperty('--chart-4', theme.accent);
+    root.style.setProperty('--chart-5', theme.primary);
     
     // Adjust colors for dark mode
     if (isDark) {
-      root.style.setProperty('--background', '#0f172a');
-      root.style.setProperty('--foreground', '#f8fafc');
-      root.style.setProperty('--card', '#1e293b');
-      root.style.setProperty('--card-foreground', '#f8fafc');
-      root.style.setProperty('--input-background', '#1e293b');
-      root.style.setProperty('--muted-foreground', '#94a3b8');
-      root.style.setProperty('--secondary', '#334155');
-      root.style.setProperty('--secondary-foreground', '#f8fafc');
+      root.style.setProperty('--background', '222.2 84% 4.9%');
+      root.style.setProperty('--foreground', '210 40% 98%');
+      root.style.setProperty('--card', '222.2 84% 4.9%');
+      root.style.setProperty('--card-foreground', '210 40% 98%');
+      root.style.setProperty('--secondary', '217.2 32.6% 17.5%');
+      root.style.setProperty('--secondary-foreground', '210 40% 98%');
+      root.style.setProperty('--muted', '217.2 32.6% 17.5%');
+      root.style.setProperty('--muted-foreground', '215 20.2% 65.1%');
+      root.style.setProperty('--border', '217.2 32.6% 17.5%');
+      root.style.setProperty('--input', '217.2 32.6% 17.5%');
+      root.style.setProperty('--accent', '217.2 32.6% 17.5%');
+      root.style.setProperty('--accent-foreground', '210 40% 98%');
     } else {
-      root.style.setProperty('--background', '#ffffff');
-      root.style.setProperty('--foreground', '#1f2937');
-      root.style.setProperty('--card', '#ffffff');
-      root.style.setProperty('--card-foreground', '#1f2937');
-      root.style.setProperty('--input-background', '#ffffff');
-      root.style.setProperty('--muted-foreground', '#64748b');
+      root.style.setProperty('--background', '0 0% 100%');
+      root.style.setProperty('--foreground', '222.2 84% 4.9%');
+      root.style.setProperty('--card', '0 0% 100%');
+      root.style.setProperty('--card-foreground', '222.2 84% 4.9%');
       root.style.setProperty('--secondary', theme.secondary);
-      root.style.setProperty('--secondary-foreground', '#1f2937');
+      root.style.setProperty('--secondary-foreground', '222.2 84% 4.9%');
+      root.style.setProperty('--muted', theme.muted);
+      root.style.setProperty('--muted-foreground', '215.4 16.3% 46.9%');
+      root.style.setProperty('--border', '214.3 31.8% 91.4%');
+      root.style.setProperty('--input', '214.3 31.8% 91.4%');
+      root.style.setProperty('--accent', theme.accent);
+      root.style.setProperty('--accent-foreground', '222.2 84% 4.9%');
     }
     
     // Sidebar variables
-    root.style.setProperty('--sidebar', isDark ? '#1e293b' : theme.primary);
+    root.style.setProperty('--sidebar', isDark ? '222.2 84% 4.9%' : theme.primary);
     root.style.setProperty('--sidebar-foreground', theme.primaryForeground);
-    root.style.setProperty('--sidebar-primary', theme.primary);
-    root.style.setProperty('--sidebar-primary-foreground', theme.primaryForeground);
-    root.style.setProperty('--sidebar-accent', isDark ? '#334155' : `${theme.primary}1a`);
-    root.style.setProperty('--sidebar-accent-foreground', theme.primaryForeground);
-    root.style.setProperty('--sidebar-border', isDark ? '#475569' : `${theme.primary}1a`);
-    root.style.setProperty('--sidebar-ring', theme.primary);
-    
-    // Chart variables
-    root.style.setProperty('--chart-1', theme.primary);
-    root.style.setProperty('--chart-2', theme.accent);
-    root.style.setProperty('--chart-3', `${theme.primary}cc`);
-    root.style.setProperty('--chart-4', `${theme.accent}cc`);
-    root.style.setProperty('--chart-5', `${theme.primary}99`);
-    
-    // Force immediate repaint
-    root.style.setProperty('--theme-timestamp', Date.now().toString());
-    
-    // Force body background update
-    document.body.style.backgroundColor = isDark ? '#0f172a' : '#ffffff';
-    document.body.style.color = isDark ? '#f8fafc' : '#1f2937';
-    
-    // Trigger reflow
-    document.body.offsetHeight;
-    
-    // Dispatch theme change event
-    window.dispatchEvent(new CustomEvent('themeChanged', { detail: theme }));
   }
 
   private saveTheme(theme: ThemeColor): void {
+    if (!this.isClient) return;
+    
     try {
       localStorage.setItem('hospital_theme', JSON.stringify(theme.name));
     } catch (error) {

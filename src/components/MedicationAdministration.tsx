@@ -181,23 +181,23 @@ export function MedicationAdministration({ session }: { session: any }) {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'administered': return 'bg-green-100 text-green-700';
-      case 'scheduled': return 'bg-blue-100 text-blue-700';
-      case 'missed': return 'bg-red-100 text-red-700';
-      case 'refused': return 'bg-orange-100 text-orange-700';
-      case 'completed': return 'bg-green-100 text-green-700';
+      case 'administered': return 'bg-green-100 text-primary';
+      case 'scheduled': return 'bg-blue-100 text-primary';
+      case 'missed': return 'bg-red-100 text-destructive';
+      case 'refused': return 'bg-orange-100 text-primary';
+      case 'completed': return 'bg-green-100 text-primary';
       case 'pending': return 'bg-yellow-100 text-yellow-700';
-      case 'overdue': return 'bg-red-100 text-red-700';
-      default: return 'bg-gray-100 text-gray-700';
+      case 'overdue': return 'bg-red-100 text-destructive';
+      default: return 'bg-muted text-foreground';
     }
   };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'high': return 'bg-red-100 text-red-700';
+      case 'high': return 'bg-red-100 text-destructive';
       case 'medium': return 'bg-yellow-100 text-yellow-700';
-      case 'low': return 'bg-green-100 text-green-700';
-      default: return 'bg-gray-100 text-gray-700';
+      case 'low': return 'bg-green-100 text-primary';
+      default: return 'bg-muted text-foreground';
     }
   };
 
@@ -216,7 +216,7 @@ export function MedicationAdministration({ session }: { session: any }) {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Medication Administration</h1>
-          <p className="text-gray-600">Manage medication schedules and care tasks</p>
+          <p className="text-muted-foreground">Manage medication schedules and care tasks</p>
         </div>
         <div className="flex items-center gap-4">
           <Input
@@ -229,13 +229,13 @@ export function MedicationAdministration({ session }: { session: any }) {
       </div>
 
       {/* Tab Navigation */}
-      <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg w-fit">
+      <div className="flex space-x-1 bg-muted p-1 rounded-lg w-fit">
         <button
           onClick={() => setActiveTab('medications')}
           className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
             activeTab === 'medications'
-              ? 'bg-white text-primary shadow-sm'
-              : 'text-gray-600 hover:text-gray-900'
+              ? 'bg-card text-primary shadow-sm'
+              : 'text-muted-foreground hover:text-gray-900'
           }`}
         >
           <Pill className="size-4 mr-2 inline" />
@@ -245,8 +245,8 @@ export function MedicationAdministration({ session }: { session: any }) {
           onClick={() => setActiveTab('care_tasks')}
           className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
             activeTab === 'care_tasks'
-              ? 'bg-white text-primary shadow-sm'
-              : 'text-gray-600 hover:text-gray-900'
+              ? 'bg-card text-primary shadow-sm'
+              : 'text-muted-foreground hover:text-gray-900'
           }`}
         >
           <CheckCircle className="size-4 mr-2 inline" />
@@ -256,7 +256,7 @@ export function MedicationAdministration({ session }: { session: any }) {
 
       {/* Search */}
       <div className="relative max-w-md">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
         <Input
           placeholder={`Search ${activeTab === 'medications' ? 'medications' : 'care tasks'}...`}
           value={searchTerm}
@@ -283,7 +283,7 @@ export function MedicationAdministration({ session }: { session: any }) {
                     key={medication.id}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                    className="flex items-center justify-between p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors"
                   >
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
@@ -292,7 +292,7 @@ export function MedicationAdministration({ session }: { session: any }) {
                         </div>
                         <div>
                           <h3 className="font-semibold text-gray-900">{medication.patient_name}</h3>
-                          <p className="text-sm text-gray-600">ID: {medication.patient_id}</p>
+                          <p className="text-sm text-muted-foreground">ID: {medication.patient_id}</p>
                         </div>
                       </div>
                       
@@ -319,13 +319,13 @@ export function MedicationAdministration({ session }: { session: any }) {
                       </div>
 
                       {medication.administered_time && (
-                        <div className="mt-2 text-sm text-green-600">
+                        <div className="mt-2 text-sm text-primary">
                           Administered at {medication.administered_time} by {medication.administered_by}
                         </div>
                       )}
 
                       {medication.notes && (
-                        <div className="mt-2 text-sm text-gray-600">
+                        <div className="mt-2 text-sm text-muted-foreground">
                           <span className="font-medium">Notes:</span> {medication.notes}
                         </div>
                       )}
@@ -344,7 +344,7 @@ export function MedicationAdministration({ session }: { session: any }) {
                               setSelectedMedication(medication);
                               setShowAdminModal(true);
                             }}
-                            className="bg-green-600 hover:bg-green-700"
+                            className="bg-primary hover:bg-green-700"
                           >
                             <CheckCircle className="size-4 mr-1" />
                             Administer
@@ -353,7 +353,7 @@ export function MedicationAdministration({ session }: { session: any }) {
                             size="sm"
                             variant="outline"
                             onClick={() => handleRefuseMedication(medication.id, 'Patient refused medication')}
-                            className="text-orange-600 hover:text-orange-700"
+                            className="text-primary hover:text-primary"
                           >
                             Refused
                           </Button>
@@ -384,7 +384,7 @@ export function MedicationAdministration({ session }: { session: any }) {
                     key={task.id}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                    className="flex items-center justify-between p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors"
                   >
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
@@ -393,7 +393,7 @@ export function MedicationAdministration({ session }: { session: any }) {
                         </div>
                         <div>
                           <h3 className="font-semibold text-gray-900">{task.patient_name}</h3>
-                          <p className="text-sm text-gray-600">{task.task_type}</p>
+                          <p className="text-sm text-muted-foreground">{task.task_type}</p>
                         </div>
                       </div>
                       
@@ -418,13 +418,13 @@ export function MedicationAdministration({ session }: { session: any }) {
                       </div>
 
                       {task.completed_time && (
-                        <div className="mt-2 text-sm text-green-600">
+                        <div className="mt-2 text-sm text-primary">
                           Completed at {task.completed_time} by {task.completed_by}
                         </div>
                       )}
 
                       {task.notes && (
-                        <div className="mt-2 text-sm text-gray-600">
+                        <div className="mt-2 text-sm text-muted-foreground">
                           <span className="font-medium">Notes:</span> {task.notes}
                         </div>
                       )}
@@ -439,7 +439,7 @@ export function MedicationAdministration({ session }: { session: any }) {
                         <Button
                           size="sm"
                           onClick={() => handleCompleteTask(task.id)}
-                          className="bg-green-600 hover:bg-green-700"
+                          className="bg-primary hover:bg-green-700"
                         >
                           <CheckCircle className="size-4 mr-1" />
                           Complete
@@ -461,12 +461,12 @@ export function MedicationAdministration({ session }: { session: any }) {
           </DialogHeader>
           {selectedMedication && (
             <div className="space-y-4">
-              <div className="p-4 bg-gray-50 rounded-lg">
+              <div className="p-4 bg-muted/50 rounded-lg">
                 <h3 className="font-semibold">{selectedMedication.patient_name}</h3>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-muted-foreground">
                   {selectedMedication.medication} - {selectedMedication.dosage} {selectedMedication.route}
                 </p>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-muted-foreground">
                   Scheduled: {selectedMedication.scheduled_time}
                 </p>
               </div>
@@ -474,7 +474,7 @@ export function MedicationAdministration({ session }: { session: any }) {
               <div>
                 <Label>Administration Notes (Optional)</Label>
                 <textarea
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md mt-1"
+                  className="w-full px-3 py-2 border border-border rounded-md mt-1"
                   rows={3}
                   placeholder="Any notes about the administration..."
                   id="admin-notes"
@@ -487,7 +487,7 @@ export function MedicationAdministration({ session }: { session: any }) {
                     const notes = (document.getElementById('admin-notes') as HTMLTextAreaElement)?.value;
                     handleAdministerMedication(selectedMedication.id, notes);
                   }}
-                  className="flex-1 bg-green-600 hover:bg-green-700"
+                  className="flex-1 bg-primary hover:bg-green-700"
                 >
                   Confirm Administration
                 </Button>

@@ -70,10 +70,10 @@ export function FrontOffice({ session }: FrontOfficeProps) {
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm text-gray-600">{stat.title}</p>
+                        <p className="text-sm text-muted-foreground">{stat.title}</p>
                         <p className="text-3xl mt-2">{stat.value}</p>
                       </div>
-                      <div className={`${stat.color} p-3 rounded-xl text-white`}>
+                      <div className={`${stat.color} p-3 rounded-xl text-card-foreground`}>
                         <Icon className="size-6" />
                       </div>
                     </div>

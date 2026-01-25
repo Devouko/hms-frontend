@@ -47,7 +47,7 @@ export function FloatingAIButton({ session }: FloatingAIButtonProps) {
               >
                 <Bot className="size-6" />
                 <motion.div
-                  className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full"
+                  className="absolute -top-1 -right-1 w-3 h-3 bg-primary rounded-full"
                   animate={{ scale: [1, 1.2, 1] }}
                   transition={{ duration: 2, repeat: Infinity }}
                 />

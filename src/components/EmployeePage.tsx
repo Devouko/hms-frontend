@@ -29,7 +29,7 @@ export function EmployeePage({ session }: EmployeePageProps) {
         animate={{ opacity: 1, y: 0 }}
       >
         <h2 className="text-gray-900 mb-2">Employee Management</h2>
-        <p className="text-gray-600 text-sm">Manage hospital staff and personnel</p>
+        <p className="text-muted-foreground text-sm">Manage hospital staff and personnel</p>
       </motion.div>
 
       {/* Stats Cards */}
@@ -47,10 +47,10 @@ export function EmployeePage({ session }: EmployeePageProps) {
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-4">
                     <div className={`bg-gradient-to-br ${stat.color} p-3 rounded-xl`}>
-                      <Icon className="size-6 text-white" />
+                      <Icon className="size-6 text-card-foreground" />
                     </div>
                   </div>
-                  <p className="text-sm text-gray-600 mb-1">{stat.label}</p>
+                  <p className="text-sm text-muted-foreground mb-1">{stat.label}</p>
                   <h3 className="text-gray-900">{stat.value}</h3>
                 </CardContent>
               </Card>
@@ -77,21 +77,21 @@ export function EmployeePage({ session }: EmployeePageProps) {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.5 + index * 0.05 }}
-                  className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                  className="flex items-center justify-between p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors"
                 >
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-teal-400 to-teal-600 rounded-full flex items-center justify-center text-white">
+                    <div className="w-12 h-12 bg-gradient-to-br from-teal-400 to-teal-600 rounded-full flex items-center justify-center text-card-foreground">
                       {employee.name.split(' ').map(n => n[0]).join('')}
                     </div>
                     <div>
                       <p className="text-gray-900">{employee.name}</p>
-                      <p className="text-sm text-gray-500">{employee.role} • {employee.department}</p>
+                      <p className="text-sm text-muted-foreground">{employee.role} • {employee.department}</p>
                     </div>
                   </div>
                   <span className={`px-3 py-1 rounded-full text-sm ${
                     employee.status === 'Active' 
-                      ? 'bg-green-100 text-green-700' 
-                      : 'bg-orange-100 text-orange-700'
+                      ? 'bg-green-100 text-primary' 
+                      : 'bg-orange-100 text-primary'
                   }`}>
                     {employee.status}
                   </span>

@@ -322,25 +322,25 @@ export function UserManagement({ session }: UserManagementProps) {
 
   const getStatusColor = (status: string) => {
     const colors = {
-      'active': 'bg-green-100 text-green-700',
-      'inactive': 'bg-gray-100 text-gray-700',
-      'suspended': 'bg-red-100 text-red-700'
+      'active': 'bg-green-100 text-primary',
+      'inactive': 'bg-muted text-foreground',
+      'suspended': 'bg-red-100 text-destructive'
     };
-    return colors[status as keyof typeof colors] || 'bg-gray-100 text-gray-700';
+    return colors[status as keyof typeof colors] || 'bg-muted text-foreground';
   };
 
   const getRoleColor = (role: string) => {
     const colors = {
-      'super_admin': 'bg-purple-100 text-purple-700',
-      'admin': 'bg-blue-100 text-blue-700',
-      'doctor': 'bg-green-100 text-green-700',
-      'nurse': 'bg-teal-100 text-teal-700',
-      'receptionist': 'bg-orange-100 text-orange-700',
+      'super_admin': 'bg-purple-100 text-primary',
+      'admin': 'bg-blue-100 text-primary',
+      'doctor': 'bg-green-100 text-primary',
+      'nurse': 'bg-teal-100 text-primary',
+      'receptionist': 'bg-orange-100 text-primary',
       'lab_tech': 'bg-yellow-100 text-yellow-700',
       'pharmacist': 'bg-pink-100 text-pink-700',
-      'accountant': 'bg-indigo-100 text-indigo-700'
+      'accountant': 'bg-indigo-100 text-primary'
     };
-    return colors[role as keyof typeof colors] || 'bg-gray-100 text-gray-700';
+    return colors[role as keyof typeof colors] || 'bg-muted text-foreground';
   };
 
   const formatRoleName = (role: string) => {
@@ -352,7 +352,7 @@ export function UserManagement({ session }: UserManagementProps) {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">User Management</h1>
-          <p className="text-gray-600">Manage system users, roles, and permissions</p>
+          <p className="text-muted-foreground">Manage system users, roles, and permissions</p>
         </div>
         <Button onClick={() => setIsUserModalOpen(true)} className="bg-[#38bdf8] hover:bg-[#0ea5e9]">
           <Plus className="size-4 mr-2" />
@@ -376,7 +376,7 @@ export function UserManagement({ session }: UserManagementProps) {
                   <select
                     value={selectedRole}
                     onChange={(e) => setSelectedRole(e.target.value)}
-                    className="px-3 py-2 border border-gray-300 rounded-md"
+                    className="px-3 py-2 border border-border rounded-md"
                   >
                     <option value="all">All Roles</option>
                     {roles.map(role => (
@@ -386,7 +386,7 @@ export function UserManagement({ session }: UserManagementProps) {
                   <select
                     value={selectedStatus}
                     onChange={(e) => setSelectedStatus(e.target.value)}
-                    className="px-3 py-2 border border-gray-300 rounded-md"
+                    className="px-3 py-2 border border-border rounded-md"
                   >
                     <option value="all">All Status</option>
                     <option value="active">Active</option>
@@ -394,7 +394,7 @@ export function UserManagement({ session }: UserManagementProps) {
                     <option value="suspended">Suspended</option>
                   </select>
                   <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
                     <Input
                       placeholder="Search users..."
                       value={searchTerm}
@@ -417,7 +417,7 @@ export function UserManagement({ session }: UserManagementProps) {
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-[#38bdf8] rounded-full flex items-center justify-center text-white font-semibold">
+                        <div className="w-12 h-12 bg-[#38bdf8] rounded-full flex items-center justify-center text-card-foreground font-semibold">
                           {user.firstName.charAt(0)}{user.lastName.charAt(0)}
                         </div>
                         <div className="flex-1">
@@ -432,7 +432,7 @@ export function UserManagement({ session }: UserManagementProps) {
                               {formatRoleName(user.role)}
                             </Badge>
                           </div>
-                          <div className="flex items-center gap-4 text-sm text-gray-600">
+                          <div className="flex items-center gap-4 text-sm text-muted-foreground">
                             <span className="flex items-center gap-1">
                               <User className="size-4" />
                               {user.username}
@@ -452,7 +452,7 @@ export function UserManagement({ session }: UserManagementProps) {
                             )}
                           </div>
                           {user.lastLogin && (
-                            <p className="text-xs text-gray-500 mt-1">
+                            <p className="text-xs text-muted-foreground mt-1">
                               Last login: {new Date(user.lastLogin).toLocaleString()}
                             </p>
                           )}
@@ -490,7 +490,7 @@ export function UserManagement({ session }: UserManagementProps) {
                           size="sm"
                           variant="outline"
                           onClick={() => handleDeleteUser(user.id)}
-                          className="text-red-600 hover:text-red-700"
+                          className="text-destructive hover:text-destructive"
                         >
                           <Trash2 className="size-4" />
                         </Button>
@@ -499,7 +499,7 @@ export function UserManagement({ session }: UserManagementProps) {
                   </motion.div>
                 ))}
                 {filteredUsers.length === 0 && (
-                  <div className="text-center py-8 text-gray-500">
+                  <div className="text-center py-8 text-muted-foreground">
                     No users found
                   </div>
                 )}
@@ -519,9 +519,9 @@ export function UserManagement({ session }: UserManagementProps) {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-gray-600 mb-4">{role.description}</p>
+                  <p className="text-sm text-muted-foreground mb-4">{role.description}</p>
                   <div className="space-y-2">
-                    <h4 className="text-sm font-medium text-gray-700">Permissions:</h4>
+                    <h4 className="text-sm font-medium text-foreground">Permissions:</h4>
                     <div className="flex flex-wrap gap-1">
                       {role.permissions.slice(0, 5).map(permissionId => {
                         const permission = availablePermissions.find(p => p.id === permissionId);
@@ -561,26 +561,26 @@ export function UserManagement({ session }: UserManagementProps) {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                <div className="flex items-center justify-between p-3 bg-gray-50 rounded">
+                <div className="flex items-center justify-between p-3 bg-muted/50 rounded">
                   <div>
                     <p className="text-sm font-medium">User login: dr.smith</p>
-                    <p className="text-xs text-gray-500">2024-12-08 08:30:00</p>
+                    <p className="text-xs text-muted-foreground">2024-12-08 08:30:00</p>
                   </div>
-                  <Badge className="bg-green-100 text-green-700">Login</Badge>
+                  <Badge className="bg-green-100 text-primary">Login</Badge>
                 </div>
-                <div className="flex items-center justify-between p-3 bg-gray-50 rounded">
+                <div className="flex items-center justify-between p-3 bg-muted/50 rounded">
                   <div>
                     <p className="text-sm font-medium">Password reset: nurse.jane</p>
-                    <p className="text-xs text-gray-500">2024-12-08 07:45:00</p>
+                    <p className="text-xs text-muted-foreground">2024-12-08 07:45:00</p>
                   </div>
                   <Badge className="bg-yellow-100 text-yellow-700">Password Reset</Badge>
                 </div>
-                <div className="flex items-center justify-between p-3 bg-gray-50 rounded">
+                <div className="flex items-center justify-between p-3 bg-muted/50 rounded">
                   <div>
                     <p className="text-sm font-medium">User created: reception</p>
-                    <p className="text-xs text-gray-500">2024-12-07 16:20:00</p>
+                    <p className="text-xs text-muted-foreground">2024-12-07 16:20:00</p>
                   </div>
-                  <Badge className="bg-blue-100 text-blue-700">User Created</Badge>
+                  <Badge className="bg-blue-100 text-primary">User Created</Badge>
                 </div>
               </div>
             </CardContent>
@@ -642,7 +642,7 @@ export function UserManagement({ session }: UserManagementProps) {
                 <select
                   value={userForm.role || ''}
                   onChange={(e) => setUserForm({ ...userForm, role: e.target.value as SystemUser['role'] })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  className="w-full px-3 py-2 border border-border rounded-md"
                 >
                   <option value="">Select Role</option>
                   {roles.map(role => (
@@ -663,7 +663,7 @@ export function UserManagement({ session }: UserManagementProps) {
                 <select
                   value={userForm.status || 'active'}
                   onChange={(e) => setUserForm({ ...userForm, status: e.target.value as SystemUser['status'] })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  className="w-full px-3 py-2 border border-border rounded-md"
                 >
                   <option value="active">Active</option>
                   <option value="inactive">Inactive</option>

@@ -92,10 +92,10 @@ export function LabResultsEntry() {
 
   const getFlagColor = (flag?: string) => {
     switch (flag) {
-      case 'high': return 'bg-red-100 text-red-700';
-      case 'low': return 'bg-blue-100 text-blue-700';
+      case 'high': return 'bg-red-100 text-destructive';
+      case 'low': return 'bg-blue-100 text-primary';
       case 'critical': return 'bg-red-200 text-red-800';
-      default: return 'bg-green-100 text-green-700';
+      default: return 'bg-green-100 text-primary';
     }
   };
 
@@ -103,7 +103,7 @@ export function LabResultsEntry() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl text-gray-900">Lab Results Entry</h1>
-        <p className="text-gray-600">Enter test results and flag critical values</p>
+        <p className="text-muted-foreground">Enter test results and flag critical values</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -122,14 +122,14 @@ export function LabResultsEntry() {
                 whileHover={{ scale: 1.02 }}
                 onClick={() => setSelectedTest(test)}
                 className={`p-3 border rounded-lg cursor-pointer transition-all ${
-                  selectedTest?.id === test.id ? 'border-primary bg-primary/5' : 'hover:border-gray-300'
+                  selectedTest?.id === test.id ? 'border-primary bg-primary/5' : 'hover:border-border'
                 }`}
               >
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-semibold">{test.patientName}</p>
-                    <p className="text-xs text-gray-600">{test.testType}</p>
-                    <p className="text-xs text-gray-500">Sample: {test.sampleId}</p>
+                    <p className="text-xs text-muted-foreground">{test.testType}</p>
+                    <p className="text-xs text-muted-foreground">Sample: {test.sampleId}</p>
                   </div>
                   <Badge variant="outline" className="bg-yellow-100 text-yellow-700">
                     Pending
@@ -151,10 +151,10 @@ export function LabResultsEntry() {
           <CardContent>
             {selectedTest ? (
               <div className="space-y-4">
-                <div className="p-3 bg-gray-50 rounded">
+                <div className="p-3 bg-muted/50 rounded">
                   <p className="text-sm font-semibold">{selectedTest.patientName}</p>
-                  <p className="text-xs text-gray-600">{selectedTest.testType}</p>
-                  <p className="text-xs text-gray-500">Sample: {selectedTest.sampleId}</p>
+                  <p className="text-xs text-muted-foreground">{selectedTest.testType}</p>
+                  <p className="text-xs text-muted-foreground">Sample: {selectedTest.sampleId}</p>
                 </div>
 
                 <div className="space-y-3">
@@ -176,7 +176,7 @@ export function LabResultsEntry() {
                           </Badge>
                         )}
                       </div>
-                      <p className="text-xs text-gray-500">Normal: {result.normalRange}</p>
+                      <p className="text-xs text-muted-foreground">Normal: {result.normalRange}</p>
                     </div>
                   ))}
                 </div>
@@ -187,7 +187,7 @@ export function LabResultsEntry() {
                 </Button>
               </div>
             ) : (
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-muted-foreground">
                 Select a pending test to enter results
               </div>
             )}
@@ -210,12 +210,12 @@ export function LabResultsEntry() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-semibold">{test.patientName}</p>
-                    <p className="text-xs text-gray-600">{test.testType}</p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-muted-foreground">{test.testType}</p>
+                    <p className="text-xs text-muted-foreground">
                       Completed by {test.enteredBy} on {test.enteredDate}
                     </p>
                   </div>
-                  <Badge className="bg-green-100 text-green-700">
+                  <Badge className="bg-green-100 text-primary">
                     Completed
                   </Badge>
                 </div>

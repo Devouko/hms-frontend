@@ -5,6 +5,7 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import Image from 'next/image';
 
 
 interface AuthPageProps {
@@ -80,136 +81,135 @@ export function AuthPage({ supabase }: AuthPageProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#3ba8c9] via-primary to-[#4dcde8] flex items-center justify-center p-4">
-      <div className="w-full max-w-6xl flex items-center gap-8">
-        {/* Left side - Form */}
+    <div className="min-h-screen flex">
+      {/* Left side - Form */}
+      <div className="w-1/2 flex items-center justify-center p-8 bg-card">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           className="w-full max-w-md"
         >
-          <div className="text-center mb-8">
+          <div className="mb-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="flex items-center justify-center gap-3 mb-4"
+              className="flex items-center gap-3 mb-6"
             >
-              <Activity className="size-8 text-white" />
-              <span className="text-2xl font-bold text-white">SmartCare</span>
+              <Activity className="size-8 text-primary" />
+              <span className="text-2xl font-bold text-foreground">SmartCare</span>
             </motion.div>
-            <p className="text-white/90">Hospital Management System</p>
+            <h1 className="text-3xl font-bold text-foreground mb-2">
+              {isLogin ? 'Welcome back' : 'Create Account'}
+            </h1>
+            <p className="text-muted-foreground">
+              {isLogin ? 'Sign in to access your dashboard' : 'Sign up to get started'}
+            </p>
           </div>
 
-          <Card className="shadow-2xl">
-          <CardHeader>
-            <CardTitle className="text-center">
-              {isLogin ? 'Welcome Back' : 'Create Account'}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={isLogin ? handleLogin : handleSignup} className="space-y-4">
-              {!isLogin && (
-                <div className="space-y-2">
-                  <Label htmlFor="name">Full Name</Label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
-                    <Input
-                      id="name"
-                      type="text"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      placeholder="Enter your name"
-                      className="pl-10"
-                      required
-                    />
-                  </div>
-                </div>
-              )}
-
+          <form onSubmit={isLogin ? handleLogin : handleSignup} className="space-y-6">
+            {!isLogin && (
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="name">Full Name</Label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
+                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
                   <Input
-                    id="email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter your email"
-                    className="pl-10"
+                    id="name"
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Enter your name"
+                    className="pl-10 h-12"
                     required
                   />
                 </div>
               </div>
+            )}
 
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-4" />
-                  <Input
-                    id="password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Enter your password"
-                    className="pl-10"
-                    required
-                  />
-                </div>
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
+                <Input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  className="pl-10 h-12"
+                  required
+                />
               </div>
-
-              {error && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="bg-destructive/10 border border-destructive/30 text-destructive px-4 py-3 rounded-lg text-sm"
-                >
-                  {error}
-                </motion.div>
-              )}
-
-              <Button
-                type="submit"
-                className="w-full bg-primary hover:bg-primary/90"
-                disabled={loading}
-              >
-                {loading ? 'Please wait...' : isLogin ? 'Sign In' : 'Sign Up'}
-              </Button>
-            </form>
-
-            <div className="mt-4 text-center">
-              <button
-                type="button"
-                onClick={() => {
-                  setIsLogin(!isLogin);
-                  setError('');
-                }}
-                className="text-sm text-primary hover:text-primary/80"
-              >
-                {isLogin
-                  ? "Don't have an account? Sign up"
-                  : 'Already have an account? Sign in'}
-              </button>
             </div>
-          </CardContent>
-        </Card>
-        </motion.div>
 
-        {/* Right side - Image */}
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.3 }}
-          className="hidden lg:block w-full max-w-lg"
-        >
-          <img 
-            src="/Assests/login.png" 
-            alt="Hospital Management" 
-            className="w-full h-full max-h-screen object-cover rounded-2xl shadow-2xl"
-          />
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter your password"
+                  className="pl-10 h-12"
+                  required
+                />
+              </div>
+            </div>
+
+            {error && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="bg-destructive/10 border border-destructive/30 text-destructive px-4 py-3 rounded-lg text-sm"
+              >
+                {error}
+              </motion.div>
+            )}
+
+            <Button
+              type="submit"
+              className="w-full h-12 bg-black hover:bg-black/90 text-card-foreground"
+              disabled={loading}
+            >
+              {loading ? 'Please wait...' : isLogin ? 'Sign in' : 'Sign up'}
+            </Button>
+          </form>
+
+          <div className="mt-6 text-center">
+            <span className="text-sm text-muted-foreground">
+              {isLogin ? "Don't have an account? " : 'Already have an account? '}
+            </span>
+            <button
+              type="button"
+              onClick={() => {
+                setIsLogin(!isLogin);
+                setError('');
+              }}
+              className="text-sm text-primary hover:text-primary/80 font-medium"
+            >
+              {isLogin ? 'Sign up' : 'Sign in'}
+            </button>
+          </div>
         </motion.div>
       </div>
+
+      {/* Right side - Image */}
+      <motion.div
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.3 }}
+        className="w-1/2 relative"
+      >
+        <Image 
+          src="/login.png" 
+          alt="Hospital Management" 
+          fill
+          className="object-cover"
+          priority
+        />
+      </motion.div>
     </div>
   );
 }
