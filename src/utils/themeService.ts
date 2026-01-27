@@ -167,8 +167,9 @@ class ThemeService {
     root.style.setProperty('--chart-4', theme.accent);
     root.style.setProperty('--chart-5', theme.primary);
     
-    // Adjust colors for dark mode
+    // Apply mode-specific colors
     if (isDark) {
+      // Dark mode colors
       root.style.setProperty('--background', '222.2 84% 4.9%');
       root.style.setProperty('--foreground', '210 40% 98%');
       root.style.setProperty('--card', '222.2 84% 4.9%');
@@ -181,7 +182,11 @@ class ThemeService {
       root.style.setProperty('--input', '217.2 32.6% 17.5%');
       root.style.setProperty('--accent', '217.2 32.6% 17.5%');
       root.style.setProperty('--accent-foreground', '210 40% 98%');
+      root.style.setProperty('--sidebar', '222.2 84% 4.9%');
+      root.style.setProperty('--sidebar-accent', '217.2 32.6% 17.5%');
+      root.style.setProperty('--sidebar-border', '217.2 32.6% 17.5%');
     } else {
+      // Light mode colors
       root.style.setProperty('--background', '0 0% 100%');
       root.style.setProperty('--foreground', '222.2 84% 4.9%');
       root.style.setProperty('--card', '0 0% 100%');
@@ -194,10 +199,12 @@ class ThemeService {
       root.style.setProperty('--input', '214.3 31.8% 91.4%');
       root.style.setProperty('--accent', theme.accent);
       root.style.setProperty('--accent-foreground', '222.2 84% 4.9%');
+      root.style.setProperty('--sidebar', theme.primary);
+      root.style.setProperty('--sidebar-accent', theme.secondary);
+      root.style.setProperty('--sidebar-border', '214.3 31.8% 91.4%');
     }
     
-    // Sidebar variables
-    root.style.setProperty('--sidebar', isDark ? '222.2 84% 4.9%' : theme.primary);
+    // Common sidebar variables
     root.style.setProperty('--sidebar-foreground', theme.primaryForeground);
   }
 

@@ -57,17 +57,14 @@ export function ThemeProvider({
 
     root.classList.add(effectiveTheme);
     
-    // Reapply current color theme when light/dark mode changes
-    const currentColorTheme = getCurrentTheme();
-    const colorTheme = colorThemes[currentColorTheme];
-    if (colorTheme) {
-      applyTheme(colorTheme);
-    }
-    
-    // Force reflow to ensure immediate application
-    requestAnimationFrame(() => {
-      document.body.offsetHeight;
-    });
+    // Apply current color theme after mode change
+    setTimeout(() => {
+      const currentColorTheme = getCurrentTheme();
+      const colorTheme = colorThemes[currentColorTheme];
+      if (colorTheme) {
+        applyTheme(colorTheme);
+      }
+    }, 10);
   }, [theme]);
 
   // Initialize color theme on mount and listen for changes

@@ -157,8 +157,8 @@ export function PatientsPage({ session }: PatientsPageProps) {
       >
         <Card className="glass-card">
           <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle>Patient Management</CardTitle>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <CardTitle className="text-lg sm:text-xl">Patient Management</CardTitle>
               <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
                 <DialogTrigger asChild>
                   <Button 
@@ -166,44 +166,46 @@ export function PatientsPage({ session }: PatientsPageProps) {
                       setSelectedPatient(null);
                       setFormData({});
                     }}
-                    className="bg-primary hover:bg-primary/90"
+                    className="bg-primary hover:bg-primary/90 w-full sm:w-auto"
                   >
                     <Plus className="size-4 mr-2" />
                     Add Patient
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto mx-4">
                   <DialogHeader>
-                    <DialogTitle>{selectedPatient ? 'Edit Patient' : 'Add New Patient'}</DialogTitle>
+                    <DialogTitle className="text-lg">{selectedPatient ? 'Edit Patient' : 'Add New Patient'}</DialogTitle>
                   </DialogHeader>
-                  <div className="grid grid-cols-2 gap-4 py-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 py-4">
                     <div className="space-y-2">
-                      <Label htmlFor="name">Full Name *</Label>
+                      <Label htmlFor="name" className="text-sm">Full Name *</Label>
                       <Input
                         id="name"
                         value={formData.name || ''}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder="Enter full name"
+                        className="h-10"
                         required
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="age">Age</Label>
+                      <Label htmlFor="age" className="text-sm">Age</Label>
                       <Input
                         id="age"
                         type="number"
                         value={formData.age || ''}
                         onChange={(e) => setFormData({ ...formData, age: e.target.value ? parseInt(e.target.value) || 0 : 0 })}
                         placeholder="Enter age"
+                        className="h-10"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="gender">Gender</Label>
+                      <Label htmlFor="gender" className="text-sm">Gender</Label>
                       <select
                         id="gender"
                         value={formData.gender || ''}
                         onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
-                        className="w-full px-3 py-2 rounded-md bg-background"
+                        className="w-full px-3 py-2 h-10 rounded-md bg-background border border-input text-sm"
                       >
                         <option value="">Select Gender</option>
                         <option value="Male">Male</option>
@@ -212,12 +214,12 @@ export function PatientsPage({ session }: PatientsPageProps) {
                       </select>
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="bloodType">Blood Type</Label>
+                      <Label htmlFor="bloodType" className="text-sm">Blood Type</Label>
                       <select
                         id="bloodType"
                         value={formData.bloodType || ''}
                         onChange={(e) => setFormData({ ...formData, bloodType: e.target.value })}
-                        className="w-full px-3 py-2 rounded-md bg-background"
+                        className="w-full px-3 py-2 h-10 rounded-md bg-background border border-input text-sm"
                       >
                         <option value="">Select Blood Type</option>
                         <option value="A+">A+</option>
@@ -231,41 +233,44 @@ export function PatientsPage({ session }: PatientsPageProps) {
                       </select>
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="phone">Phone *</Label>
+                      <Label htmlFor="phone" className="text-sm">Phone *</Label>
                       <Input
                         id="phone"
                         value={formData.phone || ''}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         placeholder="Enter phone number"
+                        className="h-10"
                         required
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="email">Email</Label>
+                      <Label htmlFor="email" className="text-sm">Email</Label>
                       <Input
                         id="email"
                         type="email"
                         value={formData.email || ''}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         placeholder="Enter email"
+                        className="h-10"
                       />
                     </div>
-                    <div className="space-y-2 col-span-2">
-                      <Label htmlFor="address">Address</Label>
+                    <div className="space-y-2 sm:col-span-2">
+                      <Label htmlFor="address" className="text-sm">Address</Label>
                       <Input
                         id="address"
                         value={formData.address || ''}
                         onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                         placeholder="Enter address"
+                        className="h-10"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="patientType">Patient Type</Label>
+                      <Label htmlFor="patientType" className="text-sm">Patient Type</Label>
                       <select
                         id="patientType"
                         value={formData.patientType || ''}
                         onChange={(e) => setFormData({ ...formData, patientType: e.target.value })}
-                        className="w-full px-3 py-2 rounded-md bg-background"
+                        className="w-full px-3 py-2 h-10 rounded-md bg-background border border-input text-sm"
                       >
                         <option value="">Select Type</option>
                         <option value="inpatient">Inpatient</option>
@@ -273,12 +278,12 @@ export function PatientsPage({ session }: PatientsPageProps) {
                       </select>
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="condition">Condition</Label>
+                      <Label htmlFor="condition" className="text-sm">Condition</Label>
                       <select
                         id="condition"
                         value={formData.condition || ''}
                         onChange={(e) => setFormData({ ...formData, condition: e.target.value })}
-                        className="w-full px-3 py-2 rounded-md bg-background"
+                        className="w-full px-3 py-2 h-10 rounded-md bg-background border border-input text-sm"
                       >
                         <option value="">Select Condition</option>
                         <option value="Stable">Stable</option>
@@ -289,23 +294,24 @@ export function PatientsPage({ session }: PatientsPageProps) {
                       </select>
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="admissionDate">Admission Date</Label>
+                      <Label htmlFor="admissionDate" className="text-sm">Admission Date</Label>
                       <Input
                         id="admissionDate"
                         type="date"
                         value={formData.admissionDate || ''}
                         onChange={(e) => setFormData({ ...formData, admissionDate: e.target.value })}
+                        className="h-10"
                       />
                     </div>
                   </div>
-                  <div className="flex justify-end gap-2">
-                    <Button variant="outline" onClick={() => setIsAddModalOpen(false)}>
+                  <div className="flex flex-col sm:flex-row justify-end gap-2">
+                    <Button variant="outline" onClick={() => setIsAddModalOpen(false)} className="w-full sm:w-auto">
                       Cancel
                     </Button>
                     <Button 
                       onClick={selectedPatient ? handleUpdate : handleAdd}
                       disabled={loading || !formData.name || !formData.phone}
-                      className="bg-primary hover:bg-primary/90"
+                      className="bg-primary hover:bg-primary/90 w-full sm:w-auto"
                     >
                       {loading ? 'Saving...' : selectedPatient ? 'Update' : 'Add'} Patient
                     </Button>
@@ -336,49 +342,83 @@ export function PatientsPage({ session }: PatientsPageProps) {
                   transition={{ delay: index * 0.05 }}
                   className="glass-bg rounded-lg p-4 hover:shadow-md transition-all"
                 >
-                  <div className="flex items-center justify-between">
-                    <div className="flex-1 grid grid-cols-5 gap-4">
-                      <div>
-                        <p className="text-xs text-muted-foreground">Name</p>
-                        <p className="text-sm text-gray-900">{patient.name}</p>
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                    <div className="flex-1 w-full">
+                      {/* Mobile Layout */}
+                      <div className="block sm:hidden space-y-2">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <p className="font-medium text-foreground">{patient.name}</p>
+                            <p className="text-sm text-muted-foreground">{patient.age} years, {patient.gender}</p>
+                          </div>
+                          <span className={`inline-block px-2 py-1 rounded text-xs ${
+                            patient.condition === 'Critical' ? 'bg-red-100 text-destructive' :
+                            patient.condition === 'Stable' ? 'bg-green-100 text-primary' :
+                            'bg-yellow-100 text-yellow-700'
+                          }`}>
+                            {patient.condition}
+                          </span>
+                        </div>
+                        <div className="flex justify-between text-sm">
+                          <span className="text-muted-foreground">Phone:</span>
+                          <span className="text-foreground">{patient.phone}</span>
+                        </div>
+                        {patient.bloodType && (
+                          <div className="flex justify-between text-sm">
+                            <span className="text-muted-foreground">Blood:</span>
+                            <span className="text-foreground">{patient.bloodType}</span>
+                          </div>
+                        )}
                       </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">Age / Gender</p>
-                        <p className="text-sm text-gray-900">{patient.age} / {patient.gender}</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">Blood Type</p>
-                        <p className="text-sm text-gray-900">{patient.bloodType}</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">Phone</p>
-                        <p className="text-sm text-gray-900">{patient.phone}</p>
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">Condition</p>
-                        <span className={`inline-block px-2 py-1 rounded text-xs ${
-                          patient.condition === 'Critical' ? 'bg-red-100 text-destructive' :
-                          patient.condition === 'Stable' ? 'bg-green-100 text-primary' :
-                          'bg-yellow-100 text-yellow-700'
-                        }`}>
-                          {patient.condition}
-                        </span>
+                      
+                      {/* Desktop Layout */}
+                      <div className="hidden sm:grid sm:grid-cols-5 gap-4">
+                        <div>
+                          <p className="text-xs text-muted-foreground">Name</p>
+                          <p className="text-sm text-foreground">{patient.name}</p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-muted-foreground">Age / Gender</p>
+                          <p className="text-sm text-foreground">{patient.age} / {patient.gender}</p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-muted-foreground">Blood Type</p>
+                          <p className="text-sm text-foreground">{patient.bloodType}</p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-muted-foreground">Phone</p>
+                          <p className="text-sm text-foreground">{patient.phone}</p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-muted-foreground">Condition</p>
+                          <span className={`inline-block px-2 py-1 rounded text-xs ${
+                            patient.condition === 'Critical' ? 'bg-red-100 text-destructive' :
+                            patient.condition === 'Stable' ? 'bg-green-100 text-primary' :
+                            'bg-yellow-100 text-yellow-700'
+                          }`}>
+                            {patient.condition}
+                          </span>
+                        </div>
                       </div>
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 w-full sm:w-auto">
                       <Button
                         size="sm"
                         variant="outline"
                         onClick={() => handleEdit(patient)}
+                        className="flex-1 sm:flex-none"
                       >
-                        <Edit className="size-4" />
+                        <Edit className="size-4 sm:mr-1" />
+                        <span className="hidden sm:inline">Edit</span>
                       </Button>
                       <Button
                         size="sm"
                         variant="outline"
                         onClick={() => handleDelete(patient.id)}
+                        className="flex-1 sm:flex-none"
                       >
-                        <Trash2 className="size-4 text-destructive" />
+                        <Trash2 className="size-4 text-destructive sm:mr-1" />
+                        <span className="hidden sm:inline">Delete</span>
                       </Button>
                     </div>
                   </div>

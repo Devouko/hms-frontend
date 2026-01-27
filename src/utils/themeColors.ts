@@ -154,9 +154,6 @@ export const applyTheme = (theme: ColorTheme) => {
   // Apply theme colors to CSS variables
   root.style.setProperty('--primary', primaryHsl);
   root.style.setProperty('--primary-foreground', '210 40% 98%');
-  root.style.setProperty('--secondary', secondaryHsl);
-  root.style.setProperty('--accent', accentHsl);
-  root.style.setProperty('--warning', accentHsl);
   root.style.setProperty('--ring', primaryHsl);
   root.style.setProperty('--chart-1', primaryHsl);
   root.style.setProperty('--chart-2', accentHsl);
@@ -164,13 +161,39 @@ export const applyTheme = (theme: ColorTheme) => {
   root.style.setProperty('--chart-4', accentHsl);
   root.style.setProperty('--chart-5', primaryHsl);
   
-  // Apply sidebar colors based on mode
+  // Apply mode-specific colors
   if (isDark) {
+    // Dark mode colors
+    root.style.setProperty('--background', '222.2 84% 4.9%');
+    root.style.setProperty('--foreground', '210 40% 98%');
+    root.style.setProperty('--card', '222.2 84% 4.9%');
+    root.style.setProperty('--card-foreground', '210 40% 98%');
+    root.style.setProperty('--secondary', '217.2 32.6% 17.5%');
+    root.style.setProperty('--secondary-foreground', '210 40% 98%');
+    root.style.setProperty('--muted', '217.2 32.6% 17.5%');
+    root.style.setProperty('--muted-foreground', '215 20.2% 65.1%');
+    root.style.setProperty('--accent', '217.2 32.6% 17.5%');
+    root.style.setProperty('--accent-foreground', '210 40% 98%');
+    root.style.setProperty('--border', '217.2 32.6% 17.5%');
+    root.style.setProperty('--input', '217.2 32.6% 17.5%');
     root.style.setProperty('--sidebar', '222.2 84% 4.9%');
     root.style.setProperty('--sidebar-foreground', '210 40% 98%');
     root.style.setProperty('--sidebar-accent', '217.2 32.6% 17.5%');
     root.style.setProperty('--sidebar-border', '217.2 32.6% 17.5%');
   } else {
+    // Light mode colors
+    root.style.setProperty('--background', '0 0% 100%');
+    root.style.setProperty('--foreground', '222.2 84% 4.9%');
+    root.style.setProperty('--card', '0 0% 100%');
+    root.style.setProperty('--card-foreground', '222.2 84% 4.9%');
+    root.style.setProperty('--secondary', secondaryHsl);
+    root.style.setProperty('--secondary-foreground', '222.2 84% 4.9%');
+    root.style.setProperty('--muted', '210 40% 96%');
+    root.style.setProperty('--muted-foreground', '215.4 16.3% 46.9%');
+    root.style.setProperty('--accent', accentHsl);
+    root.style.setProperty('--accent-foreground', '222.2 84% 4.9%');
+    root.style.setProperty('--border', '214.3 31.8% 91.4%');
+    root.style.setProperty('--input', '214.3 31.8% 91.4%');
     root.style.setProperty('--sidebar', primaryHsl);
     root.style.setProperty('--sidebar-foreground', '210 40% 98%');
     root.style.setProperty('--sidebar-accent', secondaryHsl);

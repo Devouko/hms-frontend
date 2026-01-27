@@ -81,36 +81,36 @@ export function AuthPage({ supabase }: AuthPageProps) {
   };
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex flex-col lg:flex-row">
       {/* Left side - Form */}
-      <div className="w-1/2 flex items-center justify-center p-8 bg-card">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-6 lg:p-8 bg-card">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           className="w-full max-w-md"
         >
-          <div className="mb-8">
+          <div className="mb-6 sm:mb-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="flex items-center gap-3 mb-6"
+              className="flex items-center gap-3 mb-4 sm:mb-6"
             >
-              <Activity className="size-8 text-primary" />
-              <span className="text-2xl font-bold text-foreground">SmartCare</span>
+              <Activity className="size-6 sm:size-8 text-primary" />
+              <span className="text-xl sm:text-2xl font-bold text-foreground">SmartCare</span>
             </motion.div>
-            <h1 className="text-3xl font-bold text-foreground mb-2">
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
               {isLogin ? 'Welcome back' : 'Create Account'}
             </h1>
-            <p className="text-muted-foreground">
+            <p className="text-sm sm:text-base text-muted-foreground">
               {isLogin ? 'Sign in to access your dashboard' : 'Sign up to get started'}
             </p>
           </div>
 
-          <form onSubmit={isLogin ? handleLogin : handleSignup} className="space-y-6">
+          <form onSubmit={isLogin ? handleLogin : handleSignup} className="space-y-4 sm:space-y-6">
             {!isLogin && (
               <div className="space-y-2">
-                <Label htmlFor="name">Full Name</Label>
+                <Label htmlFor="name" className="text-sm">Full Name</Label>
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
                   <Input
@@ -119,7 +119,7 @@ export function AuthPage({ supabase }: AuthPageProps) {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Enter your name"
-                    className="pl-10 h-12"
+                    className="pl-10 h-10 sm:h-12 text-sm sm:text-base"
                     required
                   />
                 </div>
@@ -127,7 +127,7 @@ export function AuthPage({ supabase }: AuthPageProps) {
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="text-sm">Email</Label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
                 <Input
@@ -136,14 +136,14 @@ export function AuthPage({ supabase }: AuthPageProps) {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
-                  className="pl-10 h-12"
+                  className="pl-10 h-10 sm:h-12 text-sm sm:text-base"
                   required
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="text-sm">Password</Label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
                 <Input
@@ -152,7 +152,7 @@ export function AuthPage({ supabase }: AuthPageProps) {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
-                  className="pl-10 h-12"
+                  className="pl-10 h-10 sm:h-12 text-sm sm:text-base"
                   required
                 />
               </div>
@@ -162,7 +162,7 @@ export function AuthPage({ supabase }: AuthPageProps) {
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="bg-destructive/10 border border-destructive/30 text-destructive px-4 py-3 rounded-lg text-sm"
+                className="bg-destructive/10 border border-destructive/30 text-destructive px-3 sm:px-4 py-2 sm:py-3 rounded-lg text-xs sm:text-sm"
               >
                 {error}
               </motion.div>
@@ -170,15 +170,15 @@ export function AuthPage({ supabase }: AuthPageProps) {
 
             <Button
               type="submit"
-              className="w-full h-12 bg-black hover:bg-black/90 text-card-foreground"
+              className="w-full h-10 sm:h-12 bg-black hover:bg-black/90 text-card-foreground text-sm sm:text-base"
               disabled={loading}
             >
               {loading ? 'Please wait...' : isLogin ? 'Sign in' : 'Sign up'}
             </Button>
           </form>
 
-          <div className="mt-6 text-center">
-            <span className="text-sm text-muted-foreground">
+          <div className="mt-4 sm:mt-6 text-center">
+            <span className="text-xs sm:text-sm text-muted-foreground">
               {isLogin ? "Don't have an account? " : 'Already have an account? '}
             </span>
             <button
@@ -187,7 +187,7 @@ export function AuthPage({ supabase }: AuthPageProps) {
                 setIsLogin(!isLogin);
                 setError('');
               }}
-              className="text-sm text-primary hover:text-primary/80 font-medium"
+              className="text-xs sm:text-sm text-primary hover:text-primary/80 font-medium"
             >
               {isLogin ? 'Sign up' : 'Sign in'}
             </button>
@@ -200,7 +200,7 @@ export function AuthPage({ supabase }: AuthPageProps) {
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 0.3 }}
-        className="w-1/2 relative"
+        className="hidden lg:block lg:w-1/2 relative min-h-[300px] lg:min-h-0"
       >
         <Image 
           src="/login.png" 

@@ -115,17 +115,30 @@ export function MainApp({ session, supabase }: MainAppProps) {
   const [aiChatOpen, setAiChatOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('sidebar-collapsed') === 'true';
+      const isMobile = window.innerWidth < 768;
+      const stored = localStorage.getItem('sidebar-collapsed');
+      return isMobile ? true : stored === 'true';
     }
     return false;
   });
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Initialize theme system
   useThemeInitialization();
 
-  // Persist sidebar state
+  // Persist sidebar state and handle mobile
   useEffect(() => {
     localStorage.setItem('sidebar-collapsed', sidebarCollapsed.toString());
+    
+    const handleResize = () => {
+      const isMobile = window.innerWidth < 768;
+      if (isMobile && !sidebarCollapsed) {
+        setSidebarCollapsed(true);
+      }
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, [sidebarCollapsed]);
 
   const handleLogout = async () => {
@@ -290,9 +303,21 @@ export function MainApp({ session, supabase }: MainAppProps) {
   const menuItems = isSuperAdmin ? superAdminMenuItems : regularMenuItems.filter((item) => item.roles.includes(userRole));
 
   return (
-    <div className="min-h-screen bg-background flex">
+    <div className="min-h-screen bg-background">
+      {/* Mobile Overlay */}
+      {mobileMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 md:hidden" 
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
+      
       {/* Sidebar */}
-      <aside className={`${sidebarCollapsed ? 'w-16' : 'w-64'} bg-sidebar border-r border-sidebar-border text-sidebar-foreground flex flex-col h-screen overflow-hidden transition-all duration-300 ease-in-out`}>
+      <aside className={`${
+        sidebarCollapsed ? 'w-16' : 'w-64'
+      } bg-sidebar border-r border-sidebar-border text-sidebar-foreground fixed top-0 left-0 h-screen overflow-y-auto transition-all duration-300 ease-in-out z-30 ${
+        mobileMenuOpen ? 'block md:block' : 'hidden md:block'
+      }`}>
         {/* Logo */}
         <div className="flex items-center justify-between px-4 py-4 border-b border-sidebar-border">
           <div className="flex items-center gap-2">
@@ -304,7 +329,13 @@ export function MainApp({ session, supabase }: MainAppProps) {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+            onClick={() => {
+              if (window.innerWidth < 768) {
+                setMobileMenuOpen(!mobileMenuOpen);
+              } else {
+                setSidebarCollapsed(!sidebarCollapsed);
+              }
+            }}
             className="h-8 w-8 text-sidebar-foreground hover:bg-sidebar-accent"
           >
             {sidebarCollapsed ? <Menu className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
@@ -312,7 +343,7 @@ export function MainApp({ session, supabase }: MainAppProps) {
         </div>
 
         {/* Main Menu */}
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto pb-4">
           <div className={`${sidebarCollapsed ? 'px-2' : 'px-4'} py-6`}>
             {isSuperAdmin ? (
               // Super Admin Single Menu
@@ -329,7 +360,12 @@ export function MainApp({ session, supabase }: MainAppProps) {
                         key={item.id}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        onClick={() => setActiveTab(item.id as TabType)}
+                        onClick={() => {
+                          setActiveTab(item.id as TabType);
+                          if (window.innerWidth < 768) {
+                            setMobileMenuOpen(false);
+                          }
+                        }}
                         className={`w-full flex items-center ${sidebarCollapsed ? 'justify-center px-2' : 'gap-3 px-3'} py-2.5 rounded-xl transition-all ${
                           isActive
                             ? 'bg-sidebar-accent text-primary shadow-sm'
@@ -361,7 +397,12 @@ export function MainApp({ session, supabase }: MainAppProps) {
                         key={item.id}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        onClick={() => setActiveTab(item.id as TabType)}
+                        onClick={() => {
+                          setActiveTab(item.id as TabType);
+                          if (window.innerWidth < 768) {
+                            setMobileMenuOpen(false);
+                          }
+                        }}
                         className={`w-full flex items-center ${sidebarCollapsed ? 'justify-center px-2' : 'gap-3 px-3'} py-2.5 rounded-xl transition-all ${
                           isActive
                             ? 'bg-sidebar-accent text-primary shadow-sm'
@@ -384,10 +425,11 @@ export function MainApp({ session, supabase }: MainAppProps) {
       </aside>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className={`${sidebarCollapsed ? 'ml-16' : 'ml-64'} transition-all duration-300 ease-in-out md:block hidden`}>
         {/* Header */}
-        <header className="bg-card border-b border-border px-8 py-4">
+        <header className="bg-card border-b border-border px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
+            {/* Desktop Search */}
             <div className="flex-1 max-w-xl">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-5" />
@@ -399,7 +441,7 @@ export function MainApp({ session, supabase }: MainAppProps) {
               </div>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 sm:gap-4">
               {isSuperAdmin && <ThemeSelector />}
               <ThemeToggle />
 
@@ -407,10 +449,10 @@ export function MainApp({ session, supabase }: MainAppProps) {
                 variant="ghost"
                 size="icon"
                 onClick={() => setAiChatOpen(!aiChatOpen)}
-                className="relative bg-card border border-border hover:bg-accent"
+                className="relative bg-card border border-border hover:bg-accent h-9 w-9"
                 title="AI Assistant"
               >
-                <Bot className="size-5" />
+                <Bot className="size-4 sm:size-5" />
                 {!aiChatOpen && (
                   <div className="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full animate-pulse" />
                 )}
@@ -418,7 +460,7 @@ export function MainApp({ session, supabase }: MainAppProps) {
 
               <NotificationsPanel />
 
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 sm:gap-3">
                 <div className="text-right">
                   <p className="text-sm text-foreground">{userName}</p>
                   <span className={`text-xs px-2 py-0.5 rounded-full glass-bg ${
@@ -440,14 +482,14 @@ export function MainApp({ session, supabase }: MainAppProps) {
                 </div>
                 <button
                   onClick={() => setProfileEditOpen(true)}
-                  className="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-primary-foreground hover:bg-primary/90 transition-all cursor-pointer"
+                  className="w-8 h-8 sm:w-10 sm:h-10 bg-primary rounded-full flex items-center justify-center text-primary-foreground hover:bg-primary/90 transition-all cursor-pointer text-sm sm:text-base"
                   title="Edit Profile"
                 >
                   {userName.charAt(0).toUpperCase()}
                 </button>
                 <button
                   onClick={handleLogout}
-                  className="p-2 hover:bg-accent rounded-xl transition-all"
+                  className="p-1.5 sm:p-2 hover:bg-accent rounded-xl transition-all"
                   title="Logout"
                 >
                   <LogOut className="size-4 text-muted-foreground" />
@@ -458,7 +500,81 @@ export function MainApp({ session, supabase }: MainAppProps) {
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-y-auto p-8">
+        <main className="overflow-y-auto p-4 sm:p-6 lg:p-8">
+          {renderPage()}
+        </main>
+      </div>
+      
+      {/* Mobile Content */}
+      <div className="md:hidden flex flex-col min-h-screen">
+        {/* Header */}
+        <header className="bg-card border-b border-border px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex items-center justify-between">
+            {/* Mobile Menu Button */}
+            <div className="flex items-center gap-4">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setMobileMenuOpen(true)}
+                className="h-9 w-9"
+              >
+                <Menu className="h-5 w-5" />
+              </Button>
+            </div>
+
+            <div className="flex items-center gap-2 sm:gap-4">
+              {isSuperAdmin && <ThemeSelector />}
+              <ThemeToggle />
+
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setAiChatOpen(!aiChatOpen)}
+                className="relative bg-card border border-border hover:bg-accent h-9 w-9"
+                title="AI Assistant"
+              >
+                <Bot className="size-4 sm:size-5" />
+                {!aiChatOpen && (
+                  <div className="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full animate-pulse" />
+                )}
+              </Button>
+
+              <NotificationsPanel />
+
+              <div className="flex items-center gap-2 sm:gap-3">
+                <button
+                  onClick={() => setProfileEditOpen(true)}
+                  className="w-8 h-8 sm:w-10 sm:h-10 bg-primary rounded-full flex items-center justify-center text-primary-foreground hover:bg-primary/90 transition-all cursor-pointer text-sm sm:text-base"
+                  title="Edit Profile"
+                >
+                  {userName.charAt(0).toUpperCase()}
+                </button>
+                <button
+                  onClick={handleLogout}
+                  className="p-1.5 sm:p-2 hover:bg-accent rounded-xl transition-all"
+                  title="Logout"
+                >
+                  <LogOut className="size-4 text-muted-foreground" />
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          {/* Mobile Search */}
+          <div className="mt-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-4" />
+              <Input
+                type="search"
+                placeholder="Search here..."
+                className="pl-10 bg-background border-border h-9 text-sm"
+              />
+            </div>
+          </div>
+        </header>
+
+        {/* Page Content */}
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6">
           {renderPage()}
         </main>
       </div>
