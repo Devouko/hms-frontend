@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { UserCog, Users, Briefcase, Award } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 
@@ -104,3 +104,6 @@ export function EmployeePage({ session }: EmployeePageProps) {
     </div>
   );
 }
+
+
+

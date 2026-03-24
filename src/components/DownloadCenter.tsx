@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Download, Upload, File, FileText, Image, Archive, Trash2, Eye, Search, Filter, FolderOpen } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
@@ -539,3 +539,5 @@ export function DownloadCenter() {
     </div>
   );
 }
+
+

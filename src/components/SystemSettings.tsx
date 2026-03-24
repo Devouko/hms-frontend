@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Save, Settings, Globe, Mail, Phone, MapPin, Clock, DollarSign, Palette, Shield } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -523,3 +523,4 @@ export function SystemSettings({ session }: SystemSettingsProps) {
     </div>
   );
 }
+

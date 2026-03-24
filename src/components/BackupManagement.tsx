@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Download, Upload, Trash2, Database, Shield } from 'lucide-react';
 import { Button } from './ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
@@ -205,3 +205,5 @@ export function BackupManagement({ session }: BackupManagementProps) {
     </div>
   );
 }
+
+

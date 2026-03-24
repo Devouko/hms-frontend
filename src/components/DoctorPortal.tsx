@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import {
   Calendar,
   Users,
@@ -313,3 +313,6 @@ export function DoctorPortal({ session }: DoctorPortalProps) {
     </div>
   );
 }
+
+
+

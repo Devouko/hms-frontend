@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { 
   Users, Calendar, Stethoscope, Pill, TestTube, 
   Droplet, FileText, Settings, BarChart3, 
@@ -457,3 +457,5 @@ export function AdminDashboard({ session }: AdminDashboardProps) {
     </div>
   );
 }
+
+

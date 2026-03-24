@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Plus, Search, Trash2, Edit, Building, Users, DollarSign, Clock, Database, Key, Eye, EyeOff, Save } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -414,3 +414,5 @@ export function ChangePassword({ session }: { session: any }) {
     </div>
   );
 }
+
+

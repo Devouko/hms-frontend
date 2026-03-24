@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import {
   Calendar as CalendarIcon,
   Phone,
@@ -637,3 +637,4 @@ export function NewDashboard({ session }: NewDashboardProps) {
     </div>
   );
 }
+

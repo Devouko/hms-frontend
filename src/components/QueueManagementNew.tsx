@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Plus, Search, Clock, Users, ArrowUp, ArrowDown, Play, Pause, CheckCircle, AlertTriangle } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from './ui/button';
@@ -768,3 +768,4 @@ export function QueueManagement({ session }: QueueManagementProps) {
     </div>
   );
 }
+

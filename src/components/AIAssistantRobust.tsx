@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Bot, Send, Mic, X, Minimize2, Maximize2, Sparkles, Brain, Stethoscope } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -289,3 +289,4 @@ export function AIAssistant({ currentPage = 'dashboard', userRole = 'admin', isO
     </motion.div>
   );
 }
+

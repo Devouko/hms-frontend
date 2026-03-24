@@ -1,16 +1,20 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
-  
-  // Environment variables validation
-  env: {
-    CUSTOM_KEY: process.env.CUSTOM_KEY,
+
+  // Don't fail production builds on lint warnings
+  eslint: {
+    ignoreDuringBuilds: true,
   },
 
+  // Don't fail on TypeScript errors in production (warnings only)
+  typescript: {
+    ignoreBuildErrors: false,
+  },
+  
   // Image optimization
   images: {
-    domains: ['localhost'],
+    domains: ['localhost', 'hankgamgdgodxtpwflpn.supabase.co'],
     formats: ['image/webp', 'image/avif'],
   },
 

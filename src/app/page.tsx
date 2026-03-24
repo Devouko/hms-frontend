@@ -1,15 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { createClient } from '@supabase/supabase-js';
-import { projectId, publicAnonKey } from '@/utils/supabase/info';
+import { supabase } from '@/utils/supabase/client';
 import { AuthPage } from '@/components/AuthPage';
 import { MainApp } from '@/components/MainApp';
-
-const supabase = createClient(
-  `https://${projectId}.supabase.co`,
-  publicAnonKey
-);
 
 export default function Home() {
   const [session, setSession] = useState<any>(null);

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { 
   UserPlus, Calendar, CheckCircle, Clock, FlaskConical, 
   FileText, CreditCard, Receipt, Pill, CheckCircle2,
@@ -273,3 +273,4 @@ export function PatientWorkflowManagement({ session }: PatientWorkflowProps) {
     </div>
   );
 }
+

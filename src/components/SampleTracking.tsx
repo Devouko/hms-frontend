@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Plus, Search, Beaker, Clock, CheckCircle, AlertTriangle, QrCode, Printer } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -571,3 +571,4 @@ export function SampleTracking({ session }: { session: any }) {
     </div>
   );
 }
+

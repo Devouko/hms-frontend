@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Users, Calendar, Stethoscope, Bed, TrendingUp, Activity } from 'lucide-react';
 import { GlassCard } from './ui/glass-card';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell } from 'recharts';
@@ -234,3 +234,6 @@ export function Dashboard() {
     </div>
   );
 }
+
+
+

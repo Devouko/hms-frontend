@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import {
   Activity,
   FileText,
@@ -241,3 +241,4 @@ export function LabTechDashboard({ session, onNavigate }: LabTechDashboardProps)
     </div>
   );
 }
+

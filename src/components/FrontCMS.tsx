@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Globe, Edit, Plus, Trash2, Eye, Image, FileText, Menu, Settings, Users } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
@@ -925,3 +925,4 @@ export function FrontCMS() {
     </div>
   );
 }
+

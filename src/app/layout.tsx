@@ -1,11 +1,13 @@
-'use client';
-
 import { Inter } from 'next/font/google';
-import { ThemeProvider } from '@/components/ThemeProvider';
-import { Toaster } from 'sonner';
+import { Providers } from './providers';
 import '@/styles/globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
+
+export const metadata = {
+  title: 'SmartCare HMS',
+  description: 'Hospital Management System',
+};
 
 export default function RootLayout({
   children,
@@ -15,10 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className} suppressHydrationWarning>
-        <ThemeProvider defaultTheme="light">
-          {children}
-          <Toaster position="top-right" richColors />
-        </ThemeProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

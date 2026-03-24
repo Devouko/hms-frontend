@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { DollarSign, TrendingUp, CreditCard, Users, Plus, Search, Edit, Trash2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
@@ -28,9 +28,8 @@ export function PaymentsPage({ session }: PaymentsPageProps) {
   const fetchPayments = async () => {
     try {
       const data = await paymentService.getAll();
-      setPayments(data);
+      setPayments(data || []);
     } catch (error) {
-      console.error('Error fetching payments:', error);
       setPayments([]);
     }
   };
@@ -56,7 +55,6 @@ export function PaymentsPage({ session }: PaymentsPageProps) {
       setIsAddModalOpen(false);
       toast.success('Payment added successfully!');
     } catch (error) {
-      console.error('Error adding payment:', error);
       toast.error('Failed to add payment. Please try again.');
     } finally {
       setLoading(false);
@@ -81,7 +79,6 @@ export function PaymentsPage({ session }: PaymentsPageProps) {
       setIsAddModalOpen(false);
       toast.success('Payment updated successfully!');
     } catch (error) {
-      console.error('Error updating payment:', error);
       toast.error('Failed to update payment. Please try again.');
     } finally {
       setLoading(false);
@@ -304,3 +301,5 @@ export function PaymentsPage({ session }: PaymentsPageProps) {
     </div>
   );
 }
+
+

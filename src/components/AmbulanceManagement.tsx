@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Plus, Search, Trash2, Truck, Phone } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -260,3 +260,5 @@ export function AmbulanceManagement({ session }: AmbulanceManagementProps) {
     </div>
   );
 }
+
+

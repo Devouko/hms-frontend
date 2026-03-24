@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Plus, Search, Trash2, Calendar as CalendarIcon, Clock, Users, CheckCircle } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -434,3 +434,5 @@ export function AppointmentsPage({ session }: AppointmentsPageProps) {
     </div>
   );
 }
+
+

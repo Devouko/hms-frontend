@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { MessageSquare, Send, Users, Mail, Phone, Bell, Plus, Search, Filter } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
@@ -547,3 +547,4 @@ export function MessagingSystem() {
     </div>
   );
 }
+

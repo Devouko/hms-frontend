@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { FileText, Download, Calendar, TrendingUp, Users, DollarSign, BarChart3, PieChart } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
@@ -275,3 +275,5 @@ export function ReportsPage() {
     </div>
   );
 }
+
+

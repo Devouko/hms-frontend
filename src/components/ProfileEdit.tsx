@@ -115,3 +115,4 @@ export function ProfileEdit({ open, onClose, session, supabase }: ProfileEditPro
     </Dialog>
   );
 }
+

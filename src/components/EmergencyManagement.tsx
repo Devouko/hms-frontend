@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Plus, Search, AlertTriangle, Clock, User, Phone, MapPin, Stethoscope } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from './ui/button';
@@ -468,3 +468,5 @@ export function EmergencyManagement({ session }: EmergencyManagementProps) {
     </div>
   );
 }
+
+

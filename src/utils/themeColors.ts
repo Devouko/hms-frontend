@@ -115,6 +115,7 @@ export const colorThemes: Record<string, ColorTheme> = {
 };
 
 export const applyTheme = (theme: ColorTheme) => {
+  if (typeof document === 'undefined') return;
   const root = document.documentElement;
   
   // Convert hex to HSL for CSS variables
@@ -204,7 +205,7 @@ export const applyTheme = (theme: ColorTheme) => {
   root.style.setProperty('--theme-timestamp', Date.now().toString());
   
   // Trigger reflow to ensure immediate application
-  document.body.offsetHeight;
+  if (typeof document !== 'undefined') document.body.offsetHeight;
 };
 
 export const getCurrentTheme = (): string => {

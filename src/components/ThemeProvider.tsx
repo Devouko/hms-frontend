@@ -1,8 +1,7 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState } from 'react';
-import { themeService } from '../utils/themeService';
-import { colorThemes, getCurrentTheme, setCurrentTheme, applyTheme } from '../utils/themeColors';
+import { colorThemes, getCurrentTheme, applyTheme } from '../utils/themeColors';
 
 type Theme = 'dark' | 'light' | 'system';
 

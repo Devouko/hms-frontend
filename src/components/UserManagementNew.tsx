@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Plus, Search, Edit, Trash2, Shield, User, Mail, Phone, Eye, EyeOff, Key } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from './ui/button';
@@ -710,3 +710,4 @@ export function UserManagement({ session }: UserManagementProps) {
     </div>
   );
 }
+

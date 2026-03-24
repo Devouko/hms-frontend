@@ -13,7 +13,7 @@ class AIService {
   private baseUrl = 'https://api.groq.com/openai/v1/chat/completions';
 
   constructor() {
-    this.apiKey = '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';
+    this.apiKey = process.env.NEXT_PUBLIC_GROQ_API_KEY || '';
   }
 
   private getRolePermissions(userRole: string): string[] {
@@ -137,6 +137,13 @@ Provide clear, helpful, and accurate responses. Be concise but thorough.`;
     currentPage: string = 'dashboard'
   ): Promise<AIResponse> {
     try {
+      if (!this.apiKey) {
+        return { 
+          content: 'AI assistant is not configured. Please contact your administrator.',
+          error: 'Missing API key'
+        };
+      }
+
       const systemPrompt = this.getSystemPrompt(userRole, currentPage);
       
       const response = await fetch(this.baseUrl, {
@@ -157,7 +164,10 @@ Provide clear, helpful, and accurate responses. Be concise but thorough.`;
       });
 
       if (!response.ok) {
-        throw new Error(`API request failed: ${response.status}`);
+        return { 
+          content: 'I apologize, but I\'m having trouble connecting to the AI service right now. Please try again later.',
+          error: `API request failed: ${response.status}`
+        };
       }
 
       const data = await response.json();

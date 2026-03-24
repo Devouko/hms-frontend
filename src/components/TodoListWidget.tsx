@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { 
   CheckSquare, 
   Plus, 
@@ -320,3 +320,4 @@ export function TodoListWidget({ session, maxItems = 5 }: TodoListWidgetProps) {
     </Card>
   );
 }
+

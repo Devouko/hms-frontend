@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Plus, Search, LogOut, Clock } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from './ui/button';
@@ -261,3 +261,5 @@ export function VisitorManagement({ session, onUpdate }: VisitorManagementProps)
     </div>
   );
 }
+
+

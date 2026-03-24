@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Baby, Skull, Plus, Search, Edit, Trash2, FileText, Calendar, User } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
@@ -622,3 +622,5 @@ export function BirthDeathRecords() {
     </div>
   );
 }
+
+

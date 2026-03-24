@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { FileText, Plus, Search, Printer } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
@@ -192,3 +192,4 @@ export function LabInvoiceGenerator() {
     </div>
   );
 }
+

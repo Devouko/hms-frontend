@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Plus, Search, Star, TrendingUp, Award, Target, User } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -454,3 +454,4 @@ export function PerformanceManagement({ session }: { session: any }) {
     </div>
   );
 }
+

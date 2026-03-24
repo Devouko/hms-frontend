@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Bot, Sparkles } from 'lucide-react';
 import { AIAssistant } from './AIAssistantRobust';
 

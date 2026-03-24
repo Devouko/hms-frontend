@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import {
   Server,
   Database,
@@ -544,3 +544,5 @@ export function SuperAdminDashboard({ session }: SuperAdminDashboardProps) {
     </div>
   );
 }
+
+

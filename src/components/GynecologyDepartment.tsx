@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { 
   Calendar, 
   User, 
@@ -304,3 +304,4 @@ export function GynecologyDepartment({ session }: GynecologyProps) {
     </div>
   );
 }
+

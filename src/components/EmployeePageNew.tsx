@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { UserCog, Users, Briefcase, Award, Plus, Edit, Trash2, Search } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
@@ -349,3 +349,6 @@ export function EmployeePageNew({ session }: EmployeePageNewProps) {
     </div>
   );
 }
+
+
+

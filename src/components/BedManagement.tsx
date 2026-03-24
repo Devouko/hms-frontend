@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Plus, Search, Edit, Trash2, Bed as BedIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from './ui/button';
@@ -380,3 +380,6 @@ export function BedManagement() {
     </div>
   );
 }
+
+
+

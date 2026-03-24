@@ -1,5 +1,7 @@
+'use client';
+
 import { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import {
   LayoutDashboard,
   Users,
@@ -91,6 +93,7 @@ import { BedManagement } from './BedManagementNew';
 import { EmergencyManagement } from './EmergencyManagement';
 import { PatientWorkflowManagement } from './PatientWorkflowManagement';
 import { InventoryManagement } from './InventoryManagementNew';
+import { SetupModule } from './SetupModule';
 import { 
   DepartmentManagement, 
   PayrollManagement, 
@@ -102,7 +105,7 @@ import {
 } from './SuperAdminComponentsNew';
 import { useThemeInitialization } from '../hooks/useThemeInitialization';
 
-type TabType = 'dashboard' | 'patients' | 'search-patients' | 'appointments' | 'payments' | 'employee' | 'activity' | 'statistics' | 'help' | 'settings' | 'reports' | 'users' | 'doctors' | 'doctor-portal' | 'pharmacy' | 'laboratory' | 'nursing' | 'inventory' | 'front-office' | 'workflow' | 'super-admin' | 'outpatient' | 'inpatient' | 'lab-invoice' | 'lab-results' | 'test-queue' | 'specimen-tracking' | 'ai-assistant' | 'blood-bank' | 'medical-records' | 'bed-management' | 'emergency' | 'expense-management' | 'income-management' | 'vehicle-management' | 'complaint-management' | 'system-settings' | 'super-admin-settings' | 'opd-report' | 'todo-list' | 'gynecology' | 'departments' | 'payroll' | 'attendance' | 'visitors' | 'queue-management' | 'pathology' | 'radiology' | 'ambulance' | 'operation-theatre' | 'billing' | 'workflows' | 'backup' | 'change-password';
+type TabType = 'dashboard' | 'patients' | 'search-patients' | 'appointments' | 'payments' | 'employee' | 'activity' | 'statistics' | 'help' | 'settings' | 'reports' | 'users' | 'doctors' | 'doctor-portal' | 'pharmacy' | 'laboratory' | 'nursing' | 'inventory' | 'front-office' | 'workflow' | 'super-admin' | 'outpatient' | 'inpatient' | 'lab-invoice' | 'lab-results' | 'test-queue' | 'specimen-tracking' | 'ai-assistant' | 'blood-bank' | 'medical-records' | 'bed-management' | 'emergency' | 'expense-management' | 'income-management' | 'vehicle-management' | 'complaint-management' | 'system-settings' | 'super-admin-settings' | 'opd-report' | 'todo-list' | 'gynecology' | 'departments' | 'payroll' | 'attendance' | 'visitors' | 'queue-management' | 'pathology' | 'radiology' | 'ambulance' | 'operation-theatre' | 'billing' | 'workflows' | 'backup' | 'change-password' | 'setup';
 
 interface MainAppProps {
   session: any;
@@ -204,6 +207,7 @@ export function MainApp({ session, supabase }: MainAppProps) {
       case 'system-settings': return isSuperAdmin ? <SuperAdminSettings /> : <SystemSettings session={session} />;
       case 'opd-report': return <OPDReport />;
       case 'todo-list': return <TodoList session={session} />;
+      case 'setup': return <SetupModule session={session} />;
       default: return <NewDashboard session={session} />;
     }
   };
@@ -246,7 +250,7 @@ export function MainApp({ session, supabase }: MainAppProps) {
     { id: 'opd-report', label: 'OPD Report', icon: FileText, category: 'admin' },
     { id: 'todo-list', label: 'To Do List', icon: CheckSquare, category: 'admin' },
     { id: 'system-settings', label: 'System Settings', icon: Settings, category: 'admin' },
-    { id: 'backup', label: 'Backup & Security', icon: Database, category: 'admin' },
+    { id: 'setup', label: 'Setup', icon: Settings, category: 'admin' },
   ];
 
   const regularMenuItems = [

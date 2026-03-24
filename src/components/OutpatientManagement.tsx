@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import {
   Users,
   Calendar,
@@ -584,3 +584,4 @@ export function OutpatientManagement({ session }: OutpatientManagementProps) {
     </div>
   );
 }
+

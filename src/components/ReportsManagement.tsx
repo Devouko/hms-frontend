@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { BarChart3, FileText, Download, Calendar, Users, DollarSign } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -222,3 +222,4 @@ Summary:
     </div>
   );
 }
+

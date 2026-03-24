@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Activity, Clock, User, FileText } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 
@@ -77,3 +77,5 @@ export function ActivityPage() {
     </div>
   );
 }
+
+

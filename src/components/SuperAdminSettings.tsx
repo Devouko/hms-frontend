@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Settings, Building2, Bell, Mail, Phone, CreditCard, Globe, Shield, Users, Database, Languages, Grid3X3, Save } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
@@ -731,3 +731,4 @@ export function SuperAdminSettings() {
     </div>
   );
 }
+

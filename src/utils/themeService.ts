@@ -231,4 +231,17 @@ class ThemeService {
   }
 }
 
-export const themeService = new ThemeService();
+// Lazy singleton — never instantiated at module load time (safe for SSR)
+let _instance: ThemeService | null = null;
+const getInstance = (): ThemeService => {
+  if (!_instance) _instance = new ThemeService();
+  return _instance;
+};
+
+export const themeService = {
+  setTheme: (theme: ThemeColor) => getInstance().setTheme(theme),
+  getCurrentTheme: () => getInstance().getCurrentTheme(),
+  getThemeByName: (name: string) => getInstance().getThemeByName(name),
+  getAllThemes: () => getInstance().getAllThemes(),
+  initializeTheme: () => getInstance().initializeTheme(),
+};

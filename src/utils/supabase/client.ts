@@ -1,10 +1,9 @@
 import { createClient } from '@supabase/supabase-js';
-import { projectId, publicAnonKey } from './info';
 
-export const supabase = createClient(
-  `https://${projectId}.supabase.co`,
-  publicAnonKey
-);
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Database table interfaces
 export interface Patient {

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Key, Eye, EyeOff, Save } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -239,3 +239,5 @@ export function ChangePassword({ session }: ChangePasswordProps) {
     </div>
   );
 }
+
+

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Plus, Search, DollarSign, Calendar } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -281,3 +281,4 @@ export function PayrollManagement({ session }: PayrollManagementProps) {
     </div>
   );
 }
+

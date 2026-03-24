@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Plus, Search, Calendar, CheckCircle, XCircle, Clock, User } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -364,3 +364,4 @@ export function LeaveManagement({ session }: { session: any }) {
     </div>
   );
 }
+

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Plus, Search, Edit, Trash2, Play, Pause, CheckCircle, Clock, Users, AlertTriangle } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from './ui/button';
@@ -624,3 +624,4 @@ export function WorkflowManagement({ session }: WorkflowManagementProps) {
     </div>
   );
 }
+

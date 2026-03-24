@@ -1,5 +1,7 @@
+'use client';
+
 import { useState } from 'react';
-import { motion } from 'motion/react';
+import { motion } from 'framer-motion';
 import { Activity, Mail, Lock, User } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -213,3 +215,4 @@ export function AuthPage({ supabase }: AuthPageProps) {
     </div>
   );
 }
+
