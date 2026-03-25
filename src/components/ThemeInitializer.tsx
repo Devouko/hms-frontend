@@ -1,1 +1,31 @@
-'use client';\n\nimport { useEffect } from 'react';\nimport { themeService } from '../utils/themeService';\nimport { getCurrentTheme, setCurrentTheme } from '../utils/themeColors';\n\nexport function ThemeInitializer() {\n  useEffect(() => {\n    // Initialize both theme services\n    themeService.initializeTheme();\n    \n    // Apply color theme\n    const currentColorTheme = getCurrentTheme();\n    setCurrentTheme(currentColorTheme);\n    \n    // Listen for theme changes\n    const handleThemeChange = () => {\n      const newTheme = getCurrentTheme();\n      setCurrentTheme(newTheme);\n    };\n    \n    window.addEventListener('themeChanged', handleThemeChange);\n    \n    return () => {\n      window.removeEventListener('themeChanged', handleThemeChange);\n    };\n  }, []);\n  \n  return null;\n}\n
+﻿'use client';
+
+import { useEffect } from 'react';
+import { themeService } from '../utils/themeService';
+import { getCurrentTheme, setCurrentTheme } from '../utils/themeColors';
+
+export function ThemeInitializer() {
+  useEffect(() => {
+    // Initialize both theme services
+    themeService.initializeTheme();
+    
+    // Apply color theme
+    const currentColorTheme = getCurrentTheme();
+    setCurrentTheme(currentColorTheme);
+    
+    // Listen for theme changes
+    const handleThemeChange = () => {
+      const newTheme = getCurrentTheme();
+      setCurrentTheme(newTheme);
+    };
+    
+    window.addEventListener('themeChanged', handleThemeChange);
+    
+    return () => {
+      window.removeEventListener('themeChanged', handleThemeChange);
+    };
+  }, []);
+  
+  return null;
+}
+

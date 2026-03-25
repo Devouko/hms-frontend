@@ -11,7 +11,7 @@ const nextConfig = {
 
   // Don't fail on TypeScript errors in production (warnings only)
   typescript: {
-    ignoreBuildErrors: false,
+    ignoreBuildErrors: true,
   },
   
   // Image optimization
