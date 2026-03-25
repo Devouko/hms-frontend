@@ -12,6 +12,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Progress } from './ui/progress';
 import { toast } from 'sonner';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from 'recharts';
+import { AutoFillButton } from './AutoFillButton';
+import { AIInsightPanel } from './AIInsightPanel';
 
 interface Bill {
   id: string;
@@ -221,6 +223,13 @@ export function BillingManagement({ session }: BillingManagementProps) {
         })}
       </div>
 
+      {/* AI Billing Insights */}
+      <AIInsightPanel
+        title="AI Revenue Insights"
+        compact
+        prompt={`Analyze billing data: Total bills: ${bills.length}, Total revenue: $${bills.reduce((s, b) => s + b.amount, 0).toFixed(0)}, Pending: ${bills.filter(b => b.status === 'Pending').length} bills, Paid: ${bills.filter(b => b.status === 'Paid').length} bills. Provide: 1) Revenue collection risk assessment, 2) Recommendations to improve collection rate, 3) Any billing anomalies to investigate.`}
+      />
+
       <Tabs defaultValue="bills" className="space-y-6">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="bills">Bills</TabsTrigger>
@@ -250,6 +259,12 @@ export function BillingManagement({ session }: BillingManagementProps) {
                             Enter the billing details below.
                           </DialogDescription>
                         </DialogHeader>
+                        <div className="flex justify-end mb-2">
+                          <AutoFillButton
+                            formType="billing"
+                            onFill={(data) => setFormData((prev) => ({ ...prev, patientName: data.patientName, amount: data.amount, discount: data.discount, tax: data.tax, notes: data.notes, dueDate: data.dueDate }))}
+                          />
+                        </div>
                         <div className="grid grid-cols-2 gap-4 py-4">
                           <div className="space-y-2">
                             <Label htmlFor="patientName">Patient Name *</Label>

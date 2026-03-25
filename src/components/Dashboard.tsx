@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Users, Calendar, Stethoscope, Bed, TrendingUp, Activity } from 'lucide-react';
 import { GlassCard } from './ui/glass-card';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell } from 'recharts';
+import { AIInsightPanel } from './AIInsightPanel';
 
 export function Dashboard() {
   const stats = [
@@ -231,6 +232,22 @@ export function Dashboard() {
           </GlassCard>
         </motion.div>
       </div>
+
+      {/* AI Insights Panel */}
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }}>
+        <AIInsightPanel
+          title="AI Hospital Insights"
+          prompt={`Analyze this hospital dashboard data and provide 3-4 actionable insights:
+- Total Patients: 1,234 (+12% this month)
+- Appointments Today: 48 (+5%)
+- Active Doctors: 56
+- Bed Occupancy: 77/100 (77%)
+- Top departments: Cardiology 30%, Neurology 25%, Orthopedics 20%, Pediatrics 15%
+- Weekly appointments peak on Thursday (61), lowest Sunday (25)
+
+Provide: 1) Key observations, 2) Potential risks, 3) Recommended actions for hospital management.`}
+        />
+      </motion.div>
     </div>
   );
 }

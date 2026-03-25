@@ -27,6 +27,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Progress } from './ui/progress';
 import { toast } from 'sonner';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from 'recharts';
+import { AIInsightPanel } from './AIInsightPanel';
 
 interface LabTest {
   id: string;
@@ -236,6 +237,14 @@ export function LaboratoryManagement() {
                   }}>
                     Submit Result
                   </Button>
+                  {resultForm.result && (
+                    <AIInsightPanel
+                      title="AI Result Analysis"
+                      prompt={`Analyze this lab test result: Test ID: ${resultForm.testId}, Result: ${resultForm.result}, Critical Flag: ${resultForm.criticalFlag}. 
+Provide: 1) Whether this value appears normal/abnormal, 2) Possible clinical significance, 3) Recommended follow-up actions. Be concise.`}
+                      autoLoad
+                    />
+                  )}
                 </CardContent>
               </Card>
             </div>

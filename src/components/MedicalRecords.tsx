@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Label } from './ui/label';
 import { Textarea } from './ui/textarea';
 import { useLocalStorage } from '../hooks/useLocalStorage';
+import { AIDiagnosisHelper } from './AIDiagnosisHelper';
 
 interface MedicalRecord {
   id: string;
@@ -105,6 +106,11 @@ export function MedicalRecords() {
                   <DialogHeader>
                     <DialogTitle>Add New Medical Record</DialogTitle>
                   </DialogHeader>
+                  <AIDiagnosisHelper
+                    symptoms={formData.symptoms}
+                    diagnosis={formData.diagnosis}
+                    onSuggestion={(field, value) => setFormData(prev => ({ ...prev, [field]: value }))}
+                  />
                   <div className="grid grid-cols-2 gap-4 py-4">
                     <div className="space-y-2">
                       <Label htmlFor="patientName">Patient Name</Label>

@@ -37,6 +37,8 @@ import {
   SelectValue,
 } from './ui/select';
 import { TodoListWidget } from './TodoListWidget';
+import { DrugInteractionChecker } from './DrugInteractionChecker';
+import { AIInsightPanel } from './AIInsightPanel';
 
 interface Medication {
   id: string;
@@ -456,6 +458,8 @@ export function PharmacyManagement() {
 
         {/* Prescriptions Tab */}
         <TabsContent value="prescriptions" className="space-y-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div className="lg:col-span-2">
           <Card>
             <CardHeader>
               <CardTitle>Prescription Queue</CardTitle>
@@ -528,8 +532,17 @@ export function PharmacyManagement() {
               </div>
             </CardContent>
           </Card>
+            </div>
+            <div className="space-y-4">
+              <DrugInteractionChecker />
+              <AIInsightPanel
+                title="Pharmacy AI Insights"
+                compact
+                prompt="Analyze pharmacy data: 2 medications below minimum stock (Paracetamol 500mg: 120 units, min 300; Ibuprofen 400mg: 80 units, min 150). 3 pending prescriptions. Provide: reorder recommendations, potential drug interaction risks to watch, and inventory optimization tips."
+              />
+            </div>
+          </div>
         </TabsContent>
-
         {/* Low Stock Tab */}
         <TabsContent value="low-stock" className="space-y-4">
           <Card>

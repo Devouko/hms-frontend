@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { Label } from './ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Textarea } from './ui/textarea';
+import { AIInsightPanel } from './AIInsightPanel';
 
 interface InventoryItem {
   id: string;
@@ -285,6 +286,14 @@ export function InventoryManagement({ session }: InventoryManagementProps) {
           </CardContent>
         </Card>
       </div>
+
+      {/* AI Inventory Insights */}
+      <AIInsightPanel
+        title="AI Inventory Insights"
+        compact
+        prompt={`Analyze hospital inventory: Total items: ${inventoryStats.total}, In stock: ${inventoryStats.in_stock}, Low stock: ${inventoryStats.low_stock}, Out of stock: ${inventoryStats.out_of_stock}, Expired: ${inventoryStats.expired}, Total value: $${inventoryStats.total_value.toFixed(0)}.
+Provide: 1) Critical reorder recommendations, 2) Expiry risk items to address, 3) Cost optimization suggestions. Be concise and actionable.`}
+      />
 
       {/* Filters */}
       <div className="flex gap-4 items-center">
