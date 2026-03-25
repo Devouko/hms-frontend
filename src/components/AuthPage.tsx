@@ -28,14 +28,15 @@ export function AuthPage({ supabase }: AuthPageProps) {
     setError('');
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
     } catch (error: any) {
-      setError(error.message || 'Failed to login');
+      const msg = error?.message || '';
+      if (msg === 'Failed to fetch') {
+        setError('Cannot reach authentication server. Check your internet connection or Supabase project status.');
+      } else {
+        setError(msg || 'Failed to login');
+      }
       console.error('Login error:', error);
     } finally {
       setLoading(false);
@@ -48,29 +49,17 @@ export function AuthPage({ supabase }: AuthPageProps) {
     setError('');
 
     try {
-      // Direct Supabase signup
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
-        options: {
-          data: {
-            name,
-            role: 'user'
-          }
-        }
+        options: { data: { name, role: 'user' } }
       });
 
       if (error) throw error;
 
-      // If signup successful, try to sign in
       if (data.user) {
-        const { error: loginError } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-        
+        const { error: loginError } = await supabase.auth.signInWithPassword({ email, password });
         if (loginError) {
-          // If auto-login fails, show success message for email confirmation
           setError('Account created! Please check your email to verify your account.');
         }
       }

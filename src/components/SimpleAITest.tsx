@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Bot, Send, X } from 'lucide-react';
 
-const GROQ_API_KEY = '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';
+const GROQ_API_KEY = process.env.NEXT_PUBLIC_GROQ_API_KEY;
 
 export function SimpleAITest() {
   const [open, setOpen] = useState(false);
@@ -19,7 +19,7 @@ export function SimpleAITest() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${GROQ_API_KEY}`,
+          'Authorization': `Bearer ${GROQ_API_KEY ?? ''}`,
         },
         body: JSON.stringify({
           model: 'llama-3.3-70b-versatile',

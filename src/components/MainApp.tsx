@@ -148,7 +148,7 @@ export function MainApp({ session, supabase }: MainAppProps) {
     await supabase.auth.signOut();
   };
 
-  const userName = session?.user?.user_metadata?.name || 'User';
+  const userName = session?.user?.user_metadata?.name || session?.user?.email || 'User';
   const userRole = session?.user?.user_metadata?.role || 'user';
   const isAdmin = userRole === 'admin' || userRole === 'super_admin';
   const isSuperAdmin = userRole === 'super_admin';

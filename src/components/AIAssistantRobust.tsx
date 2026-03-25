@@ -88,7 +88,7 @@ export function AIAssistant({ currentPage = 'dashboard', userRole = 'admin', isO
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer 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',
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_GROQ_API_KEY}`,
         },
         body: JSON.stringify({
           model: 'llama-3.3-70b-versatile',

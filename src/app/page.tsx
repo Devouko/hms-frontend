@@ -13,9 +13,7 @@ export default function Home() {
     const initAuth = async () => {
       try {
         const { data: { session }, error } = await supabase.auth.getSession();
-        if (error) {
-          console.warn('Auth session error:', error.message);
-        }
+        if (error) console.warn('Auth session error:', error.message);
         setSession(session);
       } catch (error) {
         console.warn('Auth initialization error:', error);
@@ -26,9 +24,7 @@ export default function Home() {
 
     initAuth();
 
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
     });
 

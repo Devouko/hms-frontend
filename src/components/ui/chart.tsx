@@ -69,6 +69,12 @@ function ChartContainer({
   );
 }
 
+const sanitizeCssValue = (value: string): string =>
+  /^[a-zA-Z0-9#(),%. -]+$/.test(value) ? value : '';
+
+const sanitizeCssKey = (key: string): string =>
+  key.replace(/[^a-zA-Z0-9-_]/g, '');
+
 const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
   const colorConfig = Object.entries(config).filter(
     ([, config]) => config.theme || config.color,
@@ -90,7 +96,9 @@ ${colorConfig
     const color =
       itemConfig.theme?.[theme as keyof typeof itemConfig.theme] ||
       itemConfig.color;
-    return color ? `  --color-${key}: ${color};` : null;
+    const safeColor = color ? sanitizeCssValue(color) : null;
+    const safeKey = sanitizeCssKey(key);
+    return safeColor ? `  --color-${safeKey}: ${safeColor};` : null;
   })
   .join("\n")}
 }
