@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Label } from './ui/label';
 import { toast } from 'sonner';
 import { paymentService, Payment } from '../utils/supabase/client';
+import { AutoFillButton } from './AutoFillButton';
 
 interface PaymentsPageProps {
   session: any;
@@ -166,6 +167,12 @@ export function PaymentsPage({ session }: PaymentsPageProps) {
                   <DialogHeader>
                     <DialogTitle>{selectedPayment ? 'Edit Payment' : 'Add New Payment'}</DialogTitle>
                   </DialogHeader>
+                  <div className="flex justify-end mb-2">
+                    <AutoFillButton
+                      formType="billing"
+                      onFill={(data) => setFormData((prev) => ({ ...prev, amount: data.amount, payment_method: 'Cash', description: data.notes, status: 'pending' }))}
+                    />
+                  </div>
                   <div className="grid grid-cols-2 gap-4 py-4">
                     <div className="space-y-2">
                       <Label htmlFor="amount">Amount</Label>

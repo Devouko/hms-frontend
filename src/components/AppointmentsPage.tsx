@@ -10,6 +10,7 @@ import { Badge } from './ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { toast } from 'sonner';
 import { appointmentService, Appointment } from '../utils/supabase/client';
+import { AutoFillButton } from './AutoFillButton';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
 
@@ -211,6 +212,12 @@ export function AppointmentsPage({ session }: AppointmentsPageProps) {
                         Fill in the details to schedule a new appointment.
                       </DialogDescription>
                     </DialogHeader>
+                    <div className="flex justify-end mb-2">
+                      <AutoFillButton
+                        formType="appointment"
+                        onFill={(data) => setFormData({ ...formData, ...data })}
+                      />
+                    </div>
                     <div className="grid grid-cols-2 gap-4 py-4">
                       <div className="space-y-2">
                         <Label htmlFor="doctor_name">Doctor Name</Label>

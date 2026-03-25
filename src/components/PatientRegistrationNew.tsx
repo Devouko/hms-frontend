@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Textarea } from './ui/textarea';
 import { Badge } from './ui/badge';
 import { toast } from 'sonner';
+import { AutoFillButton } from './AutoFillButton';
 
 interface PatientData {
   patient_name: string;
@@ -424,6 +425,12 @@ export function PatientRegistration({ session, onPatientRegistered }: PatientReg
             Patient Registration
           </CardTitle>
           <p className="text-muted-foreground">Register a new patient in the system</p>
+          <div className="flex justify-center mt-3">
+            <AutoFillButton
+              formType="patient"
+              onFill={(data) => setFormData((prev) => ({ ...prev, ...data }))}
+            />
+          </div>
         </CardHeader>
         
         <CardContent>
