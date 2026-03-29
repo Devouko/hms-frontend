@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
 import { Label } from './ui/label';
 import { toast } from 'sonner';
-import { patientService, Patient } from '../utils/supabase/client';
+import { patientsApi } from '../utils/api';
 
 
 
@@ -29,16 +29,10 @@ export function PatientsPage({ session }: PatientsPageProps) {
 
   const fetchPatients = async () => {
     try {
-      const data = await patientService.getAll();
+      const data = await patientsApi.getAll();
       setPatients(data || []);
     } catch (error) {
-      // Fallback to localStorage
-      const localPatients = localStorage.getItem('hospital_patients');
-      if (localPatients) {
-        setPatients(JSON.parse(localPatients));
-      } else {
-        setPatients([]);
-      }
+      setPatients([]);
     }
   };
 
@@ -75,16 +69,8 @@ export function PatientsPage({ session }: PatientsPageProps) {
         created_at: new Date().toISOString()
       };
       
-      // Try database first, fallback to localStorage
-      try {
-        const savedPatient = await patientService.create(newPatient);
-        setPatients([...patients, savedPatient]);
-      } catch (dbError) {
-        console.warn('Database save failed, using localStorage:', dbError);
-        const localPatients = [...patients, newPatient];
-        setPatients(localPatients);
-        localStorage.setItem('hospital_patients', JSON.stringify(localPatients));
-      }
+      const savedPatient = await patientsApi.create(newPatient);
+      setPatients([...patients, savedPatient]);
       
       setFormData({});
       setIsAddModalOpen(false);
@@ -113,7 +99,7 @@ export function PatientsPage({ session }: PatientsPageProps) {
     setLoading(true);
     
     try {
-      const updatedPatient = await patientService.update(selectedPatient.id, {
+      const updatedPatient = await patientsApi.update(selectedPatient.id, {
         name: formData.name,
         phone: formData.phone,
         email: formData.email,
@@ -140,7 +126,7 @@ export function PatientsPage({ session }: PatientsPageProps) {
     if (!confirm('Are you sure you want to delete this patient?')) return;
     
     try {
-      await patientService.delete(id);
+      await patientsApi.delete(id);
       setPatients(patients.filter(patient => patient.id !== id));
       toast.success('Patient deleted successfully!');
     } catch (error) {

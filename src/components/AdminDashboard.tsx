@@ -12,10 +12,10 @@ import { Badge } from './ui/badge';
 import { Progress } from './ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell, AreaChart, Area } from 'recharts';
+import { dashboardApi } from '../utils/api';
 import { PatientManagement } from './PatientManagement';
 import { AppointmentsPage } from './AppointmentsPage';
 import { DoctorManagement } from './DoctorManagement';
-import { PharmacyManagement } from './PharmacyManagement';
 import { BloodBankManagement } from './BloodBankManagement';
 import { PathologyManagement } from './PathologyManagement';
 import { RadiologyManagement } from './RadiologyManagement';
@@ -76,31 +76,19 @@ export function AdminDashboard({ session }: AdminDashboardProps) {
 
   const fetchDashboardStats = async () => {
     try {
-      // Get stats from localStorage for demo
-      const patients = JSON.parse(localStorage.getItem('hospital_patients') || '[]');
-      const appointments = JSON.parse(localStorage.getItem('hospital_appointments') || '[]');
-      const doctors = JSON.parse(localStorage.getItem('hospital_doctors') || '[]');
-      const bills = JSON.parse(localStorage.getItem('hospital_bills') || '[]');
-      const bloodBank = JSON.parse(localStorage.getItem('hospital_blood_bank') || '[]');
-      
-      const today = new Date().toISOString().split('T')[0];
-      const todayAppointments = appointments.filter((apt: any) => apt.date === today);
-      const pendingBills = bills.filter((bill: any) => bill.status === 'Pending');
-      const totalBloodUnits = bloodBank.reduce((sum: number, item: any) => sum + (item.quantity || 0), 0);
-      const totalRevenue = bills.reduce((sum: number, bill: any) => sum + (parseFloat(bill.amount) || 0), 0);
-
+      const data = await dashboardApi.getStats();
       setStats({
-        totalPatients: patients.length,
-        todayAppointments: todayAppointments.length,
-        activeDoctors: doctors.length,
-        pendingBills: pendingBills.length,
-        bloodUnits: totalBloodUnits,
-        pendingTests: Math.floor(Math.random() * 20) + 5,
-        revenue: totalRevenue,
-        bedOccupancy: Math.floor(Math.random() * 80) + 60
+        totalPatients: data.totalPatients ?? 0,
+        todayAppointments: data.todayAppointments ?? 0,
+        activeDoctors: data.activeDoctors ?? 0,
+        pendingBills: data.pendingBills ?? 0,
+        bloodUnits: data.bloodUnits ?? 0,
+        pendingTests: data.pendingTests ?? 0,
+        revenue: data.revenue ?? 0,
+        bedOccupancy: data.bedOccupancy ?? 0,
       });
     } catch (error) {
-      console.error('Error fetching dashboard stats:', error);
+      // keep default zeros
     }
   };
 

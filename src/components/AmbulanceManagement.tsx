@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
 import { Label } from './ui/label';
 import { toast } from 'sonner';
+import { ambulanceApi } from '../utils/api';
 
 interface AmbulanceCall {
   id: string;
@@ -32,10 +33,7 @@ export function AmbulanceManagement({ session }: AmbulanceManagementProps) {
   const [formData, setFormData] = useState<Partial<AmbulanceCall>>({});
 
   useEffect(() => {
-    const savedCalls = localStorage.getItem('hospital_ambulance_calls');
-    if (savedCalls) {
-      setCalls(JSON.parse(savedCalls));
-    }
+    ambulanceApi.getCalls().then(setCalls).catch(() => setCalls([]));
   }, []);
 
   const filteredCalls = calls.filter(call =>
@@ -50,43 +48,34 @@ export function AmbulanceManagement({ session }: AmbulanceManagementProps) {
       return;
     }
 
-    const newCall: AmbulanceCall = {
-      id: Date.now().toString(),
-      patientName: formData.patientName || '',
-      contactNumber: formData.contactNumber || '',
-      pickupAddress: formData.pickupAddress || '',
+    const newCall = await ambulanceApi.create({
+      patientName: formData.patientName,
+      contactNumber: formData.contactNumber,
+      pickupAddress: formData.pickupAddress,
       destination: formData.destination || 'Hospital',
       callTime: new Date().toLocaleString(),
       status: 'Pending',
       driverName: formData.driverName || '',
       vehicleNumber: formData.vehicleNumber || '',
       amount: formData.amount || 0
-    };
-
-    const updatedCalls = [...calls, newCall];
-    setCalls(updatedCalls);
-    localStorage.setItem('hospital_ambulance_calls', JSON.stringify(updatedCalls));
+    });
+    setCalls([...calls, newCall]);
     
     setFormData({});
     setIsAddModalOpen(false);
     toast.success('Ambulance call registered successfully!');
   };
 
-  const updateStatus = (id: string, status: AmbulanceCall['status']) => {
-    const updatedCalls = calls.map(call => 
-      call.id === id ? { ...call, status } : call
-    );
-    setCalls(updatedCalls);
-    localStorage.setItem('hospital_ambulance_calls', JSON.stringify(updatedCalls));
+  const updateStatus = async (id: string, status: AmbulanceCall['status']) => {
+    const updated = await ambulanceApi.update(id, { status });
+    setCalls(calls.map(c => c.id === id ? updated : c));
     toast.success('Status updated successfully!');
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this call?')) return;
-    
-    const updatedCalls = calls.filter(call => call.id !== id);
-    setCalls(updatedCalls);
-    localStorage.setItem('hospital_ambulance_calls', JSON.stringify(updatedCalls));
+    await ambulanceApi.delete(id);
+    setCalls(calls.filter(c => c.id !== id));
     toast.success('Call deleted successfully!');
   };
 

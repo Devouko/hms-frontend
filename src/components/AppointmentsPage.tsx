@@ -9,7 +9,7 @@ import { Label } from './ui/label';
 import { Badge } from './ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { toast } from 'sonner';
-import { appointmentService, Appointment } from '../utils/supabase/client';
+import { appointmentsApi } from '../utils/api';
 import { AutoFillButton } from './AutoFillButton';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
@@ -33,17 +33,10 @@ export function AppointmentsPage({ session }: AppointmentsPageProps) {
 
   const fetchAppointments = async () => {
     try {
-      const data = await appointmentService.getAll();
+      const data = await appointmentsApi.getAll();
       setAppointments(data);
     } catch (error) {
-      console.error('Error fetching appointments:', error);
-      // Fallback to localStorage
-      const localAppointments = localStorage.getItem('hospital_appointments');
-      if (localAppointments) {
-        setAppointments(JSON.parse(localAppointments));
-      } else {
-        setAppointments([]);
-      }
+      setAppointments([]);
     }
   };
 
@@ -110,17 +103,8 @@ export function AppointmentsPage({ session }: AppointmentsPageProps) {
         created_at: new Date().toISOString()
       };
 
-      // Try Supabase first, fallback to localStorage
-      try {
-        const savedAppointment = await appointmentService.create(newAppointment);
-        setAppointments([...appointments, savedAppointment]);
-      } catch (dbError) {
-        console.warn('Database save failed, using localStorage:', dbError);
-        // Save to localStorage as fallback
-        const updatedAppointments = [...appointments, newAppointment];
-        setAppointments(updatedAppointments);
-        localStorage.setItem('hospital_appointments', JSON.stringify(updatedAppointments));
-      }
+      const savedAppointment = await appointmentsApi.create(newAppointment);
+      setAppointments([...appointments, savedAppointment]);
       
       setFormData({});
       setIsAddModalOpen(false);
@@ -137,7 +121,7 @@ export function AppointmentsPage({ session }: AppointmentsPageProps) {
     if (!confirm('Are you sure you want to delete this appointment?')) return;
     
     try {
-      await appointmentService.delete(id);
+      await appointmentsApi.delete(id);
       setAppointments(appointments.filter(appointment => appointment.id !== id));
       toast.success('Appointment deleted successfully!');
     } catch (error) {

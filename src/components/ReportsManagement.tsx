@@ -5,6 +5,7 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Label } from './ui/label';
+import { reportsApi } from '../utils/api';
 
 interface ReportsManagementProps {
   session: any;
@@ -26,38 +27,26 @@ export function ReportsManagement({ session }: ReportsManagementProps) {
     generateReportData();
   }, [dateFrom, dateTo]);
 
-  const generateReportData = () => {
+  const generateReportData = async () => {
     try {
-      const patients = JSON.parse(localStorage.getItem('hospital_patients') || '[]');
-      const appointments = JSON.parse(localStorage.getItem('hospital_appointments') || '[]');
-      const bills = JSON.parse(localStorage.getItem('hospital_bills') || '[]');
-      const pathologyTests = JSON.parse(localStorage.getItem('hospital_pathology_tests') || '[]');
-      const radiologyTests = JSON.parse(localStorage.getItem('hospital_radiology_tests') || '[]');
-      const bloodBank = JSON.parse(localStorage.getItem('hospital_blood_bank') || '[]');
-
-      const filteredAppointments = appointments.filter((apt: any) => 
-        apt.date >= dateFrom && apt.date <= dateTo
-      );
-      
-      const filteredBills = bills.filter((bill: any) => 
-        bill.billDate >= dateFrom && bill.billDate <= dateTo
-      );
-
-      const completedTests = [...pathologyTests, ...radiologyTests].filter((test: any) => 
-        test.status === 'Completed' && 
-        (test.reportDate >= dateFrom && test.reportDate <= dateTo)
-      );
-
+      const params = `dateFrom=${dateFrom}&dateTo=${dateTo}`;
+      const [patients, appointments, financial, pathology, radiology] = await Promise.allSettled([
+        reportsApi.getPatientReport(params),
+        reportsApi.getAppointmentReport(params),
+        reportsApi.getFinancialReport(params),
+        reportsApi.getPathologyReport(params),
+        reportsApi.getRadiologyReport(params),
+      ]);
       setReportData({
-        totalPatients: patients.length,
-        totalAppointments: filteredAppointments.length,
-        totalRevenue: filteredBills.reduce((sum: number, bill: any) => sum + (bill.paidAmount || 0), 0),
-        pendingBills: filteredBills.filter((bill: any) => bill.status === 'Pending').length,
-        completedTests: completedTests.length,
-        bloodUnits: bloodBank.reduce((sum: number, item: any) => sum + (item.quantity || 0), 0)
+        totalPatients: patients.status === 'fulfilled' ? (patients.value?.total ?? 0) : 0,
+        totalAppointments: appointments.status === 'fulfilled' ? (appointments.value?.total ?? 0) : 0,
+        totalRevenue: financial.status === 'fulfilled' ? (financial.value?.totalRevenue ?? 0) : 0,
+        pendingBills: financial.status === 'fulfilled' ? (financial.value?.pendingBills ?? 0) : 0,
+        completedTests: pathology.status === 'fulfilled' ? (pathology.value?.completed ?? 0) : 0,
+        bloodUnits: 0,
       });
     } catch (error) {
-      console.error('Error generating report data:', error);
+      // keep zeros on failure
     }
   };
 

@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
 import { Label } from './ui/label';
 import { toast } from 'sonner';
+import { staffApi } from '../utils/api';
 
 interface Staff {
   id: string;
@@ -31,10 +32,7 @@ export function StaffManagement({ session }: StaffManagementProps) {
   const [formData, setFormData] = useState<Partial<Staff>>({});
 
   useEffect(() => {
-    const savedStaff = localStorage.getItem('hospital_staff');
-    if (savedStaff) {
-      setStaff(JSON.parse(savedStaff));
-    }
+    staffApi.getAll().then(setStaff).catch(() => setStaff([]));
   }, []);
 
   const filteredStaff = staff.filter(member =>
@@ -49,42 +47,35 @@ export function StaffManagement({ session }: StaffManagementProps) {
       return;
     }
 
-    const newStaff: Staff = {
-      id: Date.now().toString(),
-      name: formData.name || '',
-      email: formData.email || '',
-      phone: formData.phone || '',
-      role: formData.role || '',
-      department: formData.department || '',
-      salary: formData.salary || 0,
+    const newStaff = await staffApi.create({
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      role: formData.role,
+      department: formData.department,
+      salary: formData.salary,
       joinDate: formData.joinDate || new Date().toISOString().split('T')[0],
       status: 'Active'
-    };
-
-    const updatedStaff = [...staff, newStaff];
-    setStaff(updatedStaff);
-    localStorage.setItem('hospital_staff', JSON.stringify(updatedStaff));
+    });
+    setStaff([...staff, newStaff]);
     
     setFormData({});
     setIsAddModalOpen(false);
     toast.success('Staff member added successfully!');
   };
 
-  const toggleStatus = (id: string) => {
-    const updatedStaff = staff.map(member => 
-      member.id === id ? { ...member, status: member.status === 'Active' ? 'Inactive' : 'Active' } : member
-    );
-    setStaff(updatedStaff);
-    localStorage.setItem('hospital_staff', JSON.stringify(updatedStaff));
+  const toggleStatus = async (id: string) => {
+    const member = staff.find(m => m.id === id);
+    if (!member) return;
+    const updated = await staffApi.update(id, { status: member.status === 'Active' ? 'Inactive' : 'Active' });
+    setStaff(staff.map(m => m.id === id ? updated : m));
     toast.success('Status updated successfully!');
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this staff member?')) return;
-    
-    const updatedStaff = staff.filter(member => member.id !== id);
-    setStaff(updatedStaff);
-    localStorage.setItem('hospital_staff', JSON.stringify(updatedStaff));
+    await staffApi.delete(id);
+    setStaff(staff.filter(m => m.id !== id));
     toast.success('Staff member deleted successfully!');
   };
 

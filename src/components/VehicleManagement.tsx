@@ -7,8 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
 import { Label } from './ui/label';
 import { toast } from 'sonner';
-
-interface Vehicle {
+import { vehiclesApi } from '../utils/api';
   id: string;
   vehicleNo: string;
   vehicleModel: string;
@@ -44,12 +43,10 @@ export function VehicleManagement({ session }: VehicleManagementProps) {
 
   const fetchVehicles = async () => {
     try {
-      const localVehicles = localStorage.getItem('hospital_vehicles');
-      if (localVehicles) {
-        setVehicles(JSON.parse(localVehicles));
-      }
+      const data = await vehiclesApi.getAll();
+      setVehicles(data || []);
     } catch (error) {
-      console.error('Error fetching vehicles:', error);
+      setVehicles([]);
     }
   };
 
@@ -67,12 +64,11 @@ export function VehicleManagement({ session }: VehicleManagementProps) {
 
     setLoading(true);
     try {
-      const newVehicle: Vehicle = {
-        id: Date.now().toString(),
-        vehicleNo: formData.vehicleNo || '',
-        vehicleModel: formData.vehicleModel || '',
+      const newVehicle = await vehiclesApi.create({
+        vehicleNo: formData.vehicleNo,
+        vehicleModel: formData.vehicleModel,
         yearMade: formData.yearMade || '',
-        driverName: formData.driverName || '',
+        driverName: formData.driverName,
         driverLicense: formData.driverLicense || '',
         driverContact: formData.driverContact || '',
         vehicleType: formData.vehicleType || 'Ambulance',
@@ -83,12 +79,8 @@ export function VehicleManagement({ session }: VehicleManagementProps) {
         lastService: formData.lastService || '',
         nextService: formData.nextService || '',
         notes: formData.notes || '',
-        createdAt: new Date().toISOString()
-      };
-
-      const updatedVehicles = [...vehicles, newVehicle];
-      setVehicles(updatedVehicles);
-      localStorage.setItem('hospital_vehicles', JSON.stringify(updatedVehicles));
+      });
+      setVehicles([...vehicles, newVehicle]);
       
       setFormData({});
       setIsAddModalOpen(false);
@@ -101,21 +93,16 @@ export function VehicleManagement({ session }: VehicleManagementProps) {
     }
   };
 
-  const handleStatusUpdate = (id: string, status: Vehicle['status']) => {
-    const updatedVehicles = vehicles.map(vehicle => 
-      vehicle.id === id ? { ...vehicle, status } : vehicle
-    );
-    setVehicles(updatedVehicles);
-    localStorage.setItem('hospital_vehicles', JSON.stringify(updatedVehicles));
+  const handleStatusUpdate = async (id: string, status: Vehicle['status']) => {
+    const updated = await vehiclesApi.update(id, { status });
+    setVehicles(vehicles.map(v => v.id === id ? updated : v));
     toast.success('Vehicle status updated successfully!');
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this vehicle?')) return;
-    
-    const updatedVehicles = vehicles.filter(vehicle => vehicle.id !== id);
-    setVehicles(updatedVehicles);
-    localStorage.setItem('hospital_vehicles', JSON.stringify(updatedVehicles));
+    await vehiclesApi.delete(id);
+    setVehicles(vehicles.filter(v => v.id !== id));
     toast.success('Vehicle deleted successfully!');
   };
 

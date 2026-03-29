@@ -7,8 +7,8 @@ import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
 import { Label } from './ui/label';
 import { toast } from 'sonner';
-
-interface Expense {
+import { financeApi } from '../utils/api';
+import { financeApi } from '../utils/api';
   id: string;
   name: string;
   date: string;
@@ -28,10 +28,7 @@ export function ExpenseManagement({ session }: ExpenseManagementProps) {
   const [formData, setFormData] = useState<Partial<Expense>>({});
 
   useEffect(() => {
-    const savedExpenses = localStorage.getItem('hospital_expenses');
-    if (savedExpenses) {
-      setExpenses(JSON.parse(savedExpenses));
-    }
+    financeApi.getExpenses().then(setExpenses).catch(() => setExpenses([]));
   }, []);
 
   const filteredExpenses = expenses.filter(expense =>
@@ -45,30 +42,24 @@ export function ExpenseManagement({ session }: ExpenseManagementProps) {
       return;
     }
 
-    const newExpense: Expense = {
-      id: Date.now().toString(),
-      name: formData.name || '',
+    const newExpense = await financeApi.createExpense({
+      name: formData.name,
       date: formData.date || new Date().toISOString().split('T')[0],
       amount: formData.amount || 0,
-      category: formData.category || '',
+      category: formData.category,
       description: formData.description || ''
-    };
-
-    const updatedExpenses = [...expenses, newExpense];
-    setExpenses(updatedExpenses);
-    localStorage.setItem('hospital_expenses', JSON.stringify(updatedExpenses));
+    });
+    setExpenses([...expenses, newExpense]);
     
     setFormData({});
     setIsAddModalOpen(false);
     toast.success('Expense added successfully!');
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this expense?')) return;
-    
-    const updatedExpenses = expenses.filter(expense => expense.id !== id);
-    setExpenses(updatedExpenses);
-    localStorage.setItem('hospital_expenses', JSON.stringify(updatedExpenses));
+    await financeApi.deleteExpense(id);
+    setExpenses(expenses.filter(e => e.id !== id));
     toast.success('Expense deleted successfully!');
   };
 

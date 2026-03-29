@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
 import { Label } from './ui/label';
 import { toast } from 'sonner';
+import { departmentsApi } from '../utils/api';
 
 interface Department {
   id: string;
@@ -35,12 +36,10 @@ export function DepartmentManagement({ session }: { session: any }) {
 
   const fetchDepartments = async () => {
     try {
-      const localDepartments = localStorage.getItem('hospital_departments');
-      if (localDepartments) {
-        setDepartments(JSON.parse(localDepartments));
-      }
+      const data = await departmentsApi.getAll();
+      setDepartments(data || []);
     } catch (error) {
-      console.error('Error fetching departments:', error);
+      setDepartments([]);
     }
   };
 
@@ -57,22 +56,17 @@ export function DepartmentManagement({ session }: { session: any }) {
 
     setLoading(true);
     try {
-      const newDepartment: Department = {
-        id: Date.now().toString(),
-        name: formData.name || '',
+      const newDept = await departmentsApi.create({
+        name: formData.name,
         description: formData.description || '',
-        headOfDepartment: formData.headOfDepartment || '',
+        headOfDepartment: formData.headOfDepartment,
         location: formData.location || '',
         phone: formData.phone || '',
         email: formData.email || '',
         totalStaff: formData.totalStaff || 0,
         status: 'Active',
-        createdAt: new Date().toISOString()
-      };
-
-      const updatedDepartments = [...departments, newDepartment];
-      setDepartments(updatedDepartments);
-      localStorage.setItem('hospital_departments', JSON.stringify(updatedDepartments));
+      });
+      setDepartments([...departments, newDept]);
       
       setFormData({});
       setIsAddModalOpen(false);
@@ -85,14 +79,13 @@ export function DepartmentManagement({ session }: { session: any }) {
     }
   };
 
-  const handleStatusToggle = (id: string) => {
-    const updatedDepartments = departments.map(dept => 
-      dept.id === id 
-        ? { ...dept, status: dept.status === 'Active' ? 'Inactive' as const : 'Active' as const }
-        : dept
-    );
-    setDepartments(updatedDepartments);
-    localStorage.setItem('hospital_departments', JSON.stringify(updatedDepartments));
+  const handleStatusToggle = async (id: string) => {
+    const dept = departments.find(d => d.id === id);
+    if (!dept) return;
+    const updated = await departmentsApi.update(id, {
+      status: dept.status === 'Active' ? 'Inactive' : 'Active'
+    });
+    setDepartments(departments.map(d => d.id === id ? updated : d));
     toast.success('Department status updated successfully!');
   };
 

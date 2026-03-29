@@ -12,10 +12,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Progress } from './ui/progress';
 import { toast } from 'sonner';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line } from 'recharts';
+import { billingApi } from '../utils/api';
 import { AutoFillButton } from './AutoFillButton';
-import { AIInsightPanel } from './AIInsightPanel';
 
-interface Bill {
+import { AIInsightPanel } from './AIInsightPanel';
   id: string;
   patientId: string;
   patientName: string;
@@ -30,7 +30,7 @@ interface Bill {
   notes?: string;
 }
 
-interface BillingManagementProps {
+interface Bill {
   session: any;
 }
 
@@ -48,12 +48,10 @@ export function BillingManagement({ session }: BillingManagementProps) {
 
   const fetchBills = async () => {
     try {
-      const localBills = localStorage.getItem('hospital_bills');
-      if (localBills) {
-        setBills(JSON.parse(localBills));
-      }
+      const data = await billingApi.getAll();
+      setBills(data || []);
     } catch (error) {
-      console.error('Error fetching bills:', error);
+      setBills([]);
     }
   };
 
@@ -120,25 +118,20 @@ export function BillingManagement({ session }: BillingManagementProps) {
 
     setLoading(true);
     try {
-      const newBill: Bill = {
-        id: `BILL-${Date.now()}`,
-        patientId: Date.now().toString(),
-        patientName: formData.patientName || '',
+      const newBill = await billingApi.create({
+        patientName: formData.patientName,
         billDate: formData.billDate || new Date().toISOString().split('T')[0],
         dueDate: formData.dueDate || new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
         amount: formData.amount || 0,
         paidAmount: formData.paidAmount || 0,
-        status: (formData.paidAmount || 0) >= (formData.amount || 0) ? 'Paid' : 
+        status: (formData.paidAmount || 0) >= (formData.amount || 0) ? 'Paid' :
                 (formData.paidAmount || 0) > 0 ? 'Partial' : 'Pending',
         services: formData.services || [],
         discount: formData.discount || 0,
         tax: formData.tax || 0,
         notes: formData.notes || ''
-      };
-
-      const updatedBills = [...bills, newBill];
-      setBills(updatedBills);
-      localStorage.setItem('hospital_bills', JSON.stringify(updatedBills));
+      });
+      setBills([...bills, newBill]);
       
       setFormData({});
       setIsAddModalOpen(false);
@@ -151,29 +144,22 @@ export function BillingManagement({ session }: BillingManagementProps) {
     }
   };
 
-  const handlePayment = (id: string, amount: number) => {
-    const updatedBills = bills.map(bill => {
-      if (bill.id === id) {
-        const newPaidAmount = bill.paidAmount + amount;
-        return {
-          ...bill,
-          paidAmount: newPaidAmount,
-          status: newPaidAmount >= bill.amount ? 'Paid' : 'Partial'
-        };
-      }
-      return bill;
+  const handlePayment = async (id: string, amount: number) => {
+    const bill = bills.find(b => b.id === id);
+    if (!bill) return;
+    const newPaidAmount = bill.paidAmount + amount;
+    const updated = await billingApi.update(id, {
+      paidAmount: newPaidAmount,
+      status: newPaidAmount >= bill.amount ? 'Paid' : 'Partial'
     });
-    setBills(updatedBills);
-    localStorage.setItem('hospital_bills', JSON.stringify(updatedBills));
+    setBills(bills.map(b => b.id === id ? updated : b));
     toast.success('Payment recorded successfully!');
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this bill?')) return;
-    
-    const updatedBills = bills.filter(bill => bill.id !== id);
-    setBills(updatedBills);
-    localStorage.setItem('hospital_bills', JSON.stringify(updatedBills));
+    await billingApi.delete(id);
+    setBills(bills.filter(b => b.id !== id));
     toast.success('Bill deleted successfully!');
   };
 

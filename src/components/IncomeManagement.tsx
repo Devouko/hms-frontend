@@ -7,8 +7,8 @@ import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
 import { Label } from './ui/label';
 import { toast } from 'sonner';
-
-interface Income {
+import { financeApi } from '../utils/api';
+import { financeApi } from '../utils/api';
   id: string;
   name: string;
   date: string;
@@ -28,10 +28,7 @@ export function IncomeManagement({ session }: IncomeManagementProps) {
   const [formData, setFormData] = useState<Partial<Income>>({});
 
   useEffect(() => {
-    const savedIncomes = localStorage.getItem('hospital_incomes');
-    if (savedIncomes) {
-      setIncomes(JSON.parse(savedIncomes));
-    }
+    financeApi.getIncome().then(setIncomes).catch(() => setIncomes([]));
   }, []);
 
   const filteredIncomes = incomes.filter(income =>
@@ -45,30 +42,24 @@ export function IncomeManagement({ session }: IncomeManagementProps) {
       return;
     }
 
-    const newIncome: Income = {
-      id: Date.now().toString(),
-      name: formData.name || '',
+    const newIncome = await financeApi.createIncome({
+      name: formData.name,
       date: formData.date || new Date().toISOString().split('T')[0],
       amount: formData.amount || 0,
-      category: formData.category || '',
+      category: formData.category,
       description: formData.description || ''
-    };
-
-    const updatedIncomes = [...incomes, newIncome];
-    setIncomes(updatedIncomes);
-    localStorage.setItem('hospital_incomes', JSON.stringify(updatedIncomes));
+    });
+    setIncomes([...incomes, newIncome]);
     
     setFormData({});
     setIsAddModalOpen(false);
     toast.success('Income added successfully!');
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this income record?')) return;
-    
-    const updatedIncomes = incomes.filter(income => income.id !== id);
-    setIncomes(updatedIncomes);
-    localStorage.setItem('hospital_incomes', JSON.stringify(updatedIncomes));
+    await financeApi.deleteIncome(id);
+    setIncomes(incomes.filter(i => i.id !== id));
     toast.success('Income record deleted successfully!');
   };
 
